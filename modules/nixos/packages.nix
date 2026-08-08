@@ -22,7 +22,6 @@
 		htop
 		bottom
 		fish
-		fastfetch
 		pfetch-rs
 		fetch
 		ripgrep

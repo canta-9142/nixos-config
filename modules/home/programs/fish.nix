@@ -7,6 +7,8 @@
 		interactiveShellInit = ''
 			set fish_greeting ""
 			set -gx NH_FLAKE "/home/jinji/nixos-config#nixos"
+
+			${pkgs.fastfetch}/bin/fastfetch
 		'';
 
 		shellAliases = {

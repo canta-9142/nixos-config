@@ -66,7 +66,7 @@
 		let
 			system = "x86_64-linux";
 			hostname = "nixos";
-			niriOverlays = import ./overlays { inherit inputs; };
+			overlays = import ./overlays { inherit inputs; };
 		in {
 			nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
 				inherit system;
@@ -75,7 +75,7 @@
 
 				modules = [
 					./hosts/${hostname}
-					{ nixpkgs.overlays = niriOverlays; }
+					{ nixpkgs.overlays = overlays; }
 
 					nix-flatpak.nixosModules.nix-flatpak
 					sops-nix.nixosModules.sops
