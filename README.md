@@ -18,3 +18,20 @@ SOPS support is reserved in `modules/nixos/security/sops.nix`, but is not enable
 ```console
 sudo nixos-rebuild switch --flake .#nixos
 ```
+
+## Noctalia settings
+
+Settings changed from the Noctalia GUI are saved to
+`~/.local/state/noctalia/settings.toml`. They are not automatically reflected in
+the Home Manager configuration.
+
+After adjusting the settings in the GUI, update the Home Manager snapshot with:
+
+```console
+cp ~/.local/state/noctalia/settings.toml \
+  ~/nixos-config/modules/home/programs/noctalia/settings.toml
+```
+
+Runtime settings take precedence over the Home Manager defaults, so GUI changes
+remain active after rebuilding. The file in this repository serves as the
+reproducible initial configuration and should be updated manually when needed.

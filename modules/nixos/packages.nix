@@ -86,7 +86,7 @@
 		firefox
 		google-chrome
 		discord
-		concord
+		concord-tui
 		slack
 		vscode
 		zed

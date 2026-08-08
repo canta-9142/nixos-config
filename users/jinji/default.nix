@@ -5,7 +5,7 @@
     ../../modules/home/programs/fish.nix
     ../../modules/home/programs/fastfetch.nix
     ../../modules/home/programs/ghostty.nix
-    ../../modules/home/programs/noctalia.nix
+    ../../modules/home/programs/noctalia
     ../../modules/home/desktop/niri
     ../../modules/home/services/activitywatch.nix
     # ../../modules/home/programs/codex.nix
