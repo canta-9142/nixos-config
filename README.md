@@ -2,6 +2,10 @@
 
 NixOS and Home Manager configuration for the `nixos` host.
 
+## Desktop
+
+![Desktop image](./assets/images/desktop-rice.png)
+
 ## Layout
 
 - `hosts/nixos`: host-specific configuration and generated hardware settings
