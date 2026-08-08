@@ -32,6 +32,6 @@
 	programs.oh-my-posh = {
 		enable = true;
 		enableFishIntegration = true;
-		useTheme = "peru";
+		configFile = ./config.omp.json;
 	};
 }

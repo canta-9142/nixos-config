@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../modules/home/programs/fish.nix
+    ../../modules/home/programs/fish
     ../../modules/home/programs/fastfetch
     ../../modules/home/programs/ghostty.nix
     ../../modules/home/programs/noctalia
