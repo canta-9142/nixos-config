@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../../modules/home/programs/git.nix
     ../../modules/home/programs/ssh.nix
     ../../modules/home/programs/fish
     ../../modules/home/programs/fastfetch
