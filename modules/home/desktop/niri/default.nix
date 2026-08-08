@@ -108,7 +108,6 @@
 		    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "brightnessctl --class=backlight set 10%-"; }
 		    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "brightnessctl --class=backlight set +10%"; }
 		}
-		spawn-at-startup "noctalia"
 		spawn-at-startup "mako"
 		spawn-at-startup "fcitx5 -d"
 		window-rule {
