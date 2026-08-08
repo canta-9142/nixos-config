@@ -4,7 +4,7 @@
 	stylix = {
 		enable = true;
 		
-		image = ../../../assets/wallpaper.jpg;
+		image = ../../../assets/wallpapers/img-2026-04-06_17-14-21.png.jpg;
 
 		polarity = "dark";
 

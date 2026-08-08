@@ -3,7 +3,7 @@
 let
     custom-sddm-astronaut = pkgs.sddm-astronaut.override {
         themeConfig = {
-            Background = toString ../../../assets/nix-catppuccin-latte.png;
+            Background = toString ../../../assets/wallpapers/nix-catppuccin-latte.png;
             Blur = 0.4;
             ParticalBlur = true;
             Font = "Noto Sans CJK JP";

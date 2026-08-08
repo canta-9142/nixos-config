@@ -138,19 +138,20 @@ source = "wallpaper"
 wallpaper_scheme = "m3-rainbow"
 
 [wallpaper]
+directory = "/home/jinji/nixos-config/assets/wallpapers"
 transition_duration = 2000
 
     [wallpaper.default]
-    path = "/home/jinji/Pictures/Wallpapers/img-2026-04-06_17-14-21.png.jpg"
+    path = "/home/jinji/nixos-config/assets/wallpapers/img-2026-04-06_17-14-21.png.jpg"
 
     [wallpaper.last]
-    path = "/home/jinji/Pictures/Wallpapers/img-2026-04-06_17-14-21.png.jpg"
+    path = "/home/jinji/nixos-config/assets/wallpapers/img-2026-04-06_17-14-21.png.jpg"
 
     [wallpaper.monitors.HDMI-A-1]
-    path = "/home/jinji/Pictures/Wallpapers/img-2026-04-06_17-14-21.png.jpg"
+    path = "/home/jinji/nixos-config/assets/wallpapers/img-2026-04-06_17-14-21.png.jpg"
 
     [wallpaper.monitors.eDP-1]
-    path = "/home/jinji/Pictures/Wallpapers/img-2026-04-06_17-14-21.png.jpg"
+    path = "/home/jinji/nixos-config/assets/wallpapers/img-2026-04-06_17-14-21.png.jpg"
 
 [widget.battery]
 show_label = false
