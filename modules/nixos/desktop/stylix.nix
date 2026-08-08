@@ -36,6 +36,7 @@
 		};
 
 		targets = {
+			fish.enable = false;
 			gtk.enable = true;
 		};
 	};

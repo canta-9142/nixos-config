@@ -10,7 +10,6 @@
 			noto-fonts-cjk-serif
 			noto-fonts-color-emoji
 			cascadia-code
-			nerd-fonts.caskaydia-cove
 		];
 
 		fontconfig = {
