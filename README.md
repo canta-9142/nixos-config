@@ -45,14 +45,14 @@ NixOS and Home Manager configuration for the `nixos` host.
 │       ├── boot.nix
 │       ├── core.nix
 │       ├── desktop
-│       │   ├── default.nix
+│       │   ├── default.nix            # desktop environment entry point
 │       │   ├── fonts.nix
 │       │   ├── input-method.nix
-│       │   ├── niri.nix
-│       │   ├── sddm.nix
+│       │   ├── niri.nix               # niri (window manager)
+│       │   ├── sddm.nix               # sddm (display manager)
 │       │   └── stylix.nix
 │       ├── networking.nix
-│       ├── packages.nix
+│       ├── packages.nix               # system packages
 │       ├── security
 │       │   ├── sops.nix               # sops-nix settings
 │       │   └── sudo.nix
