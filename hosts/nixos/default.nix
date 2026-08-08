@@ -12,9 +12,7 @@
     ../../modules/nixos/users.nix
     ../../modules/nixos/desktop
     ../../modules/nixos/security/sudo.nix
-
-    # SOPS is planned but not enabled yet.
-    # ../../modules/nixos/security/sops.nix
+    ../../modules/nixos/security/sops.nix
   ];
 
   networking.hostName = "nixos";

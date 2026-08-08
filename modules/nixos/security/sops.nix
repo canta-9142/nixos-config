@@ -1,14 +1,19 @@
 { config, lib, pkgs, ... }:
 
-let
-	ageKeyFile = "/home/jinji/key.txt";
-in
 {
 	sops = {
-		age.keyFile = ageKeyFile;
-		age.generateKey = true;
+		defaultSopsFile = ../../../secrets/ssh.yaml;
+		
+		age = {
+			keyFile = "/home/jinji/.config/sops/age/keys.txt";
+			generateKey = false;
+		};
+
+		secrets.ssh_private_key = {
+			owner = "jinji";
+			mode = "0400";
+		};
 	};
-	environment.variables = {
-		SOPS_AGE_KEY_FILE = ageKeyFile;
-	};
+	
+	environment.variables.SOPS_AGE_KEY_FILE = "/home/jinji/.config/sops/age/keys.txt";
 }

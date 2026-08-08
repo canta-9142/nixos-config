@@ -2,12 +2,12 @@
 
 {
   imports = [
+    ../../modules/home/programs/ssh.nix
     ../../modules/home/programs/fish
     ../../modules/home/programs/fastfetch
     ../../modules/home/programs/ghostty.nix
     ../../modules/home/programs/noctalia
     ../../modules/home/desktop/niri
-    ../../modules/home/services/activitywatch.nix
     # ../../modules/home/programs/codex.nix
   ];
 
