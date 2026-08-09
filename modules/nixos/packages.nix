@@ -33,6 +33,8 @@
 		kitty
 		zellij
 		yazi
+		cava
+		
 		usbutils
 		nvme-cli
 		smartmontools
