@@ -1,5 +1,5 @@
 {
-	description = "NixOS with NNN, Stylix";
+	description = "My NixOS configurations";
 
 	inputs = {
 		flake-utils.url = "github:numtide/flake-utils";
