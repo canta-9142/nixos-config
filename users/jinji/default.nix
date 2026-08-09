@@ -5,6 +5,7 @@
     ../../modules/home/programs/git.nix
     ../../modules/home/programs/ssh.nix
     ../../modules/home/programs/fish
+    ../../modules/home/programs/direnv.nix
     ../../modules/home/programs/fastfetch
     ../../modules/home/programs/ghostty.nix
     ../../modules/home/programs/noctalia
