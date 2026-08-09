@@ -47,6 +47,9 @@
 		rpi-imager
 		python314
 		go
+		gopls
+		gotools
+		golangci-lint
 		rustc
 		cargo
 		rustfmt
