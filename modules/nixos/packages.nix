@@ -91,7 +91,6 @@
 		discord
 		concord-tui
 		slack
-		vscode
 		zed
 		thunderbird
 		kicad

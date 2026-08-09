@@ -8,6 +8,7 @@
     ../../modules/home/programs/fastfetch
     ../../modules/home/programs/ghostty.nix
     ../../modules/home/programs/noctalia
+    ../../modules/home/programs/vscode.nix
     ../../modules/home/desktop/niri
     # ../../modules/home/programs/codex.nix
   ];
