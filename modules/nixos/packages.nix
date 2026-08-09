@@ -34,6 +34,7 @@
 		zellij
 		yazi
 		cava
+		clock-rs
 		
 		usbutils
 		nvme-cli
