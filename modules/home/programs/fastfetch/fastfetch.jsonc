@@ -47,6 +47,11 @@
       "format": "{$1}{sysname}  {#2}v{release}"
     },
     {
+      "type": "packages",
+      "key": "{#90}│ {#93}Packages         {#90}│",
+      "format": "{$1}{#2}Nix: {#1}{nix-default}  {#2}Flatpak: {#1}{flatpak-all}"
+    },
+    {
       "type": "uptime",
       "key": "{#90}│ {#93}Uptime          {#90}│",
       "format": "{$1}{?days}{days} Days + {?}{hours}:{minutes}:{seconds}"
