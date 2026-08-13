@@ -100,7 +100,6 @@
 		gimp
 		inkscape
 		obs-studio
-		zoom-us
 		libreoffice
 		hunspell
 		hunspellDicts.en_US
