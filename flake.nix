@@ -29,6 +29,8 @@
 		ghostty.url = "github:ghostty-org/ghostty/tip";
 		ghostty.inputs.nixpkgs.follows = "nixpkgs";
 
+		herdr.url = "github:herdrdev/herdr/v0.8.0";
+
 		codex-cli.url = "github:sadjow/codex-cli-nix";
 		codex-cli.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -60,6 +62,7 @@
 					   noctalia,
 					   stylix,
 					   ghostty,
+					   herdr,
 					   codex-cli,
 					   gitwand,
 					   ... }:
@@ -87,6 +90,7 @@
 							home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
 							nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
 							ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
+							herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
 							codex-cli.packages.${pkgs.stdenv.hostPlatform.system}.default
 							gitwand.packages.${pkgs.stdenv.hostPlatform.system}.default
 						];

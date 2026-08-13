@@ -20,6 +20,18 @@ let
       version = "2.2.0";
       hash = "sha256-rhOSb2wmVdSEFErsgze/+EvKHhgBGRlt2L9AccxWCkE=";
     }
+    {
+      name = "chatgpt";
+      publisher = "openai";
+      version = "26.803.61601";
+      hash = "sha256-yDkbM9gULlTvj2aKiNNQuYg5x0zAi3R3wyYwgc7lg0o=";
+    }
+    {
+      name = "vscode-github-actions";
+      publisher = "github";
+      version = "0.32.3";
+      hash = "sha256-BYRiFiyynU0iNB2RLBXc+iGUd0sekvww/LoabKPJGr0=";
+    }
   ];
 in
 {
@@ -30,12 +42,16 @@ in
     profiles.default = {
       extensions = with pkgs.vscode-extensions; [
         astro-build.astro-vscode
+        codezombiech.gitignore
+        golang.go
+        jnoortheen.nix-ide
         tomoki1207.pdf
       ] ++ marketplaceExtensions;
 
       userSettings = {
         "github.copilot.enable" = {
           markdown = true;
+          go = false;
         };
         "explorer.confirmDelete" = false;
         "explorer.confirmDragAndDrop" = false;
