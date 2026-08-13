@@ -121,4 +121,15 @@
 			"org.gitfourchette.gitfourchette"
 		];
 	};
+
+	# nix-flatpak accesses Flathub during activation.  On a switch that also
+	# restarts NetworkManager, wait until networking (including DNS) is ready.
+	systemd.services.flatpak-managed-install = {
+		wants = [ "network-online.target" ];
+		after = [
+			"NetworkManager.service"
+			"NetworkManager-wait-online.service"
+			"network-online.target"
+		];
+	};
 }

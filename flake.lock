@@ -106,11 +106,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1785324350,
-        "narHash": "sha256-PsQbIF1ixDsQ9XFhvsG6cx671udy+XlQoepTlu72Ork=",
+        "lastModified": 1786635855,
+        "narHash": "sha256-K/N4k3CiFPIE8nqVQB/RlgSUbs5yuln49YcrNY1+x5Q=",
         "owner": "canta-9142",
         "repo": "GitWand-Nix",
-        "rev": "0609d20972ca05a2344f30025266546b3d76850c",
+        "rev": "fe59a69de9f39c94c9ecb6052fa4149a04d23786",
         "type": "github"
       },
       "original": {
@@ -328,11 +328,11 @@
     },
     "nixpkgs-stable_2": {
       "locked": {
-        "lastModified": 1786632684,
-        "narHash": "sha256-ZYojdJlvJmhXfCo1MxToVzIEscPOi8Nb4W/yguplz/o=",
+        "lastModified": 1786637258,
+        "narHash": "sha256-uY0LWWHAKHa/U4YmboAfShd5nIJP5dLOPl/6fhRymuc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "53cb6fa629185159eec61999cbcf7e842872a12d",
+        "rev": "8203bb27d12d0d830886efb5f8a346f68d3e7a05",
         "type": "github"
       },
       "original": {
