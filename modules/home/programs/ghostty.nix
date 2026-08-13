@@ -1,8 +1,6 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-	stylix.targets.ghostty.enable = false;
-
 	xdg.configFile."ghostty/transparent.css".text = ''
 		window,
 		window.background,

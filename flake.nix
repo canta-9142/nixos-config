@@ -23,9 +23,6 @@
 
 		noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
-		stylix.url = "github:nix-community/stylix";
-		stylix.inputs.nixpkgs.follows = "nixpkgs";
-
 		ghostty.url = "github:ghostty-org/ghostty/tip";
 		ghostty.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -60,7 +57,6 @@
 					   nclean,
 					   niri,
 					   noctalia,
-					   stylix,
 					   ghostty,
 					   herdr,
 					   codex-cli,
@@ -83,7 +79,6 @@
 					nix-flatpak.nixosModules.nix-flatpak
 					sops-nix.nixosModules.sops
 					niri.nixosModules.niri
-					stylix.nixosModules.stylix
 
 					({ pkgs, ... }: {
 						environment.systemPackages = [
