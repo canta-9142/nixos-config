@@ -42,27 +42,9 @@
 		parted
 		disko
 
-		gcc
 		arduino-ide
 		rpi-imager
 		python314
-		go
-		gopls
-		gotools
-		golangci-lint
-		rustc
-		cargo
-		rustfmt
-		clippy
-		wasm-pack
-		jq
-		nodejs
-		pnpm
-		typescript
-		tailwindcss
-		mermaid-cli
-		playwright
-		playwright-driver.browsers
 
 		activitywatch
 		ookla-speedtest

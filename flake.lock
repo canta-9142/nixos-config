@@ -94,7 +94,7 @@
       },
       "original": {
         "owner": "ghostty-org",
-        "ref": "tip",
+        "ref": "main",
         "repo": "ghostty",
         "type": "github"
       }
