@@ -23,7 +23,7 @@
 
 		noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
-		ghostty.url = "github:ghostty-org/ghostty/tip";
+		ghostty.url = "github:ghostty-org/ghostty/main";
 		ghostty.inputs.nixpkgs.follows = "nixpkgs";
 
 		herdr.url = "github:herdrdev/herdr/v0.8.0";
