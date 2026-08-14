@@ -24,7 +24,8 @@ let
       name = "chatgpt";
       publisher = "openai";
       version = "26.803.61601";
-      hash = "sha256-yDkbM9gULlTvj2aKiNNQuYg5x0zAi3R3wyYwgc7lg0o=";
+      arch = "linux-x64";
+      hash = "sha256-b9qNNTfOk8ALntHCAi3oK/2fHiCtsqyI3Zv26lgskB4=";
     }
     {
       name = "vscode-github-actions";
