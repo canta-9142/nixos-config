@@ -12,6 +12,8 @@
 				email = "work@floating-gate.com";
 			};
 
+			push.autoSetupRemote = true;
+
 			pull.rebase = true;
 		};
 	};
