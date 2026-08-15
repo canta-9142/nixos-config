@@ -46,6 +46,7 @@ in
         codezombiech.gitignore
         golang.go
         jnoortheen.nix-ide
+        mkhl.direnv
         tomoki1207.pdf
       ] ++ marketplaceExtensions;
 

@@ -86,8 +86,8 @@
 							nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
 							ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
 							herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
-							codex-cli.packages.${pkgs.stdenv.hostPlatform.system}.default
-							gitwand.packages.${pkgs.stdenv.hostPlatform.system}.default
+							pkgs.codex-cli
+							pkgs.gitwand
 						];
 					})
 					

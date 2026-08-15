@@ -75,6 +75,8 @@
 		google-chrome
 		discord
 		concord-tui
+		spotify
+		spotatui
 		slack
 		zed
 		thunderbird

@@ -19,7 +19,7 @@
 		enable = true;
 		allowPing = false;
 		checkReversePath = "loose";
-		allowedTCPPorts = [ 55544 ];
+		allowedTCPPorts = [ 55544 57621 ];
 		allowedUDPPorts = [ 51820 ];
 	};
 }

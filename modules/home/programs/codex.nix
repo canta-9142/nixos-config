@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
 	systemd.user.services.codex-remote = {
@@ -7,7 +7,7 @@
 			After = [ "network.target" ];
 		};
 		Service = {
-			ExecStart = "${inputs.codex-cli.packages.${pkgs.system}.default}/bin/codex remote-control start";
+			ExecStart = "${pkgs.codex-cli}/bin/codex remote-control start";
 			Restart = "on-failure";
 		};
 		Install = {

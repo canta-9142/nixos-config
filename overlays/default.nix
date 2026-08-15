@@ -9,5 +9,19 @@
       version = "0.2.0";
       __intentionallyOverridingVersion = true;
     };
+
+    # codex-cli-nix still uses the deprecated stdenv.isLinux alias.
+    codex-cli = inputs.codex-cli.packages.${final.stdenv.hostPlatform.system}.default.override {
+      stdenv = final.stdenv // {
+        isLinux = final.stdenv.hostPlatform.isLinux;
+      };
+    };
+
+    # GitWand-Nix still uses the deprecated appimageTools.extractType2 alias.
+    gitwand = inputs.gitwand.packages.${final.stdenv.hostPlatform.system}.default.override {
+      appimageTools = final.appimageTools // {
+        extractType2 = final.appimageTools.extract;
+      };
+    };
   })
 ]
