@@ -14,6 +14,7 @@
 			mi = "micro";
 			".." = "cd ..";
 			"..." = "cd ../..";
+			"...." = "cd ../../..";
 			g = "git";
 			ga = "git add";
 			gaa = "git add .";
@@ -22,6 +23,7 @@
 			gc = "git commit";
 			gca = "git commit -a";
 			gcm = "git commit -m";
+			gcam = "git commit -a -m";
 			gco = "git checkout";
 			gd = "git diff";
 			gf = "git fetch";

@@ -51,6 +51,7 @@
 		
 		netcat
 		tcpdump
+		iw
 		wireguard-tools
 		wireguard-ui
 		remmina
