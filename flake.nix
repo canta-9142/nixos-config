@@ -18,6 +18,8 @@
 		nclean.url = "github:p0nczek/nclean";
 		nclean.inputs.nixpkgs.follows = "nixpkgs";
 
+		qshare.url = "github:canta-9142/qshare";
+
 		niri.url = "github:sodiboo/niri-flake";
 		niri.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -55,6 +57,7 @@
 					   nix-flatpak,
 					   sops-nix,
 					   nclean,
+					   qshare,
 					   niri,
 					   noctalia,
 					   ghostty,
@@ -84,6 +87,7 @@
 						environment.systemPackages = [
 							home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
 							nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
+							qshare.packages.${pkgs.stdenv.hostPlatform.system}.default
 							ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
 							herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
 							pkgs.codex-cli
