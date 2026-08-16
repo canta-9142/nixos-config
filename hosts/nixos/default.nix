@@ -11,6 +11,7 @@
     ../../modules/nixos/packages.nix
     ../../modules/nixos/users.nix
     ../../modules/nixos/desktop
+    ../../modules/nixos/distrobox.nix
     ../../modules/nixos/security/sudo.nix
     ../../modules/nixos/security/sops.nix
   ];
