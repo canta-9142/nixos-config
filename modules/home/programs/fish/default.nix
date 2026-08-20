@@ -10,8 +10,8 @@
 		
 		shellAbbrs = {
 			nb = "nh os boot";
-			no = "nh os switch";
-			nou = "nh os switch --update";
+			ns = "nh os switch";
+			nsu = "nh os switch --update";
 			mi = "micro";
 			".." = "cd ..";
 			"..." = "cd ../..";
