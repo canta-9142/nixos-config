@@ -17,9 +17,20 @@
 			defaultFonts = {
 				sansSerif = [ "Noto Sans CJK JP" ];
 				serif = [ "Noto Sans CJK JP" ];
-				monospace = [ "Cascadia Code NF" ];
+				monospace = [
+					"Cascadia Code NF"
+					"Noto Sans Mono CJK JP"
+				];
 				emoji = [ "Noto Color Emoji" ];
 			};
+		};
+	};
+
+	services.kmscon = {
+		enable = true;
+		config = {
+			font-engine = "pango";
+			font-name = "Cascadia Code NF";
 		};
 	};
 }
