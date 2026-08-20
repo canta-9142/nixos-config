@@ -1,0 +1,85 @@
+diff --git a/src/plugins/splash/two-step/plugin.c b/src/plugins/splash/two-step/plugin.c
+--- a/src/plugins/splash/two-step/plugin.c
++++ b/src/plugins/splash/two-step/plugin.c
+@@ -630,6 +630,7 @@ view_load (view_t *view)
+ {
+         unsigned long x, y, width, title_height = 0, subtitle_height = 0;
+         unsigned long screen_width, screen_height, screen_scale;
++        long background_x = 0, background_y = 0;
+         ply_boot_splash_plugin_t *plugin;
+         ply_pixel_buffer_t *buffer;
+ 
+@@ -665,12 +666,33 @@ view_load (view_t *view)
+                                                               plugin->background_start_color);
+ 
+                 if (plugin->background_image_is_scaled) {
+-                        buffer = ply_pixel_buffer_resize (ply_image_get_buffer (plugin->background_image), screen_width, screen_height);
++                        long image_width, image_height;
++                        long scaled_width, scaled_height;
++
++                        image_width = ply_image_get_width (plugin->background_image);
++                        image_height = ply_image_get_height (plugin->background_image);
++
++                        /* Scale like CSS background-size: cover. Keep the
++                         * aspect ratio, center the image, and crop overflow.
++                         */
++                        if (screen_width * image_height > screen_height * image_width) {
++                                scaled_width = screen_width;
++                                scaled_height = (image_height * screen_width + image_width - 1) / image_width;
++                        } else {
++                                scaled_height = screen_height;
++                                scaled_width = (image_width * screen_height + image_height - 1) / image_height;
++                        }
++
++                        background_x = (screen_width - scaled_width) / 2;
++                        background_y = (screen_height - scaled_height) / 2;
++                        buffer = ply_pixel_buffer_resize (ply_image_get_buffer (plugin->background_image),
++                                                          scaled_width, scaled_height);
+                 } else {
+                         buffer = ply_pixel_buffer_tile (ply_image_get_buffer (plugin->background_image), screen_width, screen_height);
+                 }
+ 
+-                ply_pixel_buffer_fill_with_buffer (view->background_buffer, buffer, 0, 0);
++                ply_pixel_buffer_fill_with_buffer (view->background_buffer, buffer,
++                                                   background_x, background_y);
+                 ply_pixel_buffer_free (buffer);
+         }
+ 
+@@ -1647,11 +1669,6 @@ draw_background (view_t             *view,
+                 ply_pixel_buffer_fill_with_hex_color (pixel_buffer, &area,
+                                                       plugin->background_start_color);
+ 
+-        if (plugin->should_show_console_messages && use_black_background == false) {
+-                ply_pixel_buffer_fill_with_hex_color (pixel_buffer, &area, plugin->console_background_color);
+-                return;
+-        }
+-
+         if (plugin->watermark_image != NULL) {
+                 uint32_t *data;
+ 
+@@ -1950,6 +1967,7 @@ show_splash_screen (ply_boot_splash_plugin_t *plugin,
+         start_progress_animation (plugin);
+ 
+         plugin->is_visible = true;
++        unhide_console_messages (plugin);
+ 
+         return true;
+ }
+diff --git a/src/libply-splash-graphics/ply-console-viewer.c b/src/libply-splash-graphics/ply-console-viewer.c
+--- a/src/libply-splash-graphics/ply-console-viewer.c
++++ b/src/libply-splash-graphics/ply-console-viewer.c
+@@ -103,0 +104 @@ ply_console_viewer_new (ply_pixel_display_t *display,
++        console_viewer->loop = ply_event_loop_get_default ();
+@@ -151,0 +153,9 @@ ply_console_viewer_free (ply_console_viewer_t *console_viewer)
++
++        /* A queued redraw holds console_viewer as its callback data. Cancel
++         * it before freeing the viewer when a DRM display disappears during
++         * the initrd-to-root transition.
++         */
++        if (console_viewer->output_queued)
++                ply_event_loop_stop_watching_for_timeout (console_viewer->loop,
++                                                          (ply_event_loop_timeout_handler_t)
++                                                          update_console_messages, console_viewer);
+@@ -340 +350 @@ on_terminal_emulator_output (ply_console_viewer_t *console_viewer)
+-        ply_event_loop_watch_for_timeout (ply_event_loop_get_default (),
++        ply_event_loop_watch_for_timeout (console_viewer->loop,

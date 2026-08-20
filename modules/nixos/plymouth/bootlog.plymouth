@@ -1,0 +1,29 @@
+[Plymouth Theme]
+Name=NixOS Boot Log
+Description=Boot console output over a full-screen background
+ModuleName=two-step
+
+[two-step]
+ImageDir=@IMAGE_DIR@
+Font=Cascadia Code 12
+TitleFont=Cascadia Code 12
+MonospaceFont=Cascadia Code 12
+ConsoleLogTextColor=0x4c4f69ff
+ScaleBackgroundImage=true
+BackgroundStartColor=0xeff1f5
+BackgroundEndColor=0xeff1f5
+
+[boot-up]
+UseAnimation=false
+UseEndAnimation=false
+UseProgressBar=false
+
+[shutdown]
+UseAnimation=false
+UseEndAnimation=false
+UseProgressBar=false
+
+[reboot]
+UseAnimation=false
+UseEndAnimation=false
+UseProgressBar=false
