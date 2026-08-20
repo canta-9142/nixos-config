@@ -50,9 +50,21 @@ in
 	boot.kernelParams = [
 		"systemd.show_status=true"
 		"rd.systemd.show_status=true"
+		# Plymouth and SDDM both use tty1.  Keep fbcon off that VT so it
+		# cannot repaint Plymouth's retained frame with its black text buffer
+		# during the handoff.  Text consoles remain available on tty2 onward.
+		"fbcon=vc:2-63"
 	];
 
 	boot.consoleLogLevel = 6;
+
+	# Leave Plymouth's last frame on the framebuffer while SDDM takes over.
+	# Plymouth still exits and releases DRM, so it does not block the display
+	# manager from starting.
+	systemd.services.plymouth-quit.serviceConfig.ExecStart = lib.mkForce [
+		""
+		"${config.boot.plymouth.package}/bin/plymouth quit --retain-splash"
+	];
 
 	boot.loader = {
 		timeout = 10;
