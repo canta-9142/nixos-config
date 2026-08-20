@@ -66,9 +66,23 @@
 					   ... }:
 		let
 			system = "x86_64-linux";
+			pkgs = nixpkgs.legacyPackages.${system};
 			hostname = "nixos";
 			overlays = import ./overlays { inherit inputs; };
 		in {
+			devShells.${system}.default = pkgs.mkShellNoCC {
+				packages = with pkgs; [
+					nixfmt-tree
+					statix
+					deadnix
+					nixd
+					sops
+					age
+				];
+			};
+
+			formatter.${system} = pkgs.nixfmt;
+
 			nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
 				inherit system;
 
