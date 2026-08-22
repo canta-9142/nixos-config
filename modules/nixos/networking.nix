@@ -9,9 +9,12 @@
 
 	services.openssh = {
 		enable = true;
+		openFirewall = true;
 		settings = {
-			PermitRootLogin = "prohibit-password";
+			AllowUsers = [ "jinji" ];
+			KbdInteractiveAuthentication = false;
 			PasswordAuthentication = false;
+			PermitRootLogin = "no";
 		};
 	};
 
