@@ -33,6 +33,7 @@
 			gp = "git push";
 			gs = "git status";
 			gst = "git stash";
+			gsw = "git switch -c";
 		};
 
 		interactiveShellInit = ''
