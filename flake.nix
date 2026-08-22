@@ -20,7 +20,7 @@
 
 		qshare.url = "github:canta-9142/qshare";
 
-		niri.url = "github:sodiboo/niri-flake";
+		niri.url = "github:epireyn/niri-flake";
 		niri.inputs.nixpkgs.follows = "nixpkgs";
 
 		noctalia.url = "github:noctalia-dev/noctalia/cachix";
