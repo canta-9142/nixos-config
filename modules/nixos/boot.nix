@@ -77,6 +77,44 @@ in
 		systemd-boot = {
 			enable = true;
 			configurationLimit = 30;
+			extraInstallCommands = ''
+				${pkgs.python3}/bin/python3 - ${lib.escapeShellArg "${config.boot.loader.efi.efiSysMountPoint}/loader/entries"} <<-'PY'
+				import datetime
+				import re
+				import sys
+				from pathlib import Path
+
+				entries_dir = Path(sys.argv[1])
+				generation_pattern = re.compile(r"Generation ([0-9]+) ")
+				profile_pattern = re.compile(r"^title .* \[([^]]+)]", re.MULTILINE)
+				date_pattern = re.compile(
+				    r"built on [0-9]{4}-[0-9]{2}-[0-9]{2}(?: [0-9]{2}:[0-9]{2}:[0-9]{2})?"
+				)
+
+				for entry in entries_dir.glob("nixos-*.conf"):
+				    contents = entry.read_text()
+				    generation_match = generation_pattern.search(contents)
+				    if generation_match is None:
+				        continue
+
+				    profile_match = profile_pattern.search(contents)
+				    profile = (
+				        Path("/nix/var/nix/profiles/system-profiles") / profile_match.group(1)
+				        if profile_match is not None
+				        else Path("/nix/var/nix/profiles/system")
+				    )
+				    generation_link = Path(f"{profile}-{generation_match.group(1)}-link")
+				    if not generation_link.exists():
+				        continue
+
+				    built_at = datetime.datetime.fromtimestamp(generation_link.stat().st_ctime)
+				    updated = date_pattern.sub(
+				        f"built on {built_at:%Y-%m-%d %H:%M:%S}", contents
+				    )
+				    if updated != contents:
+				        entry.write_text(updated)
+				PY
+			'';
 		};
 		
 		#grub = {
