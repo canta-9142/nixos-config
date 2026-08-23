@@ -49,20 +49,15 @@
 		];
 	};
 
-	outputs = inputs@{ self,
-					   flake-utils,
-					   nixpkgs,
+	outputs = inputs@{ nixpkgs,
 					   home-manager,
 					   nix-flatpak,
 					   sops-nix,
 					   nclean,
 					   qshare,
 					   niri,
-					   noctalia,
 					   ghostty,
 					   herdr,
-					   codex-cli,
-					   gitwand,
 					   ... }:
 		let
 			system = "x86_64-linux";
@@ -110,10 +105,12 @@
 					
 					home-manager.nixosModules.home-manager
 					{
-						home-manager.useGlobalPkgs = true;
-						home-manager.useUserPackages = true;
-						home-manager.extraSpecialArgs = { inherit inputs; };
-						home-manager.users.jinji = import ./users/jinji;
+						home-manager = {
+							useGlobalPkgs = true;
+							useUserPackages = true;
+							extraSpecialArgs = { inherit inputs; };
+							users.jinji = import ./users/jinji;
+						};
 					}
 				];
 			};

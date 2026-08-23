@@ -6,7 +6,12 @@
 	programs.niri.package = pkgs.niri-unstable;
 	
 	security.polkit.enable = true;
-	services.gnome.gnome-keyring.enable = true;
+	services = {
+		gnome.gnome-keyring.enable = true;
+		power-profiles-daemon.enable = true;
+		upower.enable = true;
+		logind.settings.Login.HandleLidSwitch = "suspend";
+	};
 	security.pam.services.swaylock = {};
 
 	xdg.portal = {
@@ -24,10 +29,6 @@
 	environment.sessionVariables = {
 		NIXOS_OZONE_WL = "1";
 	};
-
-	services.power-profiles-daemon.enable = true;
-	services.upower.enable = true;
-	services.logind.settings.Login.HandleLidSwitch = "suspend";
 
 	environment.systemPackages = with pkgs; [
 		niri

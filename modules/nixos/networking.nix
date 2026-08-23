@@ -1,8 +1,17 @@
-{ config, pkgs, ... }:
+_:
 
 {
-	networking.wireless.enable = true;
-	networking.networkmanager.enable = true;
+	networking = {
+		wireless.enable = true;
+		networkmanager.enable = true;
+		firewall = {
+			enable = true;
+			allowPing = false;
+			checkReversePath = "loose";
+			allowedTCPPorts = [ 55544 57621 ];
+			allowedUDPPorts = [ 67 51820 ];
+		};
+	};
 
 	hardware.bluetooth.enable = true;
 	services.blueman.enable = true;
@@ -18,11 +27,4 @@
 		};
 	};
 
-	networking.firewall = {
-		enable = true;
-		allowPing = false;
-		checkReversePath = "loose";
-		allowedTCPPorts = [ 55544 57621 ];
-		allowedUDPPorts = [ 67 51820 ];
-	};
 }

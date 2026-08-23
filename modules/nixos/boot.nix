@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
 	plymouthWithConsoleOverlay =
@@ -33,40 +33,35 @@ in
 {
 	# Plymouth needs the native AMD KMS driver while it is still running in the
 	# initrd.  Loading it later leaves Plymouth on simpledrm until SDDM starts.
-	boot.initrd.kernelModules = [ "amdgpu" ];
-	boot.initrd.systemd.services.plymouth-start.after = [
-		"systemd-modules-load.service"
-	];
+	boot = {
+		initrd = {
+			kernelModules = [ "amdgpu" ];
+			systemd.services.plymouth-start.after = [
+				"systemd-modules-load.service"
+			];
+		};
 
-	boot.plymouth = {
+		plymouth = {
 		enable = true;
 		package = plymouthWithConsoleOverlay;
 		theme = "nixos-bootlog";
 		themePackages = [ plymouthBootLogTheme ];
 		font = "${pkgs.cascadia-code}/share/fonts/truetype/CascadiaCode-Regular.ttf";
 		showDelay = 0;
-	};
+		};
 
-	boot.kernelParams = [
+		kernelParams = [
 		"systemd.show_status=true"
 		"rd.systemd.show_status=true"
 		# Plymouth and SDDM both use tty1.  Keep fbcon off that VT so it
 		# cannot repaint Plymouth's retained frame with its black text buffer
 		# during the handoff.  Text consoles remain available on tty2 onward.
 		"fbcon=vc:2-63"
-	];
+		];
 
-	boot.consoleLogLevel = 6;
+		consoleLogLevel = 6;
 
-	# Leave Plymouth's last frame on the framebuffer while SDDM takes over.
-	# Plymouth still exits and releases DRM, so it does not block the display
-	# manager from starting.
-	systemd.services.plymouth-quit.serviceConfig.ExecStart = lib.mkForce [
-		""
-		"${config.boot.plymouth.package}/bin/plymouth quit --retain-splash"
-	];
-
-	boot.loader = {
+		loader = {
 		timeout = 10;
 
 		efi = {
@@ -134,7 +129,16 @@ in
 		#	'';
 		#	theme = lib.mkForce inputs.nixos-grub-themes.packages.${pkgs.system}.hyperfluent;
 		#};
+		};
 	};
+
+	# Leave Plymouth's last frame on the framebuffer while SDDM takes over.
+	# Plymouth still exits and releases DRM, so it does not block the display
+	# manager from starting.
+	systemd.services.plymouth-quit.serviceConfig.ExecStart = lib.mkForce [
+		""
+		"${config.boot.plymouth.package}/bin/plymouth quit --retain-splash"
+	];
 	
 	nix.gc = {
 	  	automatic = true;
