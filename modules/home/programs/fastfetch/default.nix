@@ -12,5 +12,6 @@ _:
       force = true;
     };
     "fastfetch/narrow.jsonc".source = ./narrow.jsonc;
+    "fastfetch/nixos-logo2.png".source = ../../../../assets/images/nixos-logo2.png;
   };
 }

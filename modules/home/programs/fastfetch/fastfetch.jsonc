@@ -1,8 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/fastfetch-cli/fastfetch/2.66.0/doc/json_schema.json",
   "logo": {
-    "type": "builtin",
-    "source": "NixOS"
+    "type": "auto",
+    "source": "$HOME/.config/fastfetch/nixos-logo2.png",
+    "width": 42,
+    "preserveAspectRatio": true
   },
   "display": {
     "separator": "",

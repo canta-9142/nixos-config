@@ -1,8 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/fastfetch-cli/fastfetch/2.66.0/doc/json_schema.json",
   "logo": {
-    "type": "builtin",
-    "source": "NixOS",
+    "type": "auto",
+    "source": "$HOME/.config/fastfetch/nixos-logo2.png",
+    "width": 42,
+    "preserveAspectRatio": true,
     "position": "top"
   },
   "display": {
@@ -14,7 +16,7 @@
   "modules": [
     {
       "type": "custom",
-      "key": "{#90}╭ Keys ───────────╮",
+      "key": "\u001b[1G{#90}╭ Keys ───────────╮",
       "format": "{#90}╭ Values ────────────────────────────────────────╮"
     },
     {
