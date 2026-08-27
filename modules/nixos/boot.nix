@@ -139,10 +139,4 @@ in
 		""
 		"${config.boot.plymouth.package}/bin/plymouth quit --retain-splash"
 	];
-	
-	nix.gc = {
-	  	automatic = true;
-	  	dates = "daily";
-	  	options = "--delete-older-than 5d";
-	};
 }
