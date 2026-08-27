@@ -20,7 +20,7 @@
 				"Noto Color Emoji"
 			];
 			font-size = 12;
-			theme = "Everforest Dark Med";
+			theme = "Everforest Dark Hard";
 			cursor-style = "bar";
 			background-opacity = 0.7;
 			background-opacity-cells = true;
