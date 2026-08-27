@@ -42,6 +42,7 @@ in
     bat
     tree
     kitty
+    ghostty
     zellij
     yazi
     cava

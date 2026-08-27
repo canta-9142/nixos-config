@@ -11,7 +11,6 @@
 
 	programs.ghostty = {
 		enable = true;
-		package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default;
 		enableFishIntegration = true;
 
 		settings = {

@@ -25,8 +25,6 @@
 
 		noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
-		ghostty.url = "github:ghostty-org/ghostty/tip";
-
 		herdr.url = "github:herdrdev/herdr/v0.8.0";
 
 		codex-cli.url = "github:sadjow/codex-cli-nix";
@@ -56,7 +54,6 @@
 					   nclean,
 					   qshare,
 					   niri,
-					   ghostty,
 					   herdr,
 					   ... }:
 		let
@@ -96,7 +93,6 @@
 							home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
 							nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
 							qshare.packages.${pkgs.stdenv.hostPlatform.system}.default
-							ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
 							herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
 							pkgs.codex-cli
 							pkgs.gitwand
