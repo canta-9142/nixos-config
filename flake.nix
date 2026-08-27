@@ -21,7 +21,6 @@
 		qshare.url = "github:canta-9142/qshare";
 
 		niri.url = "github:epireyn/niri-flake";
-		niri.inputs.nixpkgs.follows = "nixpkgs";
 
 		noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
@@ -35,15 +34,19 @@
 
 		zen-browser.url = "github:0xc000022070/zen-browser-flake";
 		zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+
+		look.url = "github:kunkka19xx/look?dir=apps/linows";
 	};
 
 	nixConfig = {
 		extra-substituters = [
 			"https://noctalia.cachix.org"
+			"https://look.cachix.org"
 		];
 
 		extra-trusted-public-keys = [
 			"noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+			"look.cachix.org-1:8elPCeSVBzlDZXqIRKBK9GyLIK/Hoe1xiWZF0ir7uX4="
 		];
 	};
 
@@ -55,6 +58,7 @@
 					   qshare,
 					   niri,
 					   herdr,
+					   look,
 					   ... }:
 		let
 			system = "x86_64-linux";
@@ -94,6 +98,7 @@
 							nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
 							qshare.packages.${pkgs.stdenv.hostPlatform.system}.default
 							herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
+							look.packages.${pkgs.stdenv.hostPlatform.system}.default
 							pkgs.codex-cli
 							pkgs.gitwand
 						];
