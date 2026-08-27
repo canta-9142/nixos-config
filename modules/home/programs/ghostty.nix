@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, ... }:
 
 {
 	xdg.configFile."ghostty/transparent.css".text = ''

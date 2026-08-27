@@ -24,6 +24,7 @@ in
             "/run/current-system/sw/bin/nix"
             "${env} ${envArgs}${system}/bin/switch-to-configuration (test|boot)$"
             "${env} ${envArgs}nix build --no-link --profile /nix/var/nix/profiles/system ${system}$"
+            "${env} ${envArgs}ln -sfn /nix/var/nix/profiles/system-[0-9]+-link /nix/var/nix/profiles/system$"
           ];
     }
   ];
