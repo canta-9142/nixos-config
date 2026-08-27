@@ -5,6 +5,7 @@
     ./hardware-configuration.nix
 
     ../../modules/nixos/core.nix
+    ../../modules/nixos/gc.nix
     ../../modules/nixos/boot.nix
     ../../modules/nixos/networking.nix
     ../../modules/nixos/audio.nix

@@ -15,7 +15,6 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
-  programs.firefox.enable = true;
   programs.fish.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -41,7 +40,6 @@ in
     eza
     bat
     tree
-    kitty
     ghostty
     zellij
     yazi
@@ -51,14 +49,8 @@ in
     usbutils
     nvme-cli
     smartmontools
-    parted
     disko
 
-    arduino-ide
-    rpi-imager
-    python314
-
-    activitywatch
     ookla-speedtest
 
     netcat
@@ -70,19 +62,12 @@ in
     freerdp
     cloudflared
 
-    nautilus
-    thunar
-    kdePackages.dolphin
-    kdePackages.kio-extras
-    kdePackages.kio-fuse
-    ark
-    file-roller
-
     flatpak
     flatpak-builder
     wine64
     wineWow64Packages.wayland
     zathura
+    nautilus
     chromium
     firefox
     google-chrome
@@ -93,13 +78,9 @@ in
     slack
     zed
     thunderbird
-    kicad
     gimp
     inkscape
     obs-studio
-    libreoffice
-    hunspell
-    hunspellDicts.en_US
     pympress
   ];
 

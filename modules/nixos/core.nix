@@ -34,12 +34,6 @@
       variant = "";
     };
   };
-  	
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 2d";
-  };
 
   programs.dconf.enable = true;
 
