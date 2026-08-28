@@ -37,6 +37,13 @@
 
   programs.dconf.enable = true;
 
+  boot.tmp.useTmpfs = true;
+
+  swapDevices = [ {
+  	device = "/var/lib/swapfile";
+  	size = 16 * 1024;
+  } ];
+
   time.timeZone = "Asia/Tokyo";
 
   i18n = {
