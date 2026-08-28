@@ -1,61 +1,60 @@
 { pkgs, ... }:
 
 {
-	programs.niri.enable = true;
+  programs.niri.enable = true;
 
-	programs.niri.package = pkgs.niri-unstable;
-	
-	security.polkit.enable = true;
-	services = {
-		gnome.gnome-keyring.enable = true;
-		power-profiles-daemon.enable = true;
-		upower.enable = true;
-		logind.settings.Login.HandleLidSwitch = "suspend";
-	};
-	security.pam.services.swaylock = {};
+  programs.niri.package = pkgs.niri-unstable;
 
-	xdg.portal = {
-		enable = true;
-		extraPortals = with pkgs; [
-			xdg-desktop-portal-gtk
-			xdg-desktop-portal-gnome
-		];
+  security.polkit.enable = true;
+  services = {
+    gnome.gnome-keyring.enable = true;
+    power-profiles-daemon.enable = true;
+    upower.enable = true;
+    logind.settings.Login.HandleLidSwitch = "suspend";
+  };
+  security.pam.services.swaylock = { };
 
-	    config.niri = {
-	    	"org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
-	    };
-	};
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-gnome
+    ];
 
-	environment.sessionVariables = {
-		NIXOS_OZONE_WL = "1";
-	};
+    config.niri = {
+      "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+    };
+  };
 
-	environment.systemPackages = with pkgs; [
-		niri
-		
-		fuzzel
-		mako
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
 
-		swaylock-effects
-		swayidle
+  environment.systemPackages = with pkgs; [
+    niri
 
-		wl-clipboard
-		wl-mirror
-		grim
-		slurp
-		swappy
+    fuzzel
 
-		brightnessctl
-		playerctl
-		pamixer
-		pavucontrol
+    swaylock-effects
+    swayidle
 
-		xwayland-satellite
+    wl-clipboard
+    wl-mirror
+    grim
+    slurp
+    swappy
 
-		gowall
-		papirus-icon-theme
-		adwaita-icon-theme
-		bibata-cursors
-		nwg-look
-	];
+    brightnessctl
+    playerctl
+    pamixer
+    pavucontrol
+
+    xwayland-satellite
+
+    gowall
+    papirus-icon-theme
+    adwaita-icon-theme
+    bibata-cursors
+    nwg-look
+  ];
 }

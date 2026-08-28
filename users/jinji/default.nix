@@ -11,6 +11,7 @@
     ../../modules/home/programs/noctalia
     ../../modules/home/programs/vscode.nix
     ../../modules/home/desktop/gtk.nix
+    ../../modules/home/desktop/mako.nix
     ../../modules/home/desktop/niri
     # ../../modules/home/programs/codex.nix
   ];
