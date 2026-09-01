@@ -1,119 +1,110 @@
 {
-	description = "My NixOS configurations";
+  description = "My NixOS configurations";
 
-	inputs = {
-		flake-utils.url = "github:numtide/flake-utils";
-		
-		nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-		nixpkgs-stable.url = "github:nixos/nixpkgs?ref=release-26.05";
+  inputs = {
+    flake-parts.url = "github:hercules-ci/flake-parts";
 
-		home-manager.url = "github:nix-community/home-manager";
-		home-manager.inputs.nixpkgs.follows = "nixpkgs";
-		
-		nix-flatpak.url = "github:gmodena/nix-flatpak";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs?ref=release-26.05";
 
-		sops-nix.url = "github:Mic92/sops-nix";
-		sops-nix.inputs.nixpkgs.follows = "nixpkgs-stable";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-		nclean.url = "github:p0nczek/nclean";
-		nclean.inputs.nixpkgs.follows = "nixpkgs";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
 
-		qshare.url = "github:canta-9142/qshare";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs-stable";
 
-		niri.url = "github:epireyn/niri-flake";
+    nclean.url = "github:p0nczek/nclean";
+    nclean.inputs.nixpkgs.follows = "nixpkgs";
 
-		noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    qshare.url = "github:canta-9142/qshare";
 
-		herdr.url = "github:herdrdev/herdr/v0.8.0";
+    niri.url = "github:epireyn/niri-flake";
 
-		codex-cli.url = "github:sadjow/codex-cli-nix";
-		codex-cli.inputs.nixpkgs.follows = "nixpkgs";
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
-		gitwand.url = "github:canta-9142/GitWand-Nix";
-		gitwand.inputs.nixpkgs.follows = "nixpkgs";
+    herdr.url = "github:herdrdev/herdr/v0.8.0";
 
-		zen-browser.url = "github:0xc000022070/zen-browser-flake";
-		zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+    codex-cli.url = "github:sadjow/codex-cli-nix";
+    codex-cli.inputs.nixpkgs.follows = "nixpkgs";
 
-		look.url = "github:kunkka19xx/look?dir=apps/linows";
-	};
+    gitwand.url = "github:canta-9142/GitWand-Nix";
+    gitwand.inputs.nixpkgs.follows = "nixpkgs";
 
-	nixConfig = {
-		extra-substituters = [
-			"https://noctalia.cachix.org"
-			"https://look.cachix.org"
-		];
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
 
-		extra-trusted-public-keys = [
-			"noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-			"look.cachix.org-1:8elPCeSVBzlDZXqIRKBK9GyLIK/Hoe1xiWZF0ir7uX4="
-		];
-	};
+    look.url = "github:kunkka19xx/look?dir=apps/linows";
+  };
 
-	outputs = inputs@{ nixpkgs,
-					   home-manager,
-					   nix-flatpak,
-					   sops-nix,
-					   nclean,
-					   qshare,
-					   niri,
-					   herdr,
-					   look,
-					   ... }:
-		let
-			system = "x86_64-linux";
-			pkgs = nixpkgs.legacyPackages.${system};
-			hostname = "nixos";
-			overlays = import ./overlays { inherit inputs; };
-		in {
-			devShells.${system}.default = pkgs.mkShellNoCC {
-				packages = with pkgs; [
-					nixfmt-tree
-					statix
-					deadnix
-					nixd
-					sops
-					age
-				];
-			};
+  nixConfig = {
+    extra-substituters = [
+      "https://noctalia.cachix.org"
+      "https://look.cachix.org"
+    ];
 
-			formatter.${system} = pkgs.nixfmt;
+    extra-trusted-public-keys = [
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+      "look.cachix.org-1:8elPCeSVBzlDZXqIRKBK9GyLIK/Hoe1xiWZF0ir7uX4="
+    ];
+  };
 
-			nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem {
-				inherit system;
+  outputs =
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
 
-				specialArgs = { inherit inputs; };
+      perSystem = { pkgs, ... }: {
+        devShells.default = pkgs.mkShellNoCC {
+          packages = with pkgs; [
+            nixfmt-tree
+            statix
+            deadnix
+            nixd
+            sops
+            age
+          ];
+        };
 
-				modules = [
-					./hosts/${hostname}
-					{ nixpkgs.overlays = overlays; }
+        formatter = pkgs.nixfmt-tree;
+      };
 
-					nix-flatpak.nixosModules.nix-flatpak
-					sops-nix.nixosModules.sops
-					niri.nixosModules.niri
+      flake.nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
 
-					({ pkgs, ... }: {
-						environment.systemPackages = [
-							home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
-							nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
-							qshare.packages.${pkgs.stdenv.hostPlatform.system}.default
-							herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
-							look.packages.${pkgs.stdenv.hostPlatform.system}.default
-							pkgs.codex-cli
-							pkgs.gitwand
-						];
-					})
-					
-					home-manager.nixosModules.home-manager
-					{
-						home-manager = {
-							useGlobalPkgs = true;
-							useUserPackages = true;
-							extraSpecialArgs = { inherit inputs; };
-							users.jinji = import ./users/jinji;
-						};
-					}
-				];
-			};
-		};
+        specialArgs = { inherit inputs; };
+
+        modules = [
+          ./hosts/nixos
+          { nixpkgs.overlays = import ./overlays { inherit inputs; }; }
+
+          inputs.nix-flatpak.nixosModules.nix-flatpak
+          inputs.sops-nix.nixosModules.sops
+          inputs.niri.nixosModules.niri
+
+          ({ pkgs, ... }: {
+            environment.systemPackages = [
+              inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
+              inputs.nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
+              inputs.qshare.packages.${pkgs.stdenv.hostPlatform.system}.default
+              inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
+              inputs.look.packages.${pkgs.stdenv.hostPlatform.system}.default
+              pkgs.codex-cli
+              pkgs.gitwand
+            ];
+          })
+
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = { inherit inputs; };
+              users.jinji = import ./users/jinji;
+            };
+          }
+        ];
+      };
+    };
 }
