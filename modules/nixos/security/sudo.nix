@@ -1,8 +1,8 @@
 { pkgs, ... }:
 
 let
-  env = "${pkgs.coreutils}/bin/env";
-  envArgs = "^((USER=jinji|NH_[A-Za-z0-9_]+=[^[:space:]]*|NIXOS_INSTALL_BOOTLOADER=1)[[:space:]]+)*";
+  env = "${pkgs.coreutils-full}/bin/env";
+  envArgs = "^((USER=jinji|NH_[A-Za-z0-9_]+=[^[:space:]]*|NIXOS_INSTALL_BOOTLOADER=1|NIXOS_NO_CHECK=[^[:space:]]*)[[:space:]]+)*";
   system = "/nix/store/[a-z0-9]{32}-nixos-system-[^[:space:]]+";
 in
 
