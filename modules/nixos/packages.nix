@@ -76,10 +76,10 @@ in
     spotify
     spotatui
     slack
-    zed
     thunderbird
     gimp
     inkscape
+    kicad
     obs-studio
     pympress
   ];
