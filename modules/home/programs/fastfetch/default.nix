@@ -3,8 +3,8 @@ _:
 {
   programs.fastfetch.enable = true;
 
-  # The width-aware fastfetch alias that selects between these configs is
-  # defined in ../fish.nix.
+  # The terminal- and width-aware fastfetch function is defined in
+  # ../fish/default.nix.
   # Replace the pre-existing, unmanaged config on the first activation.
   xdg.configFile = {
     "fastfetch/config.jsonc" = {
