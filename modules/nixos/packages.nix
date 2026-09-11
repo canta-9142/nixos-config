@@ -82,6 +82,7 @@ in
     kicad
     obs-studio
     pympress
+    github-desktop
   ];
 
   services.flatpak = {
@@ -96,7 +97,6 @@ in
     ];
     packages = [
       "com.usebottles.bottles"
-      "io.github.shiftey.Desktop"
       "org.gitfourchette.gitfourchette"
     ];
   };
