@@ -76,7 +76,7 @@
       border = {
         enable = true;
         width = 4;
-        active.color = "#89b4fa";
+        active.color = "#a7c080";
         inactive.color = "#6c7086";
       };
       default-column-width.proportion = 0.5;
