@@ -36,6 +36,8 @@
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
 
     look.url = "github:kunkka19xx/look?dir=apps/linows";
+
+    ytkew.url = "github:canta-9142/ytkew/feat/add-nix-flake";
   };
 
   nixConfig = {
@@ -90,6 +92,7 @@
               inputs.qshare.packages.${pkgs.stdenv.hostPlatform.system}.default
               inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
               inputs.look.packages.${pkgs.stdenv.hostPlatform.system}.default
+              inputs.ytkew.packages.${pkgs.stdenv.hostPlatform.system}.default
               pkgs.codex-cli
               pkgs.gitwand
             ];
