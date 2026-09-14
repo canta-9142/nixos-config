@@ -38,6 +38,9 @@
     look.url = "github:kunkka19xx/look?dir=apps/linows";
 
     ytkew.url = "github:canta-9142/ytkew/feat/add-nix-flake";
+
+    ghgrab.url = "github:abhixdd/ghgrab";
+    ghgrab.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -93,6 +96,7 @@
               inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
               inputs.look.packages.${pkgs.stdenv.hostPlatform.system}.default
               inputs.ytkew.packages.${pkgs.stdenv.hostPlatform.system}.default
+              inputs.ghgrab.packages.${pkgs.stdenv.hostPlatform.system}.default
               pkgs.codex-cli
               pkgs.gitwand
             ];
