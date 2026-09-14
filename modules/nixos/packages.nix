@@ -20,20 +20,13 @@ in
   environment.systemPackages = with pkgs; [
     nh
     micro
-    fresh-editor
     git
-    meld
     gh
+    meld
     wget
     curl
-    zip
-    unzip
     btop
-    htop
-    bottom
     fish
-    pfetch-rs
-    fetch
     ripgrep
     bubblewrap
     fd
@@ -41,30 +34,19 @@ in
     bat
     tree
     ghostty
-    zellij
     yazi
-    cava
-    clock-rs
 
     usbutils
     nvme-cli
     smartmontools
-    disko
 
-    ookla-speedtest
-
-    netcat
-    tcpdump
     iw
     wireguard-tools
     wireguard-ui
-    remmina
-    freerdp
     cloudflared
 
     flatpak
     flatpak-builder
-    wine64
     wineWow64Packages.wayland
     zathura
     nautilus
@@ -72,15 +54,13 @@ in
     firefox
     google-chrome
     discord
-    concord-tui
-    spotify
     spotatui
     slack
     thunderbird
     gimp
     inkscape
     kicad
-    obs-studio
+    kooha
     pympress
     github-desktop
   ];
