@@ -1,20 +1,20 @@
 _:
 
 {
-	programs.git = {
-		enable = true;
+  programs.git = {
+    enable = true;
 
-		lfs.enable = true;
+    lfs.enable = true;
 
-		settings = {
-			user = {
-				name = "Kanta IMAI";
-				email = "work@floating-gate.com";
-			};
+    settings = {
+      user = {
+        name = "Kanta IMAI";
+        email = "work@floating-gate.com";
+      };
 
-			push.autoSetupRemote = true;
+      push.autoSetupRemote = true;
 
-			pull.rebase = true;
-		};
-	};
+      pull.rebase = true;
+    };
+  };
 }

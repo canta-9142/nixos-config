@@ -88,21 +88,21 @@ in
       systemd-boot.enable = lib.mkForce false;
 
       #grub = {
-      #	enable = true;
-      #	efiSupport = true;
-      #	devices = [ "nodev" ];
-      #	useOSProber = true;
-      #	configurationLimit = 5;
-      #	extraEntriesBeforeNixOS = false;
-      #	extraEntries = ''
-      #		menuentry "Reboot" {
-      #			reboot
-      #		}
-      #		menuentry "Poweroff" {
-      #			halt
-      #		}
-      #	'';
-      #	theme = lib.mkForce inputs.nixos-grub-themes.packages.${pkgs.system}.hyperfluent;
+      # enable = true;
+      # efiSupport = true;
+      # devices = [ "nodev" ];
+      # useOSProber = true;
+      # configurationLimit = 5;
+      # extraEntriesBeforeNixOS = false;
+      # extraEntries = ''
+      #   menuentry "Reboot" {
+      #     reboot
+      #   }
+      #   menuentry "Poweroff" {
+      #     halt
+      #   }
+      # '';
+      # theme = lib.mkForce inputs.nixos-grub-themes.packages.${pkgs.system}.hyperfluent;
       #};
     };
   };

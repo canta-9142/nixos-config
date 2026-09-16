@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   marketplaceExtensions = pkgs.vscode-utils.extensionsFromVscodeMarketplace [
@@ -41,15 +46,18 @@ in
     mutableExtensionsDir = false;
 
     profiles.default = {
-      extensions = with pkgs.vscode-extensions; [
-        astro-build.astro-vscode
-        codezombiech.gitignore
-        golang.go
-        jnoortheen.nix-ide
-        marp-team.marp-vscode
-        mkhl.direnv
-        tomoki1207.pdf
-      ] ++ marketplaceExtensions;
+      extensions =
+        with pkgs.vscode-extensions;
+        [
+          astro-build.astro-vscode
+          codezombiech.gitignore
+          golang.go
+          jnoortheen.nix-ide
+          marp-team.marp-vscode
+          mkhl.direnv
+          tomoki1207.pdf
+        ]
+        ++ marketplaceExtensions;
 
       userSettings = {
         "github.copilot.enable" = {

@@ -1,31 +1,31 @@
 { config, lib, ... }:
 
 {
-	xdg.configFile."ghostty/transparent.css".text = ''
-		window,
-		window.background,
-		.background {
-			background-color: transparent;
-		}
-	'';
+  xdg.configFile."ghostty/transparent.css".text = ''
+    window,
+    window.background,
+    .background {
+      background-color: transparent;
+    }
+  '';
 
-	programs.ghostty = {
-		enable = true;
-		enableFishIntegration = true;
+  programs.ghostty = {
+    enable = true;
+    enableFishIntegration = true;
 
-		settings = {
-			font-family = lib.mkForce [
-				"Cascadia Code NF"
-				"Noto Sans Mono CJK JP"
-				"Noto Color Emoji"
-			];
-			font-size = 12;
-			theme = "Everforest Dark Hard";
-			cursor-style = "bar";
-			background-opacity = 0.7;
-			background-opacity-cells = true;
-			gtk-custom-css = "${config.xdg.configHome}/ghostty/transparent.css";
-			window-decoration = false;
-		};
-	};
+    settings = {
+      font-family = lib.mkForce [
+        "Cascadia Code NF"
+        "Noto Sans Mono CJK JP"
+        "Noto Color Emoji"
+      ];
+      font-size = 12;
+      theme = "Everforest Dark Hard";
+      cursor-style = "bar";
+      background-opacity = 0.7;
+      background-opacity-cells = true;
+      gtk-custom-css = "${config.xdg.configHome}/ghostty/transparent.css";
+      window-decoration = false;
+    };
+  };
 }
