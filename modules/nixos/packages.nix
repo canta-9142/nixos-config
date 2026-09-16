@@ -60,6 +60,7 @@ in
     gimp
     inkscape
     kicad
+    arduino-ide
     kooha
     pympress
     github-desktop
