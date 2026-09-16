@@ -36,6 +36,7 @@ in
     ghostty
     yazi
 
+    e2fprogs
     usbutils
     nvme-cli
     smartmontools
