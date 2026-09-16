@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   pkgs,
   lib,
   ...
@@ -74,6 +75,15 @@ in
       enable = true;
       pkiBundle = "/var/lib/sbctl";
       configurationLimit = 8;
+      # Format generation timestamps before the EFI images are signed.
+      package = inputs.lanzaboote.packages.${pkgs.stdenv.hostPlatform.system}.lzbt.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./lanzaboote-entry-datetime.patch ];
+        postPatch = (old.postPatch or "") + ''
+          substituteInPlace shared/src/generation.rs \
+            --replace-fail '@date@' '${pkgs.coreutils}/bin/date' \
+            --replace-fail '@timezone@' '${pkgs.tzdata}/share/zoneinfo/${config.time.timeZone}'
+        '';
+      });
     };
 
     loader = {

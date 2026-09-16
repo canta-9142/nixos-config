@@ -1,0 +1,138 @@
+--- a/shared/src/generation.rs
++++ b/shared/src/generation.rs
+@@ -9,7 +9,6 @@
+ use bootspec::BootSpec;
+ use bootspec::SpecialisationName;
+ use serde::Deserialize;
+-use time::Date;
+
+ /// (Possibly) extended Bootspec.
+ ///
+@@ -65,7 +64,7 @@
+     /// Profile symlink index
+     pub version: u64,
+     /// Build time
+-    pub build_time: Option<Date>,
++    pub build_time: Option<String>,
+     /// Top-level specialisation name
+     pub specialisation_name: Option<SpecialisationName>,
+     /// Top-level extended boot specification
+@@ -93,7 +92,7 @@
+     ) -> Result<Self> {
+         Ok(Self {
+             version: link.version,
+-            build_time: link.build_time,
++            build_time: link.build_time.clone(),
+             specialisation_name: Some(specialisation_name),
+             spec: ExtendedBootJson {
+                 bootspec: specialisation.clone().generation,
+@@ -128,7 +127,7 @@
+
+         Ok(Self {
+             version: link.version,
+-            build_time: link.build_time,
++            build_time: link.build_time.clone(),
+             specialisation_name,
+             spec: ExtendedBootJson {
+                 bootspec: bootspec.clone(),
+@@ -157,8 +156,8 @@
+     pub fn describe(&self) -> String {
+         let build_time = self
+             .build_time
+-            .map(|x| x.to_string())
+-            .unwrap_or_else(|| String::from("Unknown"));
++            .as_deref()
++            .unwrap_or("Unknown");
+
+         format!(
+             "Generation {}{}, {}",
+@@ -180,10 +179,18 @@
+     }
+ }
+
+-fn read_build_time(path: &Path) -> Result<Date> {
+-    let build_time =
+-        time::OffsetDateTime::from_unix_timestamp(fs::symlink_metadata(path)?.mtime())?.date();
+-    Ok(build_time)
++fn read_build_time(path: &Path) -> Result<String> {
++    let output = std::process::Command::new("@date@")
++        .env("TZ", "@timezone@")
++        .args([
++            "--date",
++            &format!("@{}", fs::symlink_metadata(path)?.mtime()),
++            "+%Y-%m-%d %H:%M:%S",
++        ])
++        .output()
++        .context("Failed to format generation timestamp")?;
++    anyhow::ensure!(output.status.success(), "Failed to format generation timestamp");
++    Ok(String::from_utf8(output.stdout)?.trim().to_owned())
+ }
+
+ /// A link pointing to a generation.
+@@ -194,7 +201,7 @@
+ pub struct GenerationLink {
+     pub version: u64,
+     pub path: PathBuf,
+-    pub build_time: Option<Date>,
++    pub build_time: Option<String>,
+ }
+
+ impl GenerationLink {
+--- a/systemd/src/install.rs
++++ b/systemd/src/install.rs
+@@ -350,6 +350,12 @@
+         // An Err returned from this function means that we couldn't properly read
+         // the different files belonging to this generation, so it should be reinstalled
+         if let Ok((stub_target, kernel_path, initrd_path)) = self.read_installed_generation(regex) {
++            // Re-sign existing generations when their menu description changes.
++            let stub = fs::read(&stub_target)?;
++            let os_release = OsRelease::from_generation(generation)?.to_string();
++            if pe::read_section_data(&stub, ".osrel") != Some(os_release.as_bytes()) {
++                return Ok(false);
++            }
+             self.gc_roots
+                 .extend([&stub_target, &kernel_path, &initrd_path]);
+             // Do not return yet, we still need to check the existence of the pcrlock measurements.
+--- a/systemd/tests/integration/os_release.rs
++++ b/systemd/tests/integration/os_release.rs
+@@ -17,7 +17,7 @@
+         common::setup_generation_link_from_toplevel(&toplevel, profiles.path(), 1)
+             .expect("Failed to setup generation link");
+
+-    let output0 = common::lanzaboote_install(0, esp_mountpoint.path(), vec![generation_link])?;
++    let output0 = common::lanzaboote_install(0, esp_mountpoint.path(), vec![generation_link.clone()])?;
+     assert!(output0.status.success());
+
+     let stub_data = fs::read(common::image_path(&esp_mountpoint, 1, &toplevel)?)?;
+@@ -27,11 +27,28 @@
+
+     let expected = expect![[r#"
+         ID=lanzaboote
+-        PRETTY_NAME=LanzaOS (Generation 1, 1970-01-01)
+-        VERSION_ID=Generation 1, 1970-01-01
++        PRETTY_NAME=LanzaOS (Generation 1, 1970-01-01 09:00:00)
++        VERSION_ID=Generation 1, 1970-01-01 09:00:00
+     "#]];
+
+-    expected.assert_eq(&String::from_utf8(os_release_section)?);
++    expected.assert_eq(std::str::from_utf8(&os_release_section)?);
++
++    // Existing signed entries must be refreshed too, then reused unchanged.
++    filetime::set_file_mtime(&generation_link, filetime::FileTime::from_unix_time(45296, 0))?;
++    let output1 = common::lanzaboote_install(0, esp_mountpoint.path(), vec![generation_link.clone()])?;
++    assert!(output1.status.success());
++    let image = common::image_path(&esp_mountpoint, 1, &toplevel)?;
++    let updated_stub = fs::read(&image)?;
++    let updated_os_release = pe_section(&updated_stub, ".osrel").unwrap();
++    assert_eq!(
++        std::str::from_utf8(updated_os_release)?,
++        std::str::from_utf8(&os_release_section)?.replace("09:00:00", "21:34:56")
++    );
++    assert!(common::verify_signature(&image)?);
++    let modified = fs::metadata(&image)?.modified()?;
++    let output2 = common::lanzaboote_install(0, esp_mountpoint.path(), vec![generation_link])?;
++    assert!(output2.status.success());
++    assert_eq!(fs::metadata(&image)?.modified()?, modified);
+
+     Ok(())
+ }
