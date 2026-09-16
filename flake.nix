@@ -7,6 +7,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs?ref=release-26.05";
 
+    lanzaboote.url = "github:nix-community/lanzaboote/v1.1.0";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -87,6 +90,7 @@
           inputs.nix-flatpak.nixosModules.nix-flatpak
           inputs.sops-nix.nixosModules.sops
           inputs.niri.nixosModules.niri
+          inputs.lanzaboote.nixosModules.lanzaboote
 
           ({ pkgs, ... }: {
             environment.systemPackages = [
