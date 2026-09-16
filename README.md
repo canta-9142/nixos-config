@@ -1,5 +1,4 @@
 # nixos-config
-
 NixOS and Home Manager configuration for the `nixos` host.
 
 ## Desktop
