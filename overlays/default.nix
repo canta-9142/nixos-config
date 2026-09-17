@@ -23,5 +23,8 @@
         extractType2 = final.appimageTools.extract;
       };
     };
+
+    # sops-nix still uses buildGo125Module which was removed in nixpkgs.
+    buildGo125Module = final.buildGoModule;
   })
 ]
