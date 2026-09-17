@@ -49,6 +49,7 @@ in
     flatpak
     flatpak-builder
     wineWow64Packages.wayland
+    gemini-cli
     zathura
     nautilus
     chromium
