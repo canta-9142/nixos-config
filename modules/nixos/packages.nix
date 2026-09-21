@@ -78,7 +78,6 @@ in
       }
     ];
     packages = [
-      "com.usebottles.bottles"
       "org.gitfourchette.gitfourchette"
     ];
   };
