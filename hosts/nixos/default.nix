@@ -15,6 +15,7 @@
     ../../modules/nixos/distrobox.nix
     ../../modules/nixos/virtualbox.nix
     ../../modules/nixos/security/luks.nix
+    ../../modules/nixos/security/apparmor.nix
     ../../modules/nixos/security/sudo.nix
     ../../modules/nixos/security/sops.nix
   ];
