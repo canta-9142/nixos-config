@@ -1,16 +1,18 @@
-{ ... }:
+_:
 
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/system/common.nix
+    ../../modules/system/ssh.nix
 
-    ../../modules/sysytem/core.nix
-    ../../modules/system/gc.nix
-    ../../modules/system/boot.nix
-    ../../modules/system/networking.nix
+    ./core.nix
+    ./gc.nix
+    ./boot.nix
+    ./networking.nix
     ../../modules/system/audio.nix
-    ../../modules/system/packages.nix
-    ../../modules/system/users.nix
+    ./packages.nix
+    ./users.nix
     ../../modules/system/desktop
     ../../modules/system/distrobox.nix
     ../../modules/system/virtualbox.nix

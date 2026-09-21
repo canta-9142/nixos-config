@@ -1,44 +1,22 @@
 { pkgs, ... }:
 
-let
-  nh = pkgs.symlinkJoin {
-    name = "nh-${pkgs.nh.version}";
-    paths = [ pkgs.nh ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/nh --set NH_PRESERVE_ENV 0
-    '';
-  };
-in
-
 {
 
   nixpkgs.config.allowUnfree = true;
 
-  programs.fish.enable = true;
-
   environment.systemPackages = with pkgs; [
-    nh
-    micro
-    git
-    gh
     meld
-    wget
-    curl
-    btop
-    fish
-    ripgrep
+
     bubblewrap
     fd
     eza
     bat
-    tree
+
     ghostty
-    yazi
 
     e2fsprogs
     usbutils
-    nvme-cli
+
     smartmontools
 
     iw

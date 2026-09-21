@@ -22,16 +22,7 @@ _:
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      AllowUsers = [ "jinji" ];
-      KbdInteractiveAuthentication = false;
-      PasswordAuthentication = false;
-      PermitRootLogin = "no";
-    };
-  };
+  services.openssh.openFirewall = true;
 
   hardware.wirelessRegulatoryDatabase = true;
   boot.extraModprobeConfig = ''

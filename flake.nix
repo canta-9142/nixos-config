@@ -61,7 +61,10 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
       perSystem = { pkgs, ... }: {
         devShells.default = pkgs.mkShellNoCC {
@@ -78,13 +81,31 @@
         formatter = pkgs.nixfmt-tree;
       };
 
+      flake.nixosConfigurations.rock3b = inputs.nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs.nixpkgs-stable = inputs.nixpkgs-stable;
+        modules = [
+          ./hosts/rock3b
+          {
+            nixpkgs.overlays = [
+              (_final: _prev: {
+                pkgsStable = import inputs.nixpkgs-stable {
+                  system = "aarch64-linux";
+                  config.allowUnfree = true;
+                };
+              })
+            ];
+          }
+        ];
+      };
+
       flake.nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         specialArgs = { inherit inputs; };
 
         modules = [
-          ./hosts/nixos
+          ./hosts/laptop
           { nixpkgs.overlays = import ./overlays { inherit inputs; }; }
 
           inputs.nix-flatpak.nixosModules.nix-flatpak

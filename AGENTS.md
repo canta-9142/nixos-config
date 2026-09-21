@@ -38,7 +38,7 @@ Place configuration according to the existing project layout:
 - Reusable Home Manager modules belong in `modules/home/`.
 - User-specific configuration belongs in `users/`.
 
-Do not edit `hosts/nixos/hardware-configuration.nix` unless the user explicitly requests a hardware configuration change.
+Do not edit `hosts/laptop/hardware-configuration.nix` unless the user explicitly requests a hardware configuration change.
 
 ## Web UI design
 
