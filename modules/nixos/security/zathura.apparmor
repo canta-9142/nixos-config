@@ -1,0 +1,48 @@
+# Nix's shell launcher execs the core package's ELF wrapper. Match both that
+# wrapper and the real binaries, including direct launches and future versions.
+# Wayland only: external URL openers, printing and SyncTeX editor execution
+# are intentionally not permitted. Non-default XDG directories need rules.
+include <tunables/global>
+
+profile zathura /nix/store/*-zathura-[0-9]*/bin/{zathura,zathura-sandbox,.zathura-wrapped,.zathura-sandbox-wrapped} {
+  include <abstractions/base>
+  include <abstractions/fonts>
+  include <abstractions/wayland>
+
+  # Libraries, plugins, GTK resources and NixOS-generated configuration.
+  /nix/store/ r,
+  /nix/store/** mr,
+  /nix/store/*-zathura-[0-9]*/bin/{zathura,zathura-sandbox,.zathura-wrapped,.zathura-sandbox-wrapped} ix,
+  /nix/store/*-file-*/bin/file ix,
+  /etc/{passwd,group,nsswitch.conf,machine-id,zathurarc} r,
+  /etc/xdg/** r,
+  /run/current-system/sw/share/** r,
+  /run/opengl-driver/** mr,
+  /sys/devices/**/uevent r,
+  /sys/devices/pci*/**/{vendor,device,revision,subsystem_vendor,subsystem_device} r,
+  /dev/dri/renderD[0-9]* rw,
+
+  # Native Wayland display; no IP networking or session-bus access.
+  owner /dev/shm/wayland-* rw,
+
+  # Read documents, but do not grant arbitrary home-directory file access.
+  owner @{HOME}/ r,
+  owner @{HOME}/**/ r,
+  owner @{HOME}/**.{pdf,PDF,djvu,djv,ps,eps,cbz,cbr,cbt,cb7} r,
+  owner /tmp/**.{pdf,PDF,djvu,djv,ps,eps,cbz,cbr,cbt,cb7} r,
+  owner @{HOME}/.config/zathura/{,**} r,
+  owner @{HOME}/.config/gtk-3.0/{,**} r,
+  owner @{HOME}/.local/share/{themes,icons}/{,**} r,
+  owner @{HOME}/.local/share/zathura/{,**} rwk,
+  owner @{HOME}/.cache/zathura/{,**} rwk,
+  owner /tmp/zathura-*/{,**} rw,
+  owner /tmp/zathura-* rw,
+
+  # Override the legacy encrypted-home allowance in abstractions/base.
+  audit deny @{HOME}/.Private/{,**} mrwklx,
+  audit deny @{HOMEDIRS}/.ecryptfs/** mrwklx,
+  audit deny @{HOME}/.{ssh,gnupg,aws,kube}/{,**} r,
+  audit deny @{HOME}/.config/sops/{,**} r,
+  audit deny network inet,
+  audit deny network inet6,
+}
