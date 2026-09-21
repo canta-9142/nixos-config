@@ -4,20 +4,20 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/nixos/core.nix
-    ../../modules/nixos/gc.nix
-    ../../modules/nixos/boot.nix
-    ../../modules/nixos/networking.nix
-    ../../modules/nixos/audio.nix
-    ../../modules/nixos/packages.nix
-    ../../modules/nixos/users.nix
-    ../../modules/nixos/desktop
-    ../../modules/nixos/distrobox.nix
-    ../../modules/nixos/virtualbox.nix
-    ../../modules/nixos/security/luks.nix
-    ../../modules/nixos/security/apparmor.nix
-    ../../modules/nixos/security/sudo.nix
-    ../../modules/nixos/security/sops.nix
+    ../../modules/sysytem/core.nix
+    ../../modules/system/gc.nix
+    ../../modules/system/boot.nix
+    ../../modules/system/networking.nix
+    ../../modules/system/audio.nix
+    ../../modules/system/packages.nix
+    ../../modules/system/users.nix
+    ../../modules/system/desktop
+    ../../modules/system/distrobox.nix
+    ../../modules/system/virtualbox.nix
+    ../../modules/system/security/luks.nix
+    ../../modules/system/security/apparmor.nix
+    ../../modules/system/security/sudo.nix
+    ../../modules/system/security/sops.nix
   ];
 
   networking.hostName = "nixos";

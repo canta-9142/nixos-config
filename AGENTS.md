@@ -34,7 +34,7 @@ Never expose decrypted contents from `secrets/`, private keys, tokens, or passwo
 Place configuration according to the existing project layout:
 
 - Host-specific configuration belongs in `hosts/`.
-- Reusable NixOS modules belong in `modules/nixos/`.
+- Reusable NixOS modules belong in `modules/system/`.
 - Reusable Home Manager modules belong in `modules/home/`.
 - User-specific configuration belongs in `users/`.
 

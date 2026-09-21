@@ -1,2 +1,2 @@
 disabled = []
-ignore = [".direnv", "hosts/nixos/hardware-configuration.nix"]
+ignore = [".direnv", "hosts/system/hardware-configuration.nix"]
