@@ -18,16 +18,8 @@
     udisks2.enable = true;
     fwupd.enable = true;
 
-    printing = {
-      enable = true;
-      drivers = [ pkgs.cups-filters ];
-    };
-
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
+    printing.enable = false;
+    avahi.enable = false;
 
     xserver.xkb = {
       layout = "us";
