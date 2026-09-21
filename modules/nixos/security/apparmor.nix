@@ -12,5 +12,13 @@
         cp ${./zathura.apparmor} "$out"
       '';
     };
+    policies.pympress = {
+      state = "enforce";
+      path = pkgs.runCommand "pympress-apparmor" { nativeBuildInputs = [ pkgs.apparmor-parser ]; } ''
+        apparmor_parser --skip-kernel-load --skip-cache \
+          -I ${pkgs.apparmor-profiles}/etc/apparmor.d ${./pympress.apparmor}
+        cp ${./pympress.apparmor} "$out"
+      '';
+    };
   };
 }

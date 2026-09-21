@@ -1,0 +1,69 @@
+# Match the Nix wrappers and Python entry-point script, not Python globally.
+# Wayland, read-only PDFs, default XDG directories. External links, media
+# playback, attachment extraction and saving modified PDFs are not permitted.
+# Running "python -m pympress" bypasses executable attachment; use pympress.
+include <tunables/global>
+
+profile pympress /nix/store/*-pympress-[0-9]*/bin/{pympress,.pympress-wrapped,..pympress-wrapped-wrapped} {
+  include <abstractions/base>
+  include <abstractions/fonts>
+  include <abstractions/wayland>
+  include <abstractions/dbus-session-strict>
+
+  /nix/store/ r,
+  /nix/store/** mr,
+  /nix/store/*-pympress-[0-9]*/bin/{pympress,.pympress-wrapped,..pympress-wrapped-wrapped} ix,
+  /nix/store/*-python3-[0-9]*/bin/python3* ix,
+  /etc/{passwd,group,nsswitch.conf} r,
+  /etc/xdg/** r,
+  /run/current-system/sw/share/** r,
+  /run/opengl-driver/** mr,
+  /sys/devices/**/uevent r,
+  /sys/devices/pci*/**/{vendor,device,revision,subsystem_vendor,subsystem_device} r,
+  /dev/dri/renderD[0-9]* rw,
+  owner /dev/shm/wayland-* rw,
+
+  # GTK application registration and communication between confined instances.
+  dbus (bind) bus=session name=io.github.pympress,
+  dbus (send) bus=session path=/org/freedesktop/DBus
+    interface=org.freedesktop.DBus member={RequestName,ReleaseName}
+    peer=(name=org.freedesktop.DBus),
+  dbus (send, receive) bus=session path=/io/github/pympress{,/**}
+    peer=(label=pympress),
+
+  # Permit presentation idle inhibition without general session-bus access.
+  dbus (send) bus=session path=/org/gnome/SessionManager
+    interface=org.gnome.SessionManager member={Inhibit,Uninhibit}
+    peer=(name=org.gnome.SessionManager),
+  dbus (send) bus=session path=/org/freedesktop/ScreenSaver
+    interface=org.freedesktop.ScreenSaver member={Inhibit,UnInhibit}
+    peer=(name=org.freedesktop.ScreenSaver),
+  dbus (send) bus=session path=/org/freedesktop/portal/desktop
+    interface=org.freedesktop.portal.Inhibit member=Inhibit
+    peer=(name=org.freedesktop.portal.Desktop),
+  dbus (send) bus=session path=/org/freedesktop/portal/desktop/request/**
+    interface=org.freedesktop.portal.Request member=Close
+    peer=(name=org.freedesktop.portal.Desktop),
+  dbus (receive) bus=session path=/org/freedesktop/portal/desktop/request/**
+    interface=org.freedesktop.portal.Request member=Response
+    peer=(name=org.freedesktop.portal.Desktop),
+
+  owner @{HOME}/ r,
+  owner @{HOME}/**/ r,
+  owner @{HOME}/**.{pdf,PDF} r,
+  owner /tmp/**.{pdf,PDF} r,
+  owner @{HOME}/.pympress r,
+  # Pympress uses a config FILE, not a directory, and rotates its log file.
+  owner @{HOME}/.config/pympress rw,
+  owner @{HOME}/.cache/pympress.log{,.[0-9]*} rw,
+  owner @{HOME}/.config/gtk-3.0/{,**} r,
+  owner @{HOME}/.local/share/{themes,icons}/{,**} r,
+
+  # Override the legacy encrypted-home allowance in abstractions/base.
+  audit deny @{HOME}/.Private/{,**} mrwklx,
+  audit deny @{HOMEDIRS}/.ecryptfs/** mrwklx,
+  audit deny @{HOME}/.{ssh,gnupg,aws,kube}/{,**} r,
+  audit deny @{HOME}/.config/sops/{,**} r,
+  audit deny network inet,
+  audit deny network inet6,
+}
