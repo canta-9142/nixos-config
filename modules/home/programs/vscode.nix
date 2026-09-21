@@ -55,6 +55,7 @@ in
           jnoortheen.nix-ide
           marp-team.marp-vscode
           mkhl.direnv
+          pkief.material-icon-theme
           tomoki1207.pdf
         ]
         ++ marketplaceExtensions;
@@ -69,6 +70,7 @@ in
         "markdown-pdf.executablePath" = "/run/current-system/sw/bin/chromium";
         "security.workspace.trust.untrustedFiles" = "open";
         "workbench.startupEditor" = "none";
+        "workbench.iconTheme" = "material-icon-theme";
         "editor.fontFamily" = lib.mkForce "'Cascadia Code NF', 'Noto Sans Mono CJK JP', monospace";
         "editor.cursorBlinking" = "phase";
         "editor.fontLigatures" = true;
