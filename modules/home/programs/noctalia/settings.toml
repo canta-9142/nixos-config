@@ -70,6 +70,16 @@ widget_order = []
 
     [desktop_widgets.widget]
 
+[lockscreen]
+enabled = false
+lock_before_suspend = false
+
+[idle.behavior.lock]
+enabled = true
+timeout = 600
+action = "command"
+command = "loginctl lock-session"
+
 [lockscreen_widgets]
 enabled = false
 schema_version = 2
@@ -125,6 +135,35 @@ enabled = [ "8bury/lid-guard", "elijaharch/wl-screen-mirror", "avivbintangaringg
 
 [shell.panel]
 floating_offset = 0
+
+# Custom actions remain visible when Noctalia's built-in locker is disabled.
+[[shell.session.actions]]
+action = "command"
+label = "Lock"
+glyph = "lock"
+shortcut = "1"
+command = "loginctl lock-session"
+
+[[shell.session.actions]]
+action = "logout"
+shortcut = "2"
+
+[[shell.session.actions]]
+action = "command"
+label = "Lock and suspend"
+glyph = "moon"
+shortcut = "3"
+# hypridle delays sleep until Hyprlock confirms that the session is locked.
+command = "systemctl suspend"
+
+[[shell.session.actions]]
+action = "reboot"
+shortcut = "4"
+
+[[shell.session.actions]]
+action = "shutdown"
+variant = "destructive"
+shortcut = "5"
 
 [shell.screen_corners]
 enabled = true

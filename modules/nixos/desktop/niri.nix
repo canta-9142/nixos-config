@@ -12,7 +12,7 @@
     upower.enable = true;
     logind.settings.Login.HandleLidSwitch = "suspend";
   };
-  security.pam.services.swaylock = { };
+  security.pam.services.hyprlock = { };
 
   xdg.portal = {
     enable = true;
@@ -35,7 +35,6 @@
 
     fuzzel
 
-    swaylock-effects
     swayidle
 
     wl-clipboard

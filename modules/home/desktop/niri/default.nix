@@ -152,8 +152,8 @@
       "Mod+V".action.toggle-window-floating = [ ];
       "Print".action.screenshot = [ ];
       "Super+Alt+L" = {
-        hotkey-overlay.title = "Lock the Screen: swaylock";
-        action.spawn = "swaylock";
+        hotkey-overlay.title = "Lock the Screen: hyprlock";
+        action.spawn = "hyprlock";
       };
       "Super+Alt+Space" = {
         hotkey-overlay.title = "Open Look";
