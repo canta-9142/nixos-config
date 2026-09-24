@@ -44,6 +44,13 @@ in
   # Plymouth needs the native AMD KMS driver while it is still running in the
   # initrd.  Loading it later leaves Plymouth on simpledrm until SDDM starts.
   boot = {
+    kernelPatches = [
+      {
+        name = "iwlwifi-ax210-6ghz-diagnostic";
+        patch = ./iwlwifi-ax210-6ghz-diagnostic.patch;
+      }
+    ];
+
     initrd = {
       kernelModules = [ "amdgpu" ];
       systemd.services.plymouth-start.after = [

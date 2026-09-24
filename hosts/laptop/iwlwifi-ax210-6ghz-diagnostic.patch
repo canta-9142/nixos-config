@@ -1,0 +1,54 @@
+Subject: [PATCH] iwlwifi: mvm: diagnose Dell Inspiron 14 5425 AX210 UHB bitmap
+
+Temporarily clear only the ACPI DSM function 3 OEM UHB bitmap before
+building LARI_CONFIG_CHANGE on this Dell with device 2725/subdevice 0024.
+Log the actual original value and keep sending the command if clearing
+this field leaves all bitmaps zero. Leave the cached BIOS value intact.
+
+Diagnostic only, based on Linux 7.2.7; this does not guarantee 6 GHz
+availability and must not be extended to bypass other regulatory checks.
+
+---
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -1398,6 +1398,7 @@
+ {
+ 	int ret;
+ 	u32 value;
++	bool override_uhb = false;
+ 	bool has_raw_dsm_capa = fw_has_capa(&fwrt->fw->ucode_capa,
+ 					    IWL_UCODE_TLV_CAPA_FW_ACCEPTS_RAW_DSM_TABLE);
+ 	u8 cmd_ver = iwl_fw_lookup_cmd_ver(fwrt->fw,
+@@ -1455,8 +1456,20 @@
+ 	}
+ 
+ 	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_ENABLE_6E, &value);
+-	if (!ret)
++	if (!ret) {
++		/* Temporary diagnostic override for this Dell AX210 only. */
++		if (value && fwrt->dsm_source == BIOS_SOURCE_ACPI &&
++		    dmi_match(DMI_SYS_VENDOR, "Dell Inc.") &&
++		    dmi_match(DMI_PRODUCT_NAME, "Inspiron 14 5425") &&
++		    fwrt->trans->info.hw_id == 0x27250024) {
++			IWL_INFO(fwrt,
++				 "overriding OEM 6GHz UHB bitmap on Dell Inspiron 14 5425: 0x%08x -> 0x00000000\n",
++				 value);
++			value = 0;
++			override_uhb = true;
++		}
+ 		cmd->oem_uhb_allow_bitmap = cpu_to_le32(value);
++	}
+ 
+ 	ret = iwl_bios_get_dsm(fwrt, DSM_FUNC_FORCE_DISABLE_CHANNELS, &value);
+ 	if (!ret) {
+@@ -1481,7 +1494,8 @@
+ 	if (!ret)
+ 		cmd->oem_11be_allow_bitmap = cpu_to_le32(value);
+ 
+-	if (cmd->config_bitmap ||
++	/* Send even if the diagnostic override cleared the only set bitmap. */
++	if (override_uhb || cmd->config_bitmap ||
+ 	    cmd->oem_uhb_allow_bitmap ||
+ 	    cmd->oem_11ax_allow_bitmap ||
+ 	    cmd->oem_unii4_allow_bitmap ||
