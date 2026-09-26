@@ -15,6 +15,7 @@ _:
     ./users.nix
     ../../modules/system/desktop
     ../../modules/system/distrobox.nix
+    ../../modules/system/cloudflare-warp.nix
     ../../modules/system/virtualbox.nix
     ../../modules/system/security/luks.nix
     ../../modules/system/security/apparmor.nix
