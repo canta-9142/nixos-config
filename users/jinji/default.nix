@@ -15,7 +15,7 @@
     ../../modules/home/desktop/hyprlock.nix
     ../../modules/home/desktop/mako.nix
     ../../modules/home/desktop/niri
-    # ../../modules/home/programs/codex.nix
+    ../../modules/home/programs/codex.nix
   ];
 
   home = {

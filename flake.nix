@@ -29,9 +29,6 @@
 
     herdr.url = "github:herdrdev/herdr/v0.8.0";
 
-    codex-cli.url = "github:sadjow/codex-cli-nix";
-    codex-cli.inputs.nixpkgs.follows = "nixpkgs";
-
     gitwand.url = "github:canta-9142/GitWand-Nix";
     gitwand.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -122,7 +119,6 @@
               inputs.look.packages.${pkgs.stdenv.hostPlatform.system}.default
               inputs.ytkew.packages.${pkgs.stdenv.hostPlatform.system}.default
               inputs.ghgrab.packages.${pkgs.stdenv.hostPlatform.system}.default
-              pkgs.codex-cli
               pkgs.gitwand
             ];
           })

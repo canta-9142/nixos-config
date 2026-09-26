@@ -1,17 +1,25 @@
 { pkgs, ... }:
 
 {
-  systemd.user.services.codex-remote = {
+  systemd.user.services.codex-cleanup = {
     Unit = {
-      Description = "Codex CLI Remote Control Daemon";
-      After = [ "network.target" ];
+      Description = "Keep the latest two Codex standalone releases";
     };
     Service = {
-      ExecStart = "${pkgs.codex-cli}/bin/codex remote-control start";
-      Restart = "on-failure";
+      Type = "oneshot";
+      ExecStart = "${pkgs.python3}/bin/python3 ${./codex-cleanup.py}";
+    };
+  };
+
+  systemd.user.timers.codex-cleanup = {
+    Unit.Description = "Clean old Codex standalone releases daily";
+    Timer = {
+      OnCalendar = "daily";
+      Persistent = true;
+      RandomizedDelaySec = "15m";
     };
     Install = {
-      WantedBy = [ "default.target" ];
+      WantedBy = [ "timers.target" ];
     };
   };
 }
