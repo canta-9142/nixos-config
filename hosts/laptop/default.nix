@@ -7,6 +7,7 @@ _:
     ../../modules/system/ssh.nix
 
     ./core.nix
+    ./nix-builder.nix
     ./gc.nix
     ./boot.nix
     ./networking.nix
