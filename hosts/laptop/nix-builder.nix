@@ -19,7 +19,7 @@
         sshUser = "nix-builder";
         sshKey = config.sops.secrets.nix_builder_private_key.path;
         system = "x86_64-linux";
-        maxJobs = 1;
+        maxJobs = 4;
         supportedFeatures = [
           "big-parallel"
           "kvm"
