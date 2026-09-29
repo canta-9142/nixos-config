@@ -24,10 +24,8 @@ _:
         IdentitiesOnly = true;
       };
 
-      "forgejossh.floating-gate.com" = {
-        Hostname = "forgejossh.floating-gate.com";
-        User = "git";
-        ProxyCommand = "cloudflared access ssh --hostname forgejossh.floating-gate.com";
+      # Git URLs specify git@ and port 2222; management SSH keeps port 22.
+      "ryzen.home.arpa" = {
         IdentityFile = "/run/secrets/ssh_private_key";
         IdentitiesOnly = true;
       };
