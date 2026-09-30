@@ -8,9 +8,10 @@
     "position": "top"
   },
   "display": {
+    "disableLinewrap": true,
     "separator": "",
     "constants": [
-      "\u001b[90m│                                                │\u001b[48D\u001b[39m"
+      "\u001b[90m│                                                │\u001b[22G\u001b[39m"
     ]
   },
   "modules": [
