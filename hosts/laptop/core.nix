@@ -1,7 +1,10 @@
 { pkgs, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+  };
 
   nix.settings = {
     trusted-users = [
