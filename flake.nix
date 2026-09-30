@@ -26,6 +26,7 @@
     niri.url = "github:epireyn/niri-flake";
 
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    noctalia.inputs.nixpkgs.follows = "nixpkgs";
 
     herdr.url = "github:herdrdev/herdr/v0.8.0";
 
@@ -36,6 +37,7 @@
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
 
     look.url = "github:kunkka19xx/look?dir=apps/linows";
+    look.inputs.nixpkgs.follows = "nixpkgs";
 
     ytkew.url = "github:canta-9142/ytkew/feat/add-nix-flake";
 
