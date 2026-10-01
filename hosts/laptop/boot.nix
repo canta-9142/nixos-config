@@ -44,6 +44,24 @@ in
   # Plymouth needs the native AMD KMS driver while it is still running in the
   # initrd.  Loading it later leaves Plymouth on simpledrm until SDDM starts.
   boot = {
+    # The remote builder must expose this persistent cache in its sandbox.
+    kernelPackages = pkgs.linuxPackages_latest.extend (
+      _final: prev: {
+        kernel = prev.kernel.override {
+          stdenv = pkgs.ccacheStdenv.override {
+            extraConfig = ''
+              export CCACHE_DIR=/srv/kernel/ccache
+              export CCACHE_MAXSIZE=20G
+              export CCACHE_COMPRESS=1
+              export CCACHE_UMASK=007
+              # Match nixpkgs' ccache wrapper policy across derivation changes.
+              export CCACHE_SLOPPINESS=random_seed
+            '';
+          };
+        };
+      }
+    );
+
     kernelPatches = [
       {
         name = "iwlwifi-ax210-6ghz-diagnostic";
