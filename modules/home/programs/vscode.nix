@@ -52,15 +52,19 @@ in
           astro-build.astro-vscode
           codezombiech.gitignore
           golang.go
+          humao.rest-client
           jnoortheen.nix-ide
           marp-team.marp-vscode
           mkhl.direnv
+          ms-python.python
+          ms-python.vscode-pylance
           pkief.material-icon-theme
           tomoki1207.pdf
         ]
         ++ marketplaceExtensions;
 
       userSettings = {
+        "python.languageServer" = "Pylance";
         "github.copilot.enable" = {
           markdown = true;
           go = false;
