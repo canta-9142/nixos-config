@@ -1,6 +1,8 @@
 { inputs, lib, ... }:
 
 {
+  disabledModules = [ "programs/noctalia" ];
+
   imports = [
     inputs.noctalia.homeModules.default
   ];
