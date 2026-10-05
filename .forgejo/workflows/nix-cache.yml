@@ -1,0 +1,55 @@
+name: Build and publish laptop configuration
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: laptop-nix-cache
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ryzen-nix-build
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out the exact commit
+        # actions/checkout v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          github-server-url: https://git.floating-gate.com
+          persist-credentials: false
+
+      - name: Verify commit and build laptop configuration
+        env:
+          EXPECTED_COMMIT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_COMMIT"
+          nix build --accept-flake-config --no-update-lock-file \
+            --max-jobs 1 --cores 8 \
+            .#nixosConfigurations.nixos.config.system.build.toplevel \
+            --out-link result
+
+      - name: Publish the signed closure
+        run: |
+          set -euo pipefail
+          /run/wrappers/bin/sudo -n /run/current-system/sw/bin/nix-cache-publish \
+            "$(readlink -f result)"
+
+      - name: Verify public closure metadata and signatures
+        run: |
+          set -euo pipefail
+          test -s hosts/laptop/nix-cache.pub
+          nix store verify --no-contents --recursive --sigs-needed 1 \
+            --store https://cache.floating-gate.com \
+            --option trusted-public-keys "$(cat hosts/laptop/nix-cache.pub)" \
+            "$(readlink -f result)"
