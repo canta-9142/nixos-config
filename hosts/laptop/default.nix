@@ -8,6 +8,7 @@ _:
 
     ./core.nix
     ./nix-builder.nix
+    ./nix-cache.nix
     ./gc.nix
     ./boot.nix
     ./networking.nix
