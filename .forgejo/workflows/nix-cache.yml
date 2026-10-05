@@ -3,7 +3,15 @@ name: Build and publish laptop configuration
 on:
   push:
     branches: [main]
-  workflow_dispatch: {}
+  schedule:
+    # UTC 00:00/12:00 = JST 09:00/21:00.
+    - cron: '0 */12 * * *'
+  workflow_dispatch:
+    inputs:
+      update_lock:
+        description: Update flake.lock, build, publish, and push on success
+        type: boolean
+        default: false
 
 concurrency:
   group: laptop-nix-cache
@@ -14,7 +22,7 @@ permissions:
 
 jobs:
   build-and-publish:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'schedule' && !inputs.update_lock
     runs-on: ryzen-nix-build
     timeout-minutes: 360
     defaults:
@@ -53,3 +61,27 @@ jobs:
             --store https://cache.floating-gate.com \
             --option trusted-public-keys "$(cat hosts/laptop/nix-cache.pub)" \
             "$(readlink -f result)"
+
+  update-lock:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || inputs.update_lock)
+    runs-on: ryzen-nix-build
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      statuses: write
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out main with temporary push credentials
+        # actions/checkout v4.2.2; credentials are removed by its post-job step.
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          github-server-url: https://git.floating-gate.com
+          persist-credentials: true
+
+      - name: Update, build, publish, verify, then push
+        env:
+          CACHE_UPDATE_TOKEN: ${{ github.token }}
+          CACHE_UPDATE_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: PATH="/run/wrappers/bin:$PATH" /run/current-system/sw/bin/nix-cache-update
