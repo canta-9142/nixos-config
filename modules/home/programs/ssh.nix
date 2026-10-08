@@ -16,9 +16,6 @@ _:
       "ssh.floating-gate.com" = {
         Hostname = "ssh.floating-gate.com";
         User = "jinji";
-        SetEnv = {
-          TERM = "xterm-256color";
-        };
         ProxyCommand = "cloudflared access ssh --hostname ssh.floating-gate.com";
         IdentityFile = "/run/secrets/ssh_private_key";
         IdentitiesOnly = true;
@@ -31,6 +28,9 @@ _:
       };
 
       "*" = {
+        SetEnv = {
+          TERM = "xterm-256color";
+        };
         ServerAliveInterval = 60;
         ServerAliveCountMax = 3;
       };
