@@ -10,7 +10,7 @@ _:
       "input"
       "audio"
       "video"
+      "dialout"
     ];
-
   };
 }
