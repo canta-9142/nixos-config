@@ -13,10 +13,14 @@ in
 {
   imports = [ ./fish.nix ];
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix = {
+    package = pkgs.lixPackageSets.stable.lix;
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
+  
   time.timeZone = "Asia/Tokyo";
   programs.fish.enable = true;
   environment.systemPackages = with pkgs; [
