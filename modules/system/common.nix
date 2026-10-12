@@ -27,6 +27,7 @@ in
     nh
     micro
     git
+    jujutsu
     gh
     wget
     curl
