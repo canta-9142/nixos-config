@@ -58,6 +58,7 @@ in
           mkhl.direnv
           ms-python.python
           ms-python.vscode-pylance
+          ms-vscode.cpptools
           pkief.material-icon-theme
           tomoki1207.pdf
         ]
