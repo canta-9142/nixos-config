@@ -59,6 +59,7 @@ in
           ms-python.python
           ms-python.vscode-pylance
           ms-vscode.cpptools
+          myriad-dreamin.tinymist
           pkief.material-icon-theme
           tomoki1207.pdf
         ]
