@@ -36,6 +36,7 @@
     spotatui
     slack
     thunderbird
+    libreoffice
     gimp
     inkscape
     kicad
