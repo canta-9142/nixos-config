@@ -30,7 +30,7 @@
     NIXOS_OZONE_WL = "1";
   };
 
-  networking.firewall.allowTCPPorts = [ 5900 ]; # for wayvnc
+  networking.firewall.allowedTCPPorts = [ 5900 ]; # for wayvnc
 
   environment.systemPackages = with pkgs; [
     niri
