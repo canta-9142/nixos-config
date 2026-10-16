@@ -30,6 +30,8 @@
     NIXOS_OZONE_WL = "1";
   };
 
+  networking.firewall.allowTCPPorts = [ 5900 ]; # for wayvnc
+
   environment.systemPackages = with pkgs; [
     niri
 
@@ -55,5 +57,7 @@
     adwaita-icon-theme
     bibata-cursors
     nwg-look
+
+    wayvnc
   ];
 }
