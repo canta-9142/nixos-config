@@ -7,6 +7,7 @@ _:
       tabstospaces = true;
       tabsize = 2;
       hltaberrors = true;
+      softwrap = true;
     };
   };
 }
