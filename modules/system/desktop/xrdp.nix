@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   services = {
@@ -6,7 +6,7 @@
     xrdp = {
       enable = true;
       openFirewall = true;
-      defaultWindowManager = ${pkgs.xfce4-14.xfce4-session}/bin/xfce4-session;
+      defaultWindowManager = "${pkgs.xfce4-session}/bin/xfce4-session";
     };
   };
 }
