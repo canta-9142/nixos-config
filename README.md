@@ -1,6 +1,6 @@
 # nixos-config
-NixOS configuration for the `nixos` laptop and `rock3b-nixos` server,
-with Home Manager on the laptop.
+NixOS and Home Manager configuration for the `nixos` laptop.
+The ROCK 3B configuration is maintained separately in `servers-config`.
 
 ## Desktop
 
@@ -11,33 +11,21 @@ with Home Manager on the laptop.
 ```plain
 hosts/
   laptop/                 # nixos (x86_64-linux): boot, network, packages, users
-  rock3b/                 # rock3b-nixos (aarch64-linux): board and host settings
 modules/
   system/
-    common.nix            # shared CLI tools, Fish, user basics and Nix settings
-    ssh.nix               # shared SSH authentication policy
-    server/               # Forgejo, nginx, Cloudflare tunnel and runner
+    common.nix            # CLI tools, Fish, user basics and Nix settings
+    ssh.nix               # SSH authentication policy
     desktop/              # laptop desktop modules
     security/             # laptop security modules
   home/                   # Home Manager modules
 users/jinji/              # laptop Home Manager entry point
 overlays/                 # laptop package overlays
-assets/                   # wallpapers and ROCK 3B EDID
+assets/                   # wallpapers and images
 secrets/                  # sops-encrypted secrets
 ```
 
 Directory names do not change hostnames or flake selectors: use `.#nixos`
-for the laptop and `.#rock3b-nixos` for the server. SSH keys, firewall rules,
-sudo permissions, boot configuration and retention policies remain host-specific.
-
-The `rock3b-nixpkgs` and `rock3b-nixpkgs-stable` inputs preserve the server's
-previous locked revisions independently of the laptop inputs. Update them
-separately when intentionally updating the server dependencies.
-
-The server configuration expects this repository at `/home/jinji/nixos-config`;
-its `/etc/nixos` symlink will use that path on activation. Before activating,
-place the repository there. Existing runtime credentials and service data remain
-at their original paths; they are not copied from the old configuration repository.
+for the laptop.
 
 Validation:
 
@@ -47,11 +35,6 @@ nix develop -c statix check .
 nix develop -c deadnix --fail .
 nix flake check
 ```
-
-Building the server system requires an aarch64 builder (such as the ROCK 3B)
-or configured emulation. A successful evaluation on the laptop alone does not
-verify the server build or boot.
-
 
 ## Secure Boot (Lanzaboote)
 
