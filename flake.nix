@@ -10,6 +10,9 @@
     lanzaboote.url = "github:nix-community/lanzaboote/v1.1.0";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
+    mikuboot.url = "gitlab:EvysGarden/mikuboot";
+    mikuboot.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -93,6 +96,7 @@
           inputs.sops-nix.nixosModules.sops
           inputs.niri.nixosModules.niri
           inputs.lanzaboote.nixosModules.lanzaboote
+          inputs.mikuboot.nixosModules.default
 
           ({ pkgs, ... }: {
             environment.systemPackages = [

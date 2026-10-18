@@ -79,8 +79,11 @@ in
     plymouth = {
       enable = true;
       package = plymouthWithConsoleOverlay;
-      theme = "nixos-bootlog";
-      themePackages = [ plymouthBootLogTheme ];
+      theme = "mikuboot";
+      themePackages = [
+        plymouthBootLogTheme
+        pkgs.mikuboot
+      ];
       font = "${pkgs.cascadia-code}/share/fonts/truetype/CascadiaCode-Regular.ttf";
       showDelay = 0;
     };
