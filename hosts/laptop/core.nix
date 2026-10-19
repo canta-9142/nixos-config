@@ -16,9 +16,6 @@ _:
     udisks2.enable = true;
     fwupd.enable = true;
 
-    printing.enable = false;
-    avahi.enable = false;
-
     xserver.xkb = {
       layout = "us";
       variant = "";

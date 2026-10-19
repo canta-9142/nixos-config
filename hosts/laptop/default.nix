@@ -23,6 +23,7 @@ _:
     ../../modules/system/security/apparmor.nix
     ../../modules/system/security/sudo.nix
     ../../modules/system/security/sops.nix
+    ../../modules/system/printing.nix
   ];
 
   networking.hostName = "nixos";
