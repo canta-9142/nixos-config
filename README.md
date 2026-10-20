@@ -36,6 +36,20 @@ nix develop -c deadnix --fail .
 nix flake check
 ```
 
+## Remote evaluation and builds
+
+In Fish, `ns` and `nb` sync `~/nixos-config` to a temporary directory on
+`jinji@ryzen.home.arpa`, evaluate and build `nixosConfigurations.nixos` there,
+and copy the result back before running `nh os switch` or `nh os boot` locally.
+Tracked changes and new non-ignored files are included. Temporary directories
+are removed when the command exits; a failed build or transfer stops deployment.
+Unsigned build outputs are accepted only for the direct transfer from this
+SSH host, whose key is pinned in the laptop configuration.
+
+Additional arguments, such as `ns --ask`, are passed to the local `nh` command.
+`nsr` and `nbr` preserve the previous `nh os switch` and `nh os boot`
+abbreviations. After activating this configuration, start a new Fish shell.
+
 ## Secure Boot (Lanzaboote)
 
 Lanzaboote signs boot images using keys in `/var/lib/sbctl` and keeps up to

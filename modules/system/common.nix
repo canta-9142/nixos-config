@@ -20,7 +20,7 @@ in
       "flakes"
     ];
   };
-  
+
   time.timeZone = "Asia/Tokyo";
   programs.fish.enable = true;
   environment.systemPackages = with pkgs; [
