@@ -13,12 +13,8 @@ _:
         IdentitiesOnly = true;
       };
 
-      "ryzen.home.arpa" = {
-        IdentityFile = "/run/secrets/ssh_private_key";
-        IdentitiesOnly = true;
-      };
-
-      "rock3b.home.arpa" = {
+      "*.home.arpa" = {
+        User = "jinji";
         IdentityFile = "/run/secrets/ssh_private_key";
         IdentitiesOnly = true;
       };
