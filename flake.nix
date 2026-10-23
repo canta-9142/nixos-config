@@ -39,7 +39,7 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
 
-    look.url = "github:kunkka19xx/look?dir=apps/linows";
+    look.url = "github:kunkka19xx/look";
     look.inputs.nixpkgs.follows = "nixpkgs";
 
     ytkew.url = "github:canta-9142/ytkew/feat/add-nix-flake";

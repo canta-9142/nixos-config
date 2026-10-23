@@ -224,16 +224,14 @@
         "rust-overlay": "rust-overlay_4"
       },
       "locked": {
-        "dir": "apps/linows",
-        "lastModified": 1792404785,
-        "narHash": "sha256-4rIv7WMVHbXOgFO2g4mhfayUUsenfQyCzZm+Gp5AehU=",
+        "lastModified": 1792738470,
+        "narHash": "sha256-uQ7hWMrCJ1VLWDtRjbjnLxNmMXl9RxSl1lQze6WexwI=",
         "owner": "kunkka19xx",
         "repo": "look",
-        "rev": "bb35d89cf73a909ef85ea94a26202c6a0b529159",
+        "rev": "912ee0cc154874108c85c2731ca960cbaedf11f9",
         "type": "github"
       },
       "original": {
-        "dir": "apps/linows",
         "owner": "kunkka19xx",
         "repo": "look",
         "type": "github"
