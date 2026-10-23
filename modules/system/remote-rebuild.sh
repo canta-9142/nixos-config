@@ -1,4 +1,4 @@
-# Called by the ns / nb Fish functions; additional arguments go to nh.
+# Called by the nsr / nbr Fish functions; additional arguments go to nh.
 case "${1:-}" in
   switch|boot) action="$1"; shift ;;
   *) echo "Usage: nixos-remote-rebuild {switch|boot} [nh options...]" >&2; exit 2 ;;
@@ -6,25 +6,23 @@ esac
 
 source_dir="$HOME/nixos-config"
 host="jinji@ryzen.home.arpa"
-local_dir=$(mktemp -d)
-remote_dir=""
-cleanup() {
-  if [[ -n "$remote_dir" ]]; then
-    # Expand the directory returned by the remote mktemp on this client.
-    # shellcheck disable=SC2029
-    ssh "$host" "rm -rf -- '$remote_dir'" || true
-  fi
-  rm -rf -- "$local_dir"
-}
-trap cleanup EXIT
+cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/nixos-remote-rebuild"
+mkdir -p "$cache_dir"
+# Both functions share one remote mirror, so serialize their sync/build/copy.
+exec 9> "$cache_dir/lock"
+flock -n 9 || { echo 'A remote rebuild is already running.' >&2; exit 1; }
+local_dir=$(mktemp -d "$cache_dir/run.XXXXXXXXXX")
+trap 'rm -rf -- "$local_dir"' EXIT
 
-remote_dir=$(ssh "$host" 'mktemp -d /tmp/nixos-config.XXXXXXXXXX')
+remote_dir=$(ssh "$host" 'mkdir -p ~/.cache/nixos-remote-rebuild/laptop && realpath ~/.cache/nixos-remote-rebuild/laptop')
 
 # Include uncommitted changes and new files, but omit ignored files and .git.
-# Deleted tracked files are absent from this fresh snapshot.
+# Stage with hard links to avoid copying file data on the same filesystem.
+# Mirroring the whole snapshot also removes deleted or newly ignored files.
 git -C "$source_dir" ls-files --cached --others --exclude-standard -z > "$local_dir/files"
 rsync -a --from0 --files-from="$local_dir/files" --ignore-missing-args \
-  "$source_dir/" "$host:$remote_dir/source/"
+  --link-dest="$source_dir" "$source_dir/" "$local_dir/source/"
+rsync -a --delete "$local_dir/source/" "$host:$remote_dir/source/"
 
 # shellcheck disable=SC2029
 result=$(ssh "$host" "sh -s -- '$remote_dir'" <<'REMOTE'

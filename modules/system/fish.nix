@@ -10,6 +10,7 @@
         pkgs.git
         pkgs.openssh
         pkgs.rsync
+        pkgs.util-linux
       ];
       text = builtins.readFile ./remote-rebuild.sh;
     })

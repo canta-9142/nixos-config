@@ -38,16 +38,21 @@ nix flake check
 
 ## Remote evaluation and builds
 
-In Fish, `ns` and `nb` sync `~/nixos-config` to a temporary directory on
-`jinji@ryzen.home.arpa`, evaluate and build `nixosConfigurations.nixos` there,
-and copy the result back before running `nh os switch` or `nh os boot` locally.
-Tracked changes and new non-ignored files are included. Temporary directories
-are removed when the command exits; a failed build or transfer stops deployment.
+In Fish, `nsr` and `nbr` sync `~/nixos-config` to
+`~/.cache/nixos-remote-rebuild/laptop/source` on `jinji@ryzen.home.arpa`,
+evaluate and build `nixosConfigurations.nixos` there, and copy the result back
+before running `nh os switch` or `nh os boot` locally. The remote source and
+latest build result are retained, so subsequent runs use incremental rsync
+transfers. Tracked changes and new non-ignored files are included; deleted and
+newly ignored files are removed from the mirror. Local calls are serialized to
+keep synchronization and evaluation from overlapping. Local temporary snapshots
+use hard links where possible and are removed on exit. A failed build or
+transfer stops deployment.
 Unsigned build outputs are accepted only for the direct transfer from this
 SSH host, whose key is pinned in the laptop configuration.
 
-Additional arguments, such as `ns --ask`, are passed to the local `nh` command.
-`nsr` and `nbr` preserve the previous `nh os switch` and `nh os boot`
+Additional arguments, such as `nsr --ask`, are passed to the local `nh` command.
+`ns` and `nb` preserve the previous `nh os switch` and `nh os boot`
 abbreviations. After activating this configuration, start a new Fish shell.
 
 ## Secure Boot (Lanzaboote)

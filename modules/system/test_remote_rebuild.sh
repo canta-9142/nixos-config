@@ -7,14 +7,17 @@ trap 'rm -rf -- "$test_root"' EXIT
 export TEST_ROOT="$test_root" REAL_RSYNC
 REAL_RSYNC=$(command -v rsync)
 export HOME="$test_root/home"
-mkdir -p "$HOME/nixos-config" "$test_root/bin" "$test_root/system"
+export XDG_CACHE_HOME="$HOME/.cache"
+remote_dir="$test_root/remote-home/.cache/nixos-remote-rebuild/laptop"
+mkdir -p "$HOME/nixos-config" "$test_root/bin" "$test_root/system" "$test_root/remote-home"
 git -C "$HOME/nixos-config" init -q
 printf 'ignored\n' > "$HOME/nixos-config/.gitignore"
 touch "$HOME/nixos-config/tracked" "$HOME/nixos-config/deleted"
 git -C "$HOME/nixos-config" add .
 rm "$HOME/nixos-config/deleted"
 printf 'uncommitted\n' > "$HOME/nixos-config/tracked"
-touch "$HOME/nixos-config/new" "$HOME/nixos-config/ignored"
+touch "$HOME/nixos-config/new" "$HOME/nixos-config/ignored" \
+  "$HOME/nixos-config/obsolete-untracked" "$HOME/nixos-config/now-ignored"
 
 cat > "$test_root/bin/record" <<'MOCK'
 printf '%s\n' "$1" >> "$TEST_ROOT/log"
@@ -25,20 +28,24 @@ cat > "$test_root/bin/ssh" <<'MOCK'
 set -euo pipefail
 [[ "$1" == jinji@ryzen.home.arpa ]]
 case "$2" in
-  'mktemp -d '*)
+  'mkdir -p '*)
     source record connect
-    mktemp -d "$TEST_ROOT/remote.XXXXXXXXXX"
+    HOME="$TEST_ROOT/remote-home" sh -c "$2"
     ;;
-  'rm -rf '*) source record cleanup; sh -c "$2" ;;
   *) source record build; sh -c "$2" ;;
 esac
 MOCK
 cat > "$test_root/bin/rsync" <<'MOCK'
 #!/usr/bin/env bash
 set -euo pipefail
-source record sync
 destination="${!#}"
-exec "$REAL_RSYNC" "${@:1:$#-1}" "${destination#*:}"
+if [[ "$destination" == jinji@ryzen.home.arpa:* ]]; then
+  source record sync
+  exec "$REAL_RSYNC" --itemize-changes "${@:1:$#-1}" "${destination#*:}" >> "$TEST_ROOT/transfers"
+else
+  source record snapshot
+  exec "$REAL_RSYNC" "$@"
+fi
 MOCK
 cat > "$test_root/bin/nix" <<'MOCK'
 #!/usr/bin/env bash
@@ -48,8 +55,11 @@ case "$1" in
     installable="${!#}"
     snapshot="${installable%#*}"
     [[ "$installable" == *'#nixosConfigurations.nixos.config.system.build.toplevel' ]]
-    [[ "$(cat "$snapshot/tracked")" == uncommitted ]]
+    [[ "$(cat "$snapshot/tracked")" == "${TEST_CONTENT:-uncommitted}" ]]
     [[ -f "$snapshot/new" && ! -e "$snapshot/ignored" && ! -e "$snapshot/deleted" && ! -e "$snapshot/.git" ]]
+    if [[ "${TEST_PRUNED:-}" == 1 ]]; then
+      [[ ! -e "$snapshot/obsolete-untracked" && ! -e "$snapshot/now-ignored" ]]
+    fi
     printf '/nix/store/00000000000000000000000000000000-nixos-system-test\n'
     ;;
   copy)
@@ -78,19 +88,43 @@ export PATH="$test_root/bin:$PATH"
 
 for TEST_ACTION in switch boot; do
   export TEST_ACTION
-  for TEST_FAIL in '' connect sync build copy root activate; do
+  for TEST_FAIL in '' connect snapshot sync build copy root activate; do
     export TEST_FAIL
     : > "$test_root/log"
     if bash -euo pipefail "$script" "$TEST_ACTION" --ask; then
       [[ -z "$TEST_FAIL" ]]
-      [[ "$(cat "$test_root/log")" == $'connect\nsync\nbuild\ncopy\nroot\nactivate\ncleanup' ]]
+      [[ "$(cat "$test_root/log")" == $'connect\nsnapshot\nsync\nbuild\ncopy\nroot\nactivate' ]]
     else
       [[ "$?" == 42 && -n "$TEST_FAIL" ]]
       if [[ "$TEST_FAIL" != activate ]]; then
         ! grep -qx activate "$test_root/log"
       fi
     fi
-    [[ -z "$(find "$test_root" -maxdepth 1 -name 'remote.*' -print)" ]]
+    [[ -z "$(find "$XDG_CACHE_HOME/nixos-remote-rebuild" -maxdepth 1 -name 'run.*' -print)" ]]
+    [[ -f "$remote_dir/source/tracked" ]]
   done
 done
-echo 'Remote rebuild: switch/boot, snapshots, argument forwarding, and failure cleanup passed.'
+
+# An unchanged second run must reuse the mirror without transferring file data.
+export TEST_FAIL=''
+: > "$test_root/transfers"
+bash -euo pipefail "$script" "$TEST_ACTION" --ask
+! grep -q '^>f' "$test_root/transfers"
+
+# Changes, deletions, and files that become ignored must update that same mirror.
+export TEST_CONTENT='changed uncommitted' TEST_PRUNED=1
+printf '%s\n' "$TEST_CONTENT" > "$HOME/nixos-config/tracked"
+rm "$HOME/nixos-config/obsolete-untracked"
+printf 'now-ignored\n' >> "$HOME/nixos-config/.gitignore"
+: > "$test_root/transfers"
+bash -euo pipefail "$script" "$TEST_ACTION" --ask
+grep -q '^>f.* tracked$' "$test_root/transfers"
+[[ -f "$remote_dir/source/tracked" ]]
+
+# A second caller must stop before touching the shared remote mirror.
+: > "$test_root/log"
+if flock "$XDG_CACHE_HOME/nixos-remote-rebuild/lock" bash -euo pipefail "$script" "$TEST_ACTION" --ask; then
+  exit 1
+fi
+[[ ! -s "$test_root/log" ]]
+echo 'Remote rebuild: persistent incremental sync, pruning, locking, and failure handling passed.'
