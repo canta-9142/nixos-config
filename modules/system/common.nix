@@ -35,6 +35,7 @@ in
     ripgrep
     tree
     yazi
+    mc
     nvme-cli
   ];
   users.users.jinji = {
