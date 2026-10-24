@@ -42,6 +42,6 @@ in
     isNormalUser = true;
     description = "Kanta IMAI";
     shell = pkgs.fish;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "dialout" "video" "audio" ];
   };
 }
