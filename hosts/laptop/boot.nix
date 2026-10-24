@@ -44,6 +44,9 @@ in
   # Plymouth needs the native AMD KMS driver while it is still running in the
   # initrd.  Loading it later leaves Plymouth on simpledrm until SDDM starts.
   boot = {
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    tmp.useTmpfs = true;
+
     # The remote builder must expose this persistent cache in its sandbox.
     kernelPackages = pkgs.linuxPackages_latest.extend (
       _final: prev: {
@@ -146,6 +149,13 @@ in
   };
 
   environment.systemPackages = [ pkgs.sbctl ];
+
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024;
+    }
+  ];
 
   # Leave Plymouth's last frame on the framebuffer while SDDM takes over.
   # Plymouth still exits and releases DRM, so it does not block the display

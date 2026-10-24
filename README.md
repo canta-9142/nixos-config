@@ -10,15 +10,25 @@ The ROCK 3B configuration is maintained separately in `servers-config`.
 
 ```plain
 hosts/
-  laptop/                 # nixos (x86_64-linux): boot, network, packages, users
+  laptop/                 # nixos (x86_64-linux): boot, disk, network and packages
+    nix.nix               # remote builder, binary cache and garbage collection
+    locale.nix            # locale and timezone
+    services.nix          # device and firmware services
 modules/
   system/
-    common.nix            # CLI tools, Fish, user basics and Nix settings
+    cli.nix               # shared command-line tools
+    nix.nix               # Nix implementation, Flakes and nh
+    fish.nix              # system Fish configuration
+    remote-rebuild/       # remote rebuild command and its test
     ssh.nix               # SSH authentication policy
-    desktop/              # laptop desktop modules
-    security/             # laptop security modules
-  home/                   # Home Manager modules
-users/jinji/              # laptop Home Manager entry point
+    desktop/              # system desktop modules
+    security/             # reusable security modules
+  home/
+    programs/             # application configuration; related assets stay nearby
+    desktop/              # desktop configuration, including Noctalia
+users/jinji/
+  nixos.nix               # NixOS account, secrets and Home Manager wiring
+  home.nix                # Home Manager entry point
 overlays/                 # laptop package overlays
 assets/                   # wallpapers and images
 secrets/                  # sops-encrypted secrets
@@ -116,7 +126,7 @@ After adjusting the settings in the GUI, update the Home Manager snapshot with:
 
 ```console
 cp ~/.local/state/noctalia/settings.toml \
-  ~/nixos-config/modules/home/programs/noctalia/settings.toml
+  ~/nixos-config/modules/home/desktop/noctalia/settings.toml
 ```
 
 Runtime settings take precedence over the Home Manager defaults, so GUI changes

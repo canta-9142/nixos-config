@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run with: bash modules/system/test_remote_rebuild.sh
+# Run with: bash modules/system/remote-rebuild/test_remote_rebuild.sh
 set -euo pipefail
 script=$(realpath "$(dirname "$0")/remote-rebuild.sh")
 test_root=$(mktemp -d)

@@ -1,6 +1,8 @@
 { config, lib, ... }:
 
 {
+  xdg.configFile."ghostty/config".force = lib.mkForce true;
+
   xdg.configFile."ghostty/transparent.css".text = ''
     window,
     window.background,

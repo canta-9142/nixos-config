@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 let
   catppuccinMochaCss = ''
@@ -93,6 +93,11 @@ let
   '';
 in
 {
+  xdg.configFile = {
+    "gtk-3.0/gtk.css".force = lib.mkForce true;
+    "gtk-4.0/gtk.css".force = lib.mkForce true;
+  };
+
   gtk = {
     enable = true;
     colorScheme = "dark";

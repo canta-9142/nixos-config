@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
 
@@ -43,6 +43,15 @@
     kooha
     pympress
     github-desktop
+
+    inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.qshare.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.look.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.ytkew.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.ghgrab.packages.${pkgs.stdenv.hostPlatform.system}.default
+    gitwand
   ];
 
   services.flatpak = {

@@ -3,27 +3,30 @@ _:
 {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/system/common.nix
+    ./boot.nix
+    ./luks.nix
+    ./networking.nix
+    ./nix.nix
+    ./locale.nix
+    ./services.nix
+    ./packages.nix
+
+    ../../modules/system/nix.nix
+    ../../modules/system/cli.nix
+    ../../modules/system/fish.nix
+    ../../modules/system/remote-rebuild
     ../../modules/system/ssh.nix
 
-    ./core.nix
-    ./nix-builder.nix
-    ./nix-cache.nix
-    ./gc.nix
-    ./boot.nix
-    ./networking.nix
     ../../modules/system/audio.nix
-    ./packages.nix
-    ./users.nix
     ../../modules/system/desktop
     ../../modules/system/distrobox.nix
     ../../modules/system/cloudflare-warp.nix
     ../../modules/system/virtualbox.nix
-    ../../modules/system/security/luks.nix
     ../../modules/system/security/apparmor.nix
     ../../modules/system/security/sudo.nix
-    ../../modules/system/security/sops.nix
     ../../modules/system/printing.nix
+
+    ../../users/jinji/nixos.nix
   ];
 
   networking.hostName = "nixos";

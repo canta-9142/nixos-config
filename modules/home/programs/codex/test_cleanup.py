@@ -1,4 +1,4 @@
-"""Run with: python3 -m unittest discover -s modules/home/programs -p 'test_*.py'."""
+"""Run with: python3 -m unittest discover -s modules/home/programs/codex -p 'test_*.py'."""
 
 import fcntl
 import importlib.util
@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location(
-    "codex_cleanup", Path(__file__).with_name("codex-cleanup.py")
+    "codex_cleanup", Path(__file__).with_name("cleanup.py")
 )
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)

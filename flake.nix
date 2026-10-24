@@ -98,26 +98,12 @@
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.mikuboot.nixosModules.default
 
-          ({ pkgs, ... }: {
-            environment.systemPackages = [
-              inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
-              inputs.nclean.packages.${pkgs.stdenv.hostPlatform.system}.default
-              inputs.qshare.packages.${pkgs.stdenv.hostPlatform.system}.default
-              inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
-              inputs.look.packages.${pkgs.stdenv.hostPlatform.system}.default
-              inputs.ytkew.packages.${pkgs.stdenv.hostPlatform.system}.default
-              inputs.ghgrab.packages.${pkgs.stdenv.hostPlatform.system}.default
-              pkgs.gitwand
-            ];
-          })
-
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               extraSpecialArgs = { inherit inputs; };
-              users.jinji = import ./users/jinji;
             };
           }
         ];

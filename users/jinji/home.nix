@@ -1,4 +1,4 @@
-{ lib, ... }:
+_:
 
 {
   imports = [
@@ -9,13 +9,13 @@
     ../../modules/home/programs/fastfetch
     ../../modules/home/programs/ghostty.nix
     ../../modules/home/programs/micro.nix
-    ../../modules/home/programs/noctalia
     ../../modules/home/programs/vscode.nix
     ../../modules/home/desktop/gtk.nix
     ../../modules/home/desktop/hyprlock.nix
     ../../modules/home/desktop/mako.nix
+    ../../modules/home/desktop/noctalia
     ../../modules/home/desktop/niri
-    ../../modules/home/programs/codex.nix
+    ../../modules/home/programs/codex
   ];
 
   home = {
@@ -25,10 +25,4 @@
   };
 
   programs.home-manager.enable = true;
-
-  xdg.configFile = {
-    "gtk-3.0/gtk.css".force = lib.mkForce true;
-    "gtk-4.0/gtk.css".force = lib.mkForce true;
-    "ghostty/config".force = lib.mkForce true;
-  };
 }

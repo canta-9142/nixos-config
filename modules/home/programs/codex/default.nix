@@ -7,7 +7,7 @@
     };
     Service = {
       Type = "oneshot";
-      ExecStart = "${pkgs.python3}/bin/python3 ${./codex-cleanup.py}";
+      ExecStart = "${pkgs.python3}/bin/python3 ${./cleanup.py}";
     };
   };
 
