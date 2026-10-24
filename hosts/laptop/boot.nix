@@ -79,7 +79,7 @@ in
     plymouth = {
       enable = true;
       package = plymouthWithConsoleOverlay;
-      theme = "mikuboot";
+      theme = "nixos-bootlog";
       themePackages = [
         plymouthBootLogTheme
         pkgs.mikuboot
