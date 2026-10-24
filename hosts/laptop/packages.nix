@@ -32,7 +32,6 @@
     chromium
     firefox
     google-chrome
-    discord
     spotatui
     slack
     thunderbird
@@ -58,6 +57,7 @@
     ];
     packages = [
       "org.gitfourchette.gitfourchette"
+      "com.discordapp.Discord"
     ];
   };
 
