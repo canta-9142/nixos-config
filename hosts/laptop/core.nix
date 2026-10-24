@@ -10,6 +10,8 @@ _:
       "root"
       "@wheel"
     ];
+
+    auto-optimise-store = true;
   };
 
   services = {
