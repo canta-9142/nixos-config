@@ -16,9 +16,6 @@
       keyboard = {
         xkb = {
           layout = "us";
-          model = "";
-          rules = "";
-          variant = "";
         };
         repeat-delay = 600;
         repeat-rate = 25;
