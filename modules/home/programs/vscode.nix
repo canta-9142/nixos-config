@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -43,9 +42,11 @@ in
 {
   programs.vscode = {
     enable = true;
-    mutableExtensionsDir = false;
+    mutableExtensionsDir = true;
 
     profiles.default = {
+      mutableUserSettings = true;
+
       extensions =
         with pkgs.vscode-extensions;
         [
@@ -84,8 +85,4 @@ in
     };
   };
 
-  home.file = {
-    "${config.xdg.configHome}/Code/User/settings.json".force = true;
-    ".vscode/extensions".force = true;
-  };
 }
