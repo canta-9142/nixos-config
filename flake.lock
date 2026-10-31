@@ -288,11 +288,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1793401013,
-        "narHash": "sha256-EV2ImNIprXf+L6E33fvJqJy8H5ZUW+6QnZI46WcfYNY=",
+        "lastModified": 1793439035,
+        "narHash": "sha256-3ecL4J4Ffgv4fhBUV9LHGcU8YvEddoMRxj3kNei8/Vw=",
         "owner": "epireyn",
         "repo": "niri-flake",
-        "rev": "e85b7c252dd81fc826598af8ff8aa8b6f33bf26e",
+        "rev": "f46f7f993d6ec1668c62e79932f618ff1a331348",
         "type": "github"
       },
       "original": {
@@ -321,11 +321,11 @@
     "niri-unstable": {
       "flake": false,
       "locked": {
-        "lastModified": 1793340996,
-        "narHash": "sha256-Vf+Ea6sgZ2fn+NU1m0wtIl6MJIOyXZ2BBlwd/HDYKio=",
+        "lastModified": 1793433282,
+        "narHash": "sha256-Hb9YM87WXxh9K4KIZ0U5e4M+6POT5hK2mGI5xj/kBXo=",
         "owner": "niri-wm",
         "repo": "niri",
-        "rev": "b22eb842ca9506d4e2ff997b116031cdb3f650f8",
+        "rev": "8e7b5745407294ed37b4b4d8ff4cf4574d45686b",
         "type": "github"
       },
       "original": {
@@ -493,11 +493,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793393673,
-        "narHash": "sha256-z+HlqYVhSokpPiSvMpLbpQWffGs0XJViGwN0D6GMf5M=",
+        "lastModified": 1793423963,
+        "narHash": "sha256-uFBOC6cKGUJhSdseWU8Y9GA8WakQYHgVubk6UEdl+/0=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "e35286e02cd0277aa979299a8e96ad3644aaae5b",
+        "rev": "f2cebd97e01657ea2581af099eb5c8c2e194fb80",
         "type": "github"
       },
       "original": {
