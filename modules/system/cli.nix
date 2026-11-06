@@ -14,5 +14,11 @@
     yazi
     mc
     nvme-cli
+    nixfmt-tree
+    statix
+    deadnix
+    nixd
+    sops
+    age
   ];
 }
