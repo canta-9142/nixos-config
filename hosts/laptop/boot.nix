@@ -54,7 +54,7 @@ in
           stdenv = pkgs.ccacheStdenv.override {
             extraConfig = ''
               export CCACHE_DIR=/srv/kernel/ccache
-              export CCACHE_MAXSIZE=20G
+              export CCACHE_MAXSIZE=50G
               export CCACHE_COMPRESS=1
               export CCACHE_UMASK=007
               # Match nixpkgs' ccache wrapper policy across derivation changes.
