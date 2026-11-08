@@ -44,7 +44,11 @@ in
   # Plymouth needs the native AMD KMS driver while it is still running in the
   # initrd.  Loading it later leaves Plymouth on simpledrm until SDDM starts.
   boot = {
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    binfmt = {
+      emulatedSystems = [ "aarch64-linux" ];
+      preferStaticEmulators = true;
+    };
+    
     tmp.useTmpfs = true;
 
     # The remote builder must expose this persistent cache in its sandbox.
