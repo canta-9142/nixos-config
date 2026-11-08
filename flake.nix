@@ -7,7 +7,7 @@
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
     nixpkgs-stable.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
 
-    lanzaboote.url = "github:nix-community/lanzaboote/v1.1.0";
+    lanzaboote.url = "github:nix-community/lanzaboote/v1.2.0";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
     mikuboot.url = "gitlab:EvysGarden/mikuboot";

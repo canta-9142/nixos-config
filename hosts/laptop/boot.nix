@@ -48,7 +48,7 @@ in
       emulatedSystems = [ "aarch64-linux" ];
       preferStaticEmulators = true;
     };
-    
+
     tmp.useTmpfs = true;
 
     # The remote builder must expose this persistent cache in its sandbox.
@@ -109,7 +109,8 @@ in
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
-      configurationLimit = 8;
+      # Measured Boot in Lanzaboote 1.2 supports at most four generations.
+      configurationLimit = 4;
       # Format generation timestamps before the EFI images are signed.
       package = inputs.lanzaboote.packages.${pkgs.stdenv.hostPlatform.system}.lzbt.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ./lanzaboote-entry-datetime.patch ];
