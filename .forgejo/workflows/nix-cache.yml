@@ -43,7 +43,7 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_COMMIT"
           nix build --accept-flake-config --no-update-lock-file \
-            --max-jobs 1 --cores 8 \
+            --max-jobs 1 --cores 14 \
             .#nixosConfigurations.nixos.config.system.build.toplevel \
             --out-link result
 
