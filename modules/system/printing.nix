@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   services = {
@@ -22,8 +22,8 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = "1min";
+      # Exit codes 1–254 skip the unit without marking it failed.
+      ExecCondition = "${pkgs.coreutils}/bin/timeout 5s ${pkgs.bash}/bin/bash -c 'exec 3<>/dev/tcp/192.168.190.107/631'";
       TimeoutStartSec = "30s";
     };
 
@@ -33,5 +33,14 @@
         -v ipp://192.168.190.107
       lpadmin -d Brother_MFC_L3780CDW
     '';
+  };
+
+  systemd.timers.configure-brother-printer = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "1min";
+      OnUnitInactiveSec = "1min";
+      AccuracySec = "1s";
+    };
   };
 }
