@@ -38,6 +38,7 @@
     libreoffice
     gimp
     inkscape
+    krita
     kicad
     arduino-ide
     kooha
