@@ -202,11 +202,11 @@
         "rust-overlay": "rust-overlay_4"
       },
       "locked": {
-        "lastModified": 1794920770,
-        "narHash": "sha256-522PO5T9/ivZLffzzvFu8tLGVHr4Pa2Ygaq/dviWUzE=",
+        "lastModified": 1795097134,
+        "narHash": "sha256-TVdmNhvNobpJ4DWdgiwED1vXjszjIc/HJdq+AhmSLvU=",
         "owner": "kunkka19xx",
         "repo": "look",
-        "rev": "549cd16cd5e3ea56e4f8fc19f8bd5157e49ac546",
+        "rev": "fa0eec76b01db258676dfd7d42337dd49f60cadd",
         "type": "github"
       },
       "original": {
@@ -471,11 +471,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795054984,
-        "narHash": "sha256-HdIsS5cKWxdSlkKs9UwRZo9JL+JFQl8rHMXxo/cd/d0=",
+        "lastModified": 1795109055,
+        "narHash": "sha256-aYa8thBtObLfwM29BtpqnV+fs+1JUnkb0EDliLmJwCg=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "d456755d3bb09be68be67582c5766fb96cb4a1a8",
+        "rev": "6bc8abe9250575a15b1b3b88d993906551fcacf0",
         "type": "github"
       },
       "original": {
