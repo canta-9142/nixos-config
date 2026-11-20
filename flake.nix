@@ -16,6 +16,9 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-hazkey.url = "github:aster-void/nix-hazkey";
+    nix-hazkey.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-flatpak.url = "github:gmodena/nix-flatpak";
 
     sops-nix.url = "github:Mic92/sops-nix";
