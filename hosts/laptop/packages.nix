@@ -39,6 +39,7 @@
     gimp
     inkscape
     krita
+    xmind
     kicad
     arduino-ide
     kooha
