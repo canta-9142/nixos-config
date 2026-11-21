@@ -3,8 +3,6 @@ _:
 {
   programs.obs-studio = {
     enable = true;
-    # The application is installed through hosts/laptop/packages.nix.
-    package = null;
     enableVirtualCamera = true;
   };
 

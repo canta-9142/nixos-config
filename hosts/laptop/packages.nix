@@ -44,7 +44,6 @@
     kicad
     arduino-ide
     kooha
-    obs-studio
     pympress
     github-desktop
 
