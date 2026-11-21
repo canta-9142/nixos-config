@@ -46,6 +46,27 @@ nix develop -c deadnix --fail .
 nix flake check
 ```
 
+## OBS to Discord
+
+The desktop configuration installs OBS with the `OBS Cam` virtual camera and a
+PipeWire audio cable from the `OBS Audio` output to the `OBS Microphone` input.
+After activating the configuration, reboot to load the configured virtual camera
+module and restart the audio session.
+
+1. In OBS, add the video and audio sources you want to send.
+2. In Settings → Audio → Advanced, select `OBS Audio` as the Monitoring Device.
+3. In Advanced Audio Properties, set each audio source you want to send to
+   **Monitor and Output** (or **Monitor Only** if it should not also be recorded
+   or streamed by OBS). Leave Discord's received audio out of this mix to avoid
+   sending other participants' voices back to them.
+4. Click **Start Virtual Camera** in OBS before selecting the camera in Discord.
+5. In Discord's Voice & Video settings, select `OBS Cam` as the camera and
+   `OBS Microphone` as the input device. Enable your camera in the call.
+
+Video is sent as a camera feed; audio is sent through the call's microphone
+input. If music or game audio is suppressed, disable Discord's noise suppression
+and automatic gain control and adjust its input sensitivity.
+
 ## Remote evaluation and builds
 
 In Fish, `nsr` and `nbr` sync `~/nixos-config` to

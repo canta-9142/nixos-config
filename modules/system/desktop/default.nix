@@ -6,6 +6,7 @@
     ./sddm.nix
     ./input-method.nix
     ./fonts.nix
+    ./obs-studio.nix
   ];
 
   programs.dconf.enable = true;
