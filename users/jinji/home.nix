@@ -15,6 +15,7 @@ _:
     ../../modules/home/desktop/mako.nix
     ../../modules/home/desktop/noctalia
     ../../modules/home/desktop/niri
+    ../../modules/home/desktop/umbriel
     ../../modules/home/programs/codex
   ];
 

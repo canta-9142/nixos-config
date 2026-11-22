@@ -31,6 +31,9 @@
 
     niri.url = "github:epireyn/niri-flake";
 
+    # Keep Umbriel's own nixpkgs pin so its binary cache can be used.
+    umbriel.url = "github:noctalia-dev/umbriel/cachix";
+
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
 

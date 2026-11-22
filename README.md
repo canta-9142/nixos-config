@@ -6,6 +6,23 @@ The ROCK 3B configuration is maintained separately in `servers-config`.
 
 ![Desktop image](./assets/images/desktop-rice.png)
 
+Niri and Umbriel are available as separate SDDM sessions. After activating the
+configuration, log out and select **Umbriel** in SDDM to try it; select **Niri**
+to return. Both sessions use the same Noctalia settings and Hyprlock/Hypridle.
+
+Umbriel starts with a scrolling layout and mirrors Niri's main shortcuts,
+monitor positions, keyboard and touchpad settings. Its additional shortcuts are:
+
+- `Super+L`: cycle scrolling, dwindle, master and stacking layouts.
+- `Super+Shift+Space`: move the focused window to the scratchpad.
+- `Super+Ctrl+Space`: show or hide the scratchpad.
+- `Super+Ctrl+Shift+Space`: restore a scratchpad window to its workspace.
+
+`Super+Alt+L` locks the session, `Super+Shift+E` asks to log out, and `Print`
+uses Noctalia's region screenshot tool. Umbriel's configuration lives in
+`modules/home/desktop/umbriel/default.nix`. GUI behavior, input methods, remote
+access and suspend/resume should be checked in the actual Umbriel session.
+
 ## Layout
 
 ```plain

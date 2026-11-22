@@ -3,6 +3,7 @@
 {
   imports = [
     ./niri.nix
+    ./umbriel.nix
     ./sddm.nix
     ./input-method.nix
     ./fonts.nix
