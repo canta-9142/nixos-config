@@ -223,11 +223,11 @@
         "rust-overlay": "rust-overlay_4"
       },
       "locked": {
-        "lastModified": 1795359205,
-        "narHash": "sha256-G98NAGJ7pQYS3sTSnWOLuTtqT2y2BsJ6wRv28fTOgRw=",
+        "lastModified": 1795440735,
+        "narHash": "sha256-G30Uu17dqsu6zk0YqtV9YnYVb4yjORpDFJFieaee5kI=",
         "owner": "kunkka19xx",
         "repo": "look",
-        "rev": "6a03eecc19f60542cea8f7f4e170211f1bd52fc7",
+        "rev": "fa1166c7e195c676a6954e362c199307aa551c42",
         "type": "github"
       },
       "original": {
@@ -287,11 +287,11 @@
         "xwayland-satellite-unstable": "xwayland-satellite-unstable"
       },
       "locked": {
-        "lastModified": 1795346411,
-        "narHash": "sha256-cvMqI3tXFdA8lMgCMLisSnGsOar4YjbnuqnlHapqwxo=",
+        "lastModified": 1795424826,
+        "narHash": "sha256-EieTxxhT9pgdZYyACk8PjfheFr/on9EOfLF2hc8rH6M=",
         "owner": "epireyn",
         "repo": "niri-flake",
-        "rev": "836d60bd099a4dd1f1e7fb65e6e6acd8f662f43e",
+        "rev": "6ec1e69193f582abad00c3840fd477b34089bafd",
         "type": "github"
       },
       "original": {
@@ -320,11 +320,11 @@
     "niri-unstable": {
       "flake": false,
       "locked": {
-        "lastModified": 1795332971,
-        "narHash": "sha256-z/jsUe7O6diShp7lVtxKZqc1XN8ARTEEqlmZy9Ry7Qs=",
+        "lastModified": 1795415725,
+        "narHash": "sha256-tptDg8UhFYs7DPo6/nX1Kthkcr+IQD5q6RtYDbs4yfc=",
         "owner": "niri-wm",
         "repo": "niri",
-        "rev": "2fbc6f3b5b5094098472ed620e28db1fed5fed91",
+        "rev": "02ee0585b9da359cb30aa2a13a6023a6e471cc23",
         "type": "github"
       },
       "original": {
@@ -418,11 +418,11 @@
     },
     "nixpkgs-stable_2": {
       "locked": {
-        "lastModified": 1795258312,
-        "narHash": "sha256-pLM4uV148b0eRALcfeaBoiw7K2M77XPihI0iNzxytAw=",
-        "rev": "94c3211b0ee8ba969a3f12eb4aff8ba0f72971dd",
+        "lastModified": 1795370043,
+        "narHash": "sha256-RThZ6/XvhVczW74iClJaGo9+fXjvfm5mvvzTy6hrcYU=",
+        "rev": "0dc498bfe49baeb18b0f9891e800b53bb2603193",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.14979.94c3211b0ee8/nixexprs.tar.zst?lastModified=1795258312&rev=94c3211b0ee8ba969a3f12eb4aff8ba0f72971dd"
+        "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.15079.0dc498bfe49b/nixexprs.tar.zst?lastModified=1795370043&rev=0dc498bfe49baeb18b0f9891e800b53bb2603193"
       },
       "original": {
         "type": "tarball",
@@ -855,11 +855,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795333741,
-        "narHash": "sha256-xJaT+L8DeMR0TJjAOlrjGqaRG2AjZrjivQfCtiLRtlY=",
+        "lastModified": 1795434855,
+        "narHash": "sha256-R2BZyn0NAM3maHw1GfzEtHFpUPAuJyg4t8I6Dbuzsjg=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "81376950ac382a96b965f9d6f8bf60354ad99c2f",
+        "rev": "e2e4f8220406ce60d64395cfbf91e2189c894769",
         "type": "github"
       },
       "original": {
