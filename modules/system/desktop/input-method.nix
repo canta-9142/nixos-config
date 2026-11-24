@@ -11,6 +11,7 @@
     fcitx5 = {
       waylandFrontend = true;
       addons = with pkgs; [
+        fcitx5-meltype
         fcitx5-mozc
         fcitx5-gtk
       ];
@@ -33,6 +34,10 @@
         };
         "Groups/0/Items/2" = {
           Name = "hazkey";
+          Layout = "";
+        };
+        "Groups/0/Items/3" = {
+          Name = "meltype";
           Layout = "";
         };
       };

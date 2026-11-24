@@ -236,6 +236,23 @@
         "type": "github"
       }
     },
+    "meltype-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794128124,
+        "narHash": "sha256-S4QXU03TCggUO9pmkWQkm3bW8oyRTorXmgmmKZLfX6c=",
+        "owner": "yksr-melt",
+        "repo": "Meltype",
+        "rev": "36a7c0d9900dff1f41099be027af98bd072ea68a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yksr-melt",
+        "ref": "v1.5.0",
+        "repo": "Meltype",
+        "type": "github"
+      }
+    },
     "mikuboot": {
       "inputs": {
         "nixpkgs": [
@@ -366,6 +383,27 @@
       "original": {
         "owner": "aster-void",
         "repo": "nix-hazkey",
+        "type": "github"
+      }
+    },
+    "nix-meltype": {
+      "inputs": {
+        "meltype-src": "meltype-src",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794207147,
+        "narHash": "sha256-wAMIScjwyNLvfenDoUEjqOuVTLwG6rj8S7YkuC4kSzU=",
+        "owner": "aster-void",
+        "repo": "nix-meltype",
+        "rev": "8066327526ec15fa9ac8c9ea265de9a044fcbe4e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aster-void",
+        "repo": "nix-meltype",
         "type": "github"
       }
     },
@@ -594,6 +632,7 @@
         "niri": "niri",
         "nix-flatpak": "nix-flatpak",
         "nix-hazkey": "nix-hazkey",
+        "nix-meltype": "nix-meltype",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-stable": "nixpkgs-stable_2",
         "noctalia": "noctalia",

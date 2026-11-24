@@ -2,6 +2,7 @@
 
 [
   inputs.niri.overlays.niri
+  inputs.nix-meltype.overlays.default
 
   # Compatibility shim until niri-flake stops referring to the removed name.
   (final: prev: {

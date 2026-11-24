@@ -19,6 +19,9 @@
     nix-hazkey.url = "github:aster-void/nix-hazkey";
     nix-hazkey.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-meltype.url = "github:aster-void/nix-meltype";
+    nix-meltype.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-flatpak.url = "github:gmodena/nix-flatpak";
 
     sops-nix.url = "github:Mic92/sops-nix";
