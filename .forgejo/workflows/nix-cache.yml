@@ -43,7 +43,7 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_COMMIT"
           nix build --accept-flake-config --no-update-lock-file \
-            --max-jobs 1 --cores 14 \
+            --max-jobs 1 --cores 16 \
             .#nixosConfigurations.nixos.config.system.build.toplevel \
             --out-link result
 
@@ -82,6 +82,7 @@ jobs:
 
       - name: Update, build, publish, verify, then push
         env:
+          CACHE_UPDATE_CORES: '16'
           CACHE_UPDATE_TOKEN: ${{ github.token }}
           CACHE_UPDATE_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: PATH="/run/wrappers/bin:$PATH" /run/current-system/sw/bin/nix-cache-update
