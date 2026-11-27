@@ -75,7 +75,7 @@ class UpdateTests(unittest.TestCase):
         git(self.work, "config", "user.name", "Test")
         git(self.work, "config", "user.email", "test@example.invalid")
         (self.work / "flake.lock").write_text("initial\n")
-        key = self.work / "hosts/laptop/nix-cache.pub"
+        key = self.work / "hosts/inspiron5425/nix-cache.pub"
         key.parent.mkdir(parents=True)
         key.write_text("test-public-key\n")
         git(self.work, "add", ".")

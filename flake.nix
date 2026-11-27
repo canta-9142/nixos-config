@@ -155,13 +155,13 @@
         };
       };
 
-      flake.nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {
+      flake.nixosConfigurations.inspiron5425 = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         specialArgs = { inherit inputs; };
 
         modules = [
-          ./hosts/laptop
+          ./hosts/inspiron5425
           { nixpkgs.overlays = import ./overlays { inherit inputs; }; }
 
           inputs.nix-flatpak.nixosModules.nix-flatpak

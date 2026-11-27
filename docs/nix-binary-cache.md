@@ -67,7 +67,7 @@ CI成功を確認する。定期ジョブ自身のpushは`[skip ci]`で通常CI�
 ## laptopでの操作
 
 対象コミットのCI成功を確認してから実行する。`NH_FLAKE`は既存の
-`~/nixos-config#nixos`を使う。
+`~/nixos-config#inspiron5425`を使う。
 
 ```sh
 cd ~/nixos-config
@@ -79,7 +79,7 @@ nh os switch
 キャッシュと一致しない成果物のビルドが必要になる。
 CIは自動でlaptopへ適用せず、適用のタイミングは利用者が決める。
 
-`hosts/laptop/nix-cache.nix`で`always-allow-substitutes = true`を設定する。
+`hosts/inspiron5425/nix-cache.nix`で`always-allow-substitutes = true`を設定する。
 fish補完などの`allowSubstitutes = false`な生成物もキャッシュ取得の対象になる。
 この設定を初めて適用する際は`nh os switch -- --always-allow-substitutes`を使う。
 2026-10-06に、同じ構成のdry-runがビルド85件から0件・取得39件に変わることを確認し、
@@ -178,11 +178,11 @@ laptopで、既存の固定済みSSHホスト鍵を使う管理SSH接続から�
 
 ```sh
 cd ~/nixos-config
-scp jinji@ryzen.home.arpa:/etc/nix/cache.floating-gate.com.pub hosts/laptop/nix-cache.pub
-git add hosts/laptop/nix-cache.nix hosts/laptop/nix-cache.pub hosts/laptop/default.nix
+scp jinji@ryzen.home.arpa:/etc/nix/cache.floating-gate.com.pub hosts/inspiron5425/nix-cache.pub
+git add hosts/inspiron5425/nix-cache.nix hosts/inspiron5425/nix-cache.pub hosts/inspiron5425/default.nix
 ```
 
-`hosts/laptop/nix-cache.pub`は初期状態では空で、この間は新キャッシュ設定を有効にしない。
+`hosts/inspiron5425/nix-cache.pub`は初期状態では空で、この間は新キャッシュ設定を有効にしない。
 公開鍵を入れると取得先と信頼鍵が有効になり、既存のcache.nixos.orgとRemote Builderを維持する。
 新キャッシュの優先度は50とし、標準キャッシュより後に問い合わせる。
 
@@ -195,7 +195,7 @@ PROBE_PATH=/nix/store/ここをRyzenのcache-probeのpathに置き換える
 PROBE_ROOT=$(mktemp -d)
 nix copy --from https://cache.floating-gate.com \
   --to "local?root=$PROBE_ROOT" \
-  --option trusted-public-keys "$(cat hosts/laptop/nix-cache.pub)" \
+  --option trusted-public-keys "$(cat hosts/inspiron5425/nix-cache.pub)" \
   "$PROBE_PATH"
 cat "$PROBE_ROOT$PROBE_PATH"
 ```
@@ -204,7 +204,7 @@ cat "$PROBE_ROOT$PROBE_PATH"
 その後、通常の設定ビルド・適用を利用者が行う。
 
 ```sh
-nix build .#nixosConfigurations.nixos.config.system.build.toplevel
+nix build .#nixosConfigurations.inspiron5425.config.system.build.toplevel
 nh os switch
 ```
 
@@ -289,7 +289,7 @@ PRや他ブランチでは実行しない。定期更新のscheduleと`update_lo
 
 1. 既存Web CIと同じrevisionに固定したcheckout actionで対象コミットを取得する。認証情報はGit設定に残さない。
 2. checkout済みHEADがイベントのSHAと一致することを確認する。
-3. `nix build .#nixosConfigurations.nixos.config.system.build.toplevel`でlaptop構成全体をビルドする。
+3. `nix build .#nixosConfigurations.inspiron5425.config.system.build.toplevel`でlaptop構成全体をビルドする。
    lockは更新せず、flake側のキャッシュ設定は`--accept-flake-config`で受け入れる。
    Nix daemonの信頼設定を変更する権限はないため、未許可の追加キャッシュ設定は無視されることがある。
 4. `result`の絶対pathをsudo経由の公開コマンドへ渡し、closure全体を署名・公開する。

@@ -29,7 +29,7 @@ _:
     ../../users/jinji/nixos.nix
   ];
 
-  networking.hostName = "nixos";
+  networking.hostName = "inspiron5425";
   # Forgejo's migrated host key on Mesh port 2222; separate from management SSH.
   programs.ssh.knownHosts.ryzen-forgejo = {
     hostNames = [ "[ryzen.home.arpa]:2222" ];

@@ -4,7 +4,7 @@ set -euo pipefail
 : "${CACHE_UPDATE_TOKEN:?Run from the scheduled Actions job}"
 : "${CACHE_UPDATE_RUN_URL:?Missing workflow run URL}"
 repository=${CACHE_UPDATE_REPOSITORY:-jinji/nixos-config}
-public_key_file=${CACHE_UPDATE_PUBLIC_KEY_FILE:-hosts/laptop/nix-cache.pub}
+public_key_file=${CACHE_UPDATE_PUBLIC_KEY_FILE:-hosts/inspiron5425/nix-cache.pub}
 cores=${CACHE_UPDATE_CORES:-8}
 if [[ ! $cores =~ ^[0-9]+$ ]]; then
   echo "Invalid CACHE_UPDATE_CORES; expected a non-negative integer." >&2
@@ -16,7 +16,7 @@ if [[ ! $repository =~ ^[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*$ ]
 fi
 group=${repository##*/}
 if (( $# == 0 )); then
-  set -- .#nixosConfigurations.nixos.config.system.build.toplevel
+  set -- .#nixosConfigurations.inspiron5425.config.system.build.toplevel
 fi
 # Only discard changes produced by this job, never pre-existing tracked changes.
 git diff --quiet

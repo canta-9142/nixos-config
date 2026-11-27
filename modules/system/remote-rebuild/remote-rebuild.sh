@@ -14,7 +14,7 @@ flock -n 9 || { echo 'A remote rebuild is already running.' >&2; exit 1; }
 local_dir=$(mktemp -d "$cache_dir/run.XXXXXXXXXX")
 trap 'rm -rf -- "$local_dir"' EXIT
 
-remote_dir=$(ssh "$host" 'mkdir -p ~/.cache/nixos-remote-rebuild/laptop && realpath ~/.cache/nixos-remote-rebuild/laptop')
+remote_dir=$(ssh "$host" 'mkdir -p ~/.cache/nixos-remote-rebuild/inspiron5425 && realpath ~/.cache/nixos-remote-rebuild/inspiron5425')
 
 # Include uncommitted changes and new files, but omit ignored files and .git.
 # Stage with hard links to avoid copying file data on the same filesystem.
@@ -29,7 +29,7 @@ result=$(ssh "$host" "sh -s -- '$remote_dir'" <<'REMOTE'
 set -eu
 nix build --accept-flake-config --no-update-lock-file \
   --out-link "$1/result" --print-out-paths \
-  "$1/source#nixosConfigurations.nixos.config.system.build.toplevel"
+  "$1/source#nixosConfigurations.inspiron5425.config.system.build.toplevel"
 REMOTE
 )
 

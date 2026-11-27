@@ -1,7 +1,7 @@
 # Run with: nix run --impure --file ./tests/discord-mediapipe.nix
 let
   flake = builtins.getFlake (toString ../.);
-  inherit (flake.nixosConfigurations.nixos) pkgs;
+  inherit (flake.nixosConfigurations.inspiron5425) pkgs;
   inherit (pkgs) discord;
 in
 pkgs.buildFHSEnv (

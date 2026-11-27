@@ -8,7 +8,7 @@ export TEST_ROOT="$test_root" REAL_RSYNC
 REAL_RSYNC=$(command -v rsync)
 export HOME="$test_root/home"
 export XDG_CACHE_HOME="$HOME/.cache"
-remote_dir="$test_root/remote-home/.cache/nixos-remote-rebuild/laptop"
+remote_dir="$test_root/remote-home/.cache/nixos-remote-rebuild/inspiron5425"
 mkdir -p "$HOME/nixos-config" "$test_root/bin" "$test_root/system" "$test_root/remote-home"
 git -C "$HOME/nixos-config" init -q
 printf 'ignored\n' > "$HOME/nixos-config/.gitignore"
@@ -54,7 +54,7 @@ case "$1" in
   build)
     installable="${!#}"
     snapshot="${installable%#*}"
-    [[ "$installable" == *'#nixosConfigurations.nixos.config.system.build.toplevel' ]]
+    [[ "$installable" == *'#nixosConfigurations.inspiron5425.config.system.build.toplevel' ]]
     [[ "$(cat "$snapshot/tracked")" == "${TEST_CONTENT:-uncommitted}" ]]
     [[ -f "$snapshot/new" && ! -e "$snapshot/ignored" && ! -e "$snapshot/deleted" && ! -e "$snapshot/.git" ]]
     if [[ "${TEST_PRUNED:-}" == 1 ]]; then

@@ -24,7 +24,7 @@
 
       interactiveShellInit = ''
         set fish_greeting ""
-        set -gx NH_FLAKE "/home/jinji/nixos-config#nixos"
+        set -gx NH_FLAKE "/home/jinji/nixos-config#inspiron5425"
 
         fastfetch;
       '';

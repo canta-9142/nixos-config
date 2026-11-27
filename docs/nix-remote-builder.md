@@ -5,7 +5,7 @@ flake評価・成果物取得・ノートPCへの適用はノートPC側で行�
 
 ## 普段の操作
 
-ノートPC上で実行する。`NH_FLAKE`は`~/nixos-config#nixos`に設定済み。
+ノートPC上で実行する。`NH_FLAKE`は`~/nixos-config#inspiron5425`に設定済み。
 
 ```sh
 # ノートPCを更新（ビルドは原則Ryzen）
@@ -21,8 +21,8 @@ nh os switch --builders '' --max-jobs 1
 `nixos-rebuild`でも同じオプションを使える。
 
 ```sh
-sudo nixos-rebuild switch --flake ~/nixos-config#nixos
-sudo nixos-rebuild switch --flake ~/nixos-config#nixos --builders '' --max-jobs 1
+sudo nixos-rebuild switch --flake ~/nixos-config#inspiron5425
+sudo nixos-rebuild switch --flake ~/nixos-config#inspiron5425 --builders '' --max-jobs 1
 ```
 
 自動でローカル実行へは切り替えない。途中切断で失敗した場合も、上記のローカル指定で再実行する。
@@ -82,7 +82,7 @@ nixos-rebuild switch --flake ~/servers-config#ryzen \
 | --- | --- |
 | Ryzenの専用ユーザー・ビルド設定 | `modules/system/nix-builder.nix` |
 | ビルド用SSH公開鍵 | `hosts/ryzen/nix-builder.pub` |
-| ノートPCの委譲先・SSH設定 | `~/nixos-config/hosts/laptop/nix-builder.nix` |
+| ノートPCの委譲先・SSH設定 | `~/nixos-config/hosts/inspiron5425/nix-builder.nix` |
 | 暗号化したSSH秘密鍵 | `~/nixos-config/secrets/nix-builder.yaml` |
 
 秘密鍵はsops-nixで`/run/secrets/nix_builder_private_key`へ配備する（root所有、0400）。

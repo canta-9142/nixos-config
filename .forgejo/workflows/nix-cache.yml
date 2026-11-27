@@ -44,7 +44,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EXPECTED_COMMIT"
           nix build --accept-flake-config --no-update-lock-file \
             --max-jobs 1 --cores 16 \
-            .#nixosConfigurations.nixos.config.system.build.toplevel \
+            .#nixosConfigurations.inspiron5425.config.system.build.toplevel \
             --out-link result
 
       - name: Publish the signed closure
@@ -56,10 +56,10 @@ jobs:
       - name: Verify public closure metadata and signatures
         run: |
           set -euo pipefail
-          test -s hosts/laptop/nix-cache.pub
+          test -s hosts/inspiron5425/nix-cache.pub
           nix store verify --no-contents --recursive --sigs-needed 1 \
             --store https://cache.floating-gate.com \
-            --option trusted-public-keys "$(cat hosts/laptop/nix-cache.pub)" \
+            --option trusted-public-keys "$(cat hosts/inspiron5425/nix-cache.pub)" \
             "$(readlink -f result)"
 
   update-lock:

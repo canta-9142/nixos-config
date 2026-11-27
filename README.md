@@ -1,5 +1,5 @@
 # nixos-config
-NixOS and Home Manager configuration for the `nixos` laptop.
+NixOS and Home Manager configuration for the `inspiron5425` laptop.
 Ryzen, ROCK 3B and Cubie A5E configurations are also included.
 See [server operations](docs/servers.md) for deployment, images and recovery.
 All four hosts use the same pinned `nixpkgs` input.
@@ -29,7 +29,7 @@ access and suspend/resume should be checked in the actual Umbriel session.
 
 ```plain
 hosts/
-  laptop/                 # nixos (x86_64-linux): boot, disk, network and packages
+  inspiron5425/           # inspiron5425 (x86_64-linux): boot, disk, network and packages
     nix.nix               # remote builder, binary cache and garbage collection
     locale.nix            # locale and timezone
     services.nix          # device and firmware services
@@ -53,7 +53,7 @@ assets/                   # wallpapers and images
 secrets/                  # sops-encrypted secrets
 ```
 
-Directory names do not change hostnames or flake selectors: use `.#nixos`
+Directory names do not change hostnames or flake selectors: use `.#inspiron5425`
 for the laptop.
 
 Validation:
@@ -89,8 +89,8 @@ and automatic gain control and adjust its input sensitivity.
 ## Remote evaluation and builds
 
 In Fish, `nsr` and `nbr` sync `~/nixos-config` to
-`~/.cache/nixos-remote-rebuild/laptop/source` on `jinji@ryzen.home.arpa`,
-evaluate and build `nixosConfigurations.nixos` there, and copy the result back
+`~/.cache/nixos-remote-rebuild/inspiron5425/source` on `jinji@ryzen.home.arpa`,
+evaluate and build `nixosConfigurations.inspiron5425` there, and copy the result back
 before running `nh os switch` or `nh os boot` locally. The remote source and
 latest build result are retained, so subsequent runs use incremental rsync
 transfers. Tracked changes and new non-ignored files are included; deleted and
@@ -129,7 +129,7 @@ Initial setup (these commands change the machine and must be run manually):
 3. Install the boot configuration, then inspect signatures:
 
    ```console
-   sudo nixos-rebuild boot --flake .#nixos
+   sudo nixos-rebuild boot --flake .#inspiron5425
    nix shell nixpkgs#sbctl -c sudo sbctl verify
    ```
 
