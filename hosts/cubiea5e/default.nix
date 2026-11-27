@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    ../../users/jinji/server.nix
     ./hardware-configuration.nix
     ./initrd-debug.nix
     ../../modules/system/server

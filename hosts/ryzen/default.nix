@@ -1,6 +1,7 @@
 { lib, ... }:
 {
   imports = [
+    ../../users/jinji/server.nix
     ./hardware-configuration.nix
     ./storage.nix
     ./forgejo.nix

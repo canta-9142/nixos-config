@@ -26,7 +26,7 @@ _:
     ../../modules/system/security/sudo.nix
     ../../modules/system/printing.nix
 
-    ../../users/jinji/nixos.nix
+    ../../users/jinji/desktop.nix
   ];
 
   programs.fish.shellAbbrs = {

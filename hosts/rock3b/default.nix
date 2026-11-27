@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    ../../users/jinji/server.nix
     ./hardware-configuration.nix
     ./rock3b.nix
     ./boot.nix

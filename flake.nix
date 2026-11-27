@@ -169,15 +169,6 @@
               inputs.niri.nixosModules.niri
               inputs.lanzaboote.nixosModules.lanzaboote
               inputs.mikuboot.nixosModules.default
-
-              inputs.home-manager.nixosModules.home-manager
-              {
-                home-manager = {
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
-                  extraSpecialArgs = { inherit inputs; };
-                };
-              }
             ];
           };
         };
