@@ -20,7 +20,7 @@ let
     name = "servers-nix-cache-update";
     text = ''
       export CACHE_UPDATE_REPOSITORY=jinji/servers-config
-      export CACHE_UPDATE_PUBLIC_KEY_FILE=modules/system/nix-cache.pub
+      export CACHE_UPDATE_PUBLIC_KEY_FILE=modules/system/nix/cache.pub
       exec ${update}/bin/nix-cache-update \
         .#nixosConfigurations.ryzen.config.system.build.toplevel \
         .#nixosConfigurations.rock3b.config.system.build.toplevel \
@@ -47,7 +47,6 @@ in
 {
   imports = [ ../../modules/system/server/forgejo-runner-registration.nix ];
 
-  nix.package = pkgs.lixPackageSets.stable.lix;
   nix.settings = {
     extra-substituters = [
       "https://noctalia.cachix.org"

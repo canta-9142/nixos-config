@@ -128,57 +128,59 @@
           formatter = pkgs.nixfmt-tree;
         };
 
-      flake.deploy.nodes.ryzen = {
-        hostname = "ryzen.home.arpa";
-        sshUser = "jinji";
-        interactiveSudo = true;
-        remoteBuild = true;
-        profiles.system = {
-          user = "root";
-          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.ryzen;
+      flake = {
+        deploy.nodes.ryzen = {
+          hostname = "ryzen.home.arpa";
+          sshUser = "jinji";
+          interactiveSudo = true;
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.ryzen;
+          };
         };
-      };
 
-      flake.nixosConfigurations = {
-        ryzen = inputs.nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./hosts/ryzen ];
+        nixosConfigurations = {
+          ryzen = inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [ ./hosts/ryzen ];
+          };
+          rock3b = inputs.nixpkgs.lib.nixosSystem {
+            system = "aarch64-linux";
+            modules = [ ./hosts/rock3b ];
+          };
+          cubiea5e = inputs.nixpkgs.lib.nixosSystem {
+            system = "aarch64-linux";
+            specialArgs = { inherit (inputs) cubiea5e; };
+            modules = [ ./hosts/cubiea5e ];
+          };
+
+          inspiron5425 = inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+
+            specialArgs = { inherit inputs; };
+
+            modules = [
+              ./hosts/inspiron5425
+              { nixpkgs.overlays = import ./overlays { inherit inputs; }; }
+
+              inputs.nix-flatpak.nixosModules.nix-flatpak
+              inputs.sops-nix.nixosModules.sops
+              inputs.niri.nixosModules.niri
+              inputs.lanzaboote.nixosModules.lanzaboote
+              inputs.mikuboot.nixosModules.default
+
+              inputs.home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  extraSpecialArgs = { inherit inputs; };
+                };
+              }
+            ];
+          };
         };
-        rock3b = inputs.nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          modules = [ ./hosts/rock3b ];
-        };
-        cubiea5e = inputs.nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          specialArgs = { inherit (inputs) cubiea5e; };
-          modules = [ ./hosts/cubiea5e ];
-        };
-      };
-
-      flake.nixosConfigurations.inspiron5425 = inputs.nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-
-        specialArgs = { inherit inputs; };
-
-        modules = [
-          ./hosts/inspiron5425
-          { nixpkgs.overlays = import ./overlays { inherit inputs; }; }
-
-          inputs.nix-flatpak.nixosModules.nix-flatpak
-          inputs.sops-nix.nixosModules.sops
-          inputs.niri.nixosModules.niri
-          inputs.lanzaboote.nixosModules.lanzaboote
-          inputs.mikuboot.nixosModules.default
-
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = { inherit inputs; };
-            };
-          }
-        ];
       };
     };
 }

@@ -18,9 +18,7 @@ _:
 
     shellAbbrs = {
       nb = "nh os boot";
-      nbl = "nh os boot --builders '' --max-jobs 10";
       ns = "nh os switch";
-      nsl = "nh os switch --builders '' --max-jobs 10";
       nsu = "nh os switch --update";
       mi = "micro";
       g = "git";

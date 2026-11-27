@@ -56,10 +56,10 @@ jobs:
       - name: Verify public closure metadata and signatures
         run: |
           set -euo pipefail
-          test -s hosts/inspiron5425/nix-cache.pub
+          test -s modules/system/nix/cache.pub
           nix store verify --no-contents --recursive --sigs-needed 1 \
             --store https://cache.floating-gate.com \
-            --option trusted-public-keys "$(cat hosts/inspiron5425/nix-cache.pub)" \
+            --option trusted-public-keys "$(cat modules/system/nix/cache.pub)" \
             "$(readlink -f result)"
 
   update-lock:

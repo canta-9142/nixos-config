@@ -1,15 +1,12 @@
 _: {
+  imports = [ ../ssh.nix ];
+
   services.openssh = {
-    enable = true;
     openFirewall = false;
     settings = {
       AllowUsers = [
-        "jinji"
         "rock"
       ];
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "no";
     };
   };
   networking = {

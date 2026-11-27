@@ -105,7 +105,7 @@ workflowとRunnerの制限は8時間。同じworkflowの実行は直列化する
 `modules/system/common.nix`から`nix-cache.nix`を読み込み、3台とも次を設定する。
 
 - 取得先: `https://cache.floating-gate.com?priority=50`
-- 信頼鍵: Ryzenから管理SSHで取得済みの`modules/system/nix-cache.pub`
+- 信頼鍵: Ryzenから管理SSHで取得済みの`modules/system/nix/cache.pub`
 - `always-allow-substitutes = true`（fish補完なども取得する）
 - `fallback = true`（取得失敗時は利用可能なビルダーでビルドする）
 

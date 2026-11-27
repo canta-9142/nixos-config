@@ -1,14 +1,12 @@
 { pkgs, ... }:
 {
   imports = [
-    ./fish.nix
-    ./nix-cache.nix
+    ../nix
+    ../cli.nix
+    ../fish.nix
+    ../nix/cache-client.nix
   ];
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
   time.timeZone = "Asia/Tokyo";
 
   users.users = {
@@ -29,14 +27,5 @@
   };
   security.sudo.wheelNeedsPassword = true;
 
-  environment.systemPackages = with pkgs; [
-    nh
-    git
-    gh
-    vim
-    micro
-    tree
-    btop
-    nvme-cli
-  ];
+  environment.systemPackages = [ pkgs.vim ];
 }

@@ -178,11 +178,11 @@ laptopで、既存の固定済みSSHホスト鍵を使う管理SSH接続から�
 
 ```sh
 cd ~/nixos-config
-scp jinji@ryzen.home.arpa:/etc/nix/cache.floating-gate.com.pub hosts/inspiron5425/nix-cache.pub
-git add hosts/inspiron5425/nix-cache.nix hosts/inspiron5425/nix-cache.pub hosts/inspiron5425/default.nix
+scp jinji@ryzen.home.arpa:/etc/nix/cache.floating-gate.com.pub modules/system/nix/cache.pub
+git add hosts/inspiron5425/nix-cache.nix modules/system/nix/cache.pub hosts/inspiron5425/default.nix
 ```
 
-`hosts/inspiron5425/nix-cache.pub`は初期状態では空で、この間は新キャッシュ設定を有効にしない。
+`modules/system/nix/cache.pub`は初期状態では空で、この間は新キャッシュ設定を有効にしない。
 公開鍵を入れると取得先と信頼鍵が有効になり、既存のcache.nixos.orgとRemote Builderを維持する。
 新キャッシュの優先度は50とし、標準キャッシュより後に問い合わせる。
 
@@ -195,7 +195,7 @@ PROBE_PATH=/nix/store/ここをRyzenのcache-probeのpathに置き換える
 PROBE_ROOT=$(mktemp -d)
 nix copy --from https://cache.floating-gate.com \
   --to "local?root=$PROBE_ROOT" \
-  --option trusted-public-keys "$(cat hosts/inspiron5425/nix-cache.pub)" \
+  --option trusted-public-keys "$(cat modules/system/nix/cache.pub)" \
   "$PROBE_PATH"
 cat "$PROBE_ROOT$PROBE_PATH"
 ```

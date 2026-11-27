@@ -4,7 +4,7 @@ set -euo pipefail
 : "${CACHE_UPDATE_TOKEN:?Run from the scheduled Actions job}"
 : "${CACHE_UPDATE_RUN_URL:?Missing workflow run URL}"
 repository=${CACHE_UPDATE_REPOSITORY:-jinji/nixos-config}
-public_key_file=${CACHE_UPDATE_PUBLIC_KEY_FILE:-hosts/inspiron5425/nix-cache.pub}
+public_key_file=${CACHE_UPDATE_PUBLIC_KEY_FILE:-modules/system/nix/cache.pub}
 cores=${CACHE_UPDATE_CORES:-8}
 if [[ ! $cores =~ ^[0-9]+$ ]]; then
   echo "Invalid CACHE_UPDATE_CORES; expected a non-negative integer." >&2

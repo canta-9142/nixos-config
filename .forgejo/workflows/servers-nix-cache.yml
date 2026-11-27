@@ -63,11 +63,11 @@ jobs:
       - name: Verify public closure metadata and signatures
         run: |
           set -euo pipefail
-          test -s modules/system/nix-cache.pub
+          test -s modules/system/nix/cache.pub
           mapfile -t paths < "$RUNNER_TEMP/servers-cache-paths"
           nix store verify --no-contents --recursive --sigs-needed 1 \
             --store https://cache.floating-gate.com \
-            --option trusted-public-keys "$(cat modules/system/nix-cache.pub)" \
+            --option trusted-public-keys "$(cat modules/system/nix/cache.pub)" \
             "${paths[@]}"
 
   update-lock:
@@ -93,7 +93,7 @@ jobs:
           CACHE_UPDATE_TOKEN: ${{ github.token }}
           CACHE_UPDATE_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           CACHE_UPDATE_REPOSITORY: jinji/servers-config
-          CACHE_UPDATE_PUBLIC_KEY_FILE: modules/system/nix-cache.pub
+          CACHE_UPDATE_PUBLIC_KEY_FILE: modules/system/nix/cache.pub
           CACHE_UPDATE_CORES: '14'
         run: |
           PATH="/run/wrappers/bin:$PATH" nix shell --inputs-from . \

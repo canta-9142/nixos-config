@@ -1,12 +1,12 @@
 { lib, ... }:
 let
-  publicKey = lib.trim (builtins.readFile ./nix-cache.pub);
+  publicKey = lib.trim (builtins.readFile ./cache.pub);
 in
 {
   assertions = [
     {
       assertion = publicKey != "";
-      message = "The binary cache requires its verified public key in modules/system/nix-cache.pub.";
+      message = "The binary cache requires its verified public key in modules/system/nix/cache.pub.";
     }
   ];
 

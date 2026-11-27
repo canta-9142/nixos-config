@@ -9,10 +9,10 @@
     ./web.nix
     ./nix-cache.nix
     ./nix-ci.nix
-    ./kernel-build.nix
-    ../../modules/system/server/common.nix
+    ../../modules/system/nix/ccache.nix
+    ../../modules/system/server
     ../../modules/system/server/ssh.nix
-    ../../modules/system/server/cloudflare-mesh.nix
+    ../../modules/system/cloudflare-warp.nix
     ../../modules/system/server/maintenance.nix
     ../../modules/system/server/nix-builder.nix
   ];

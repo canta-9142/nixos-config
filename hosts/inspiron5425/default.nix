@@ -11,7 +11,7 @@ _:
     ./services.nix
     ./packages.nix
 
-    ../../modules/system/nix.nix
+    ../../modules/system/nix
     ../../modules/system/cli.nix
     ../../modules/system/fish.nix
     ../../modules/system/remote-rebuild
@@ -28,6 +28,12 @@ _:
 
     ../../users/jinji/nixos.nix
   ];
+
+  programs.fish.shellAbbrs = {
+    nbl = "nh os boot --builders '' --max-jobs 10";
+    nsl = "nh os switch --builders '' --max-jobs 10";
+  };
+  environment.sessionVariables.NH_FLAKE = "/home/jinji/nixos-config#inspiron5425";
 
   networking.hostName = "inspiron5425";
   # Forgejo's migrated host key on Mesh port 2222; separate from management SSH.

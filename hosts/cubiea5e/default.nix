@@ -3,7 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ./initrd-debug.nix
-    ../../modules/system/server/common.nix
+    ../../modules/system/server
     ../../modules/system/server/ssh.nix
   ];
 
@@ -13,7 +13,6 @@
   };
 
   programs.direnv.enable = true;
-  nix.package = pkgs.lixPackageSets.stable.lix;
   environment = {
     sessionVariables.NH_FLAKE = "/home/jinji/servers-config#cubiea5e";
     systemPackages = [ pkgs.pciutils ];

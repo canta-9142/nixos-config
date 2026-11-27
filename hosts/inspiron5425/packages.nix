@@ -3,8 +3,21 @@
 {
 
   nixpkgs.config.allowUnfree = true;
+  programs.nix-ld.enable = true;
 
   environment.systemPackages = with pkgs; [
+    wget
+    curl
+    fish
+    ripgrep
+    yazi
+    mc
+    nixfmt-tree
+    statix
+    deadnix
+    nixd
+    sops
+    age
     meld
 
     bubblewrap
