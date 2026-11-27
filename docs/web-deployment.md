@@ -25,7 +25,7 @@ Runnerの登録変更や追加トークンは不要。ホスト全体のマウ�
 ## ローカル検証
 
 ```sh
-cd ~/servers-config
+cd ~/nixos-config
 nix fmt
 nix develop -c statix check .
 nix develop -c deadnix --fail .
@@ -33,7 +33,7 @@ nix flake check
 nix build .#nixosConfigurations.ryzen.config.system.build.toplevel --no-link
 
 cd ~/Projects/floating-gate
-nix shell --inputs-from ~/servers-config \
+nix shell --inputs-from ~/nixos-config \
   nixpkgs#bubblewrap nixpkgs#git nixpkgs#coreutils nixpkgs#findutils nixpkgs#util-linux \
   -c sh scripts/ci/test-deploy.sh
 ```
@@ -146,7 +146,7 @@ DNS切替後の公開アクセスは利用者が確認済み。下記の失敗�
   クエリと`Cache-Control: no-cache`でキャッシュの影響を抑える。
 
 ```sh
-cd ~/servers-config
+cd ~/nixos-config
 nix shell --inputs-from . nixpkgs#python3 -c python3 scripts/check-web-release.py \
   557c62cdacf7001e3b769287baf43cc90fda3dcd \
   555e7c6695c4ed1e724b2d9da40649b9b698efbc7ae05a847a9b259f78399de2

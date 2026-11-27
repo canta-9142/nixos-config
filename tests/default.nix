@@ -37,6 +37,7 @@ inputs.deploy-rs.lib.${pkgs.stdenv.hostPlatform.system}.deployChecks self.deploy
   nix-cache-update =
     pkgs.runCommand "nix-cache-update-check"
       {
+        CACHE_UPDATE_TARGETS_FILE = ../scripts/nix-cache-targets;
         nativeBuildInputs = with pkgs; [
           bash
           coreutils
@@ -64,7 +65,7 @@ inputs.deploy-rs.lib.${pkgs.stdenv.hostPlatform.system}.deployChecks self.deploy
       ''
         export HOME="$TMPDIR/home"
         mkdir -p "$HOME"
-        bash ${./unit/test_remote_rebuild.sh} ${../modules/system/remote-rebuild/remote-rebuild.sh}
+        bash ${./unit/test_remote_rebuild.sh} ${../hosts/inspiron5425/remote-rebuild/remote-rebuild.sh}
         touch "$out"
       '';
   codex-cleanup = pkgs.runCommand "codex-cleanup-check" { nativeBuildInputs = [ pkgs.python3 ]; } ''

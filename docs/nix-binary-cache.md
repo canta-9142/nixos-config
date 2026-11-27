@@ -1,5 +1,7 @@
 # Nix Binary Cache運用計画（Phase 7）
 
+> 統合後の対象・runner・更新スケジュールは [現行の運用手順](operations.md) を参照。以下には導入時の手順・記録を含む。
+
 `servers-config`のForgejo移行とRunner追加は[サーバー向け移行手順](servers-cache-migration.md)を参照。
 複数リポジトリ対応では、GCの最新成功分をリポジトリごとに保持する。
 既存のgroupなし履歴・公開呼び出しは`nixos-config`として引き継ぐ。実機適用は別途行う。
@@ -38,7 +40,7 @@ laptop固有の構成生成物まで揃うとは限らない。
 - laptopの`~/nixos-config`の正本をRyzenのForgejoへ移す。
 - laptopの`~/nixos-config`はそのcloneとして維持し、設定変更をpushする。
 - Ryzenの更新ジョブも同じリポジトリを使用する。
-- `servers-config`はサーバー構成のリポジトリとして引き続き分けて管理する。
+- サーバー構成は `nixos-config` に統合済み。現行の CI は全4台と両イメージを扱う。
 - 既存リモートを残す場合は、バックアップ用mirrorとして扱う。
 
 再利用には`flake.lock`だけでなく、設定ファイル、対象ホスト、ビルドに影響する
@@ -110,10 +112,10 @@ retentionの期間と削除処理は後述の「キャッシュの保持とGC」
 
 ### 1. Ryzenへの設定適用と署名鍵の生成
 
-Ryzenで更新した`servers-config`を取得し、ビルド・適用する。
+Ryzenで更新した`nixos-config`を取得し、ビルド・適用する。
 
 ```sh
-cd ~/servers-config
+cd ~/nixos-config
 nix build .#nixosConfigurations.ryzen.config.system.build.toplevel
 nh os switch
 ```
@@ -143,7 +145,7 @@ Ryzenで検証用成果物をビルドし、完成したstore pathを公開す�
 検証用の非content-addressed derivationを使い、署名の検証対象を作る。
 
 ```sh
-cd ~/servers-config
+cd ~/nixos-config
 nix build --impure --expr 'let pkgs = (builtins.getFlake (toString ./.)).nixosConfigurations.ryzen.pkgs; in pkgs.runCommand "ryzen-cache-probe" {} "echo cache-probe > $out"' --out-link cache-probe
 sudo nix-cache-publish "$(readlink -f cache-probe)"
 curl --fail http://127.0.0.1:8081/nix-cache-info
@@ -319,10 +321,10 @@ sudoedit /etc/forgejo-runner/nix.env
 
 エディタで`TOKEN=<登録トークン>`の1行を保存する。値をGitやチャット、コマンド履歴に記載しない。
 
-4. Ryzenで更新した`servers-config`を取得し、ビルド・適用する。
+4. Ryzenで更新した`nixos-config`を取得し、ビルド・適用する。
 
 ```sh
-cd ~/servers-config
+cd ~/nixos-config
 nix build .#nixosConfigurations.ryzen.config.system.build.toplevel
 nh os switch
 systemctl status forgejo-runner-nix
@@ -378,7 +380,7 @@ Runner待ちや長いビルドがある場合、実際の開始時刻は遅れ�
 ### 更新・公開・push
 
 Ryzenに`nix-cache-update`をインストールする。
-処理本体は`servers-config/scripts/update-nix-cache.sh`で、CIの使い捨てcheckout内から実行する。
+処理本体は`scripts/update-nix-cache.sh`で、CIの使い捨てcheckout内から実行する。
 このコマンドは利用者の通常cloneでは実行しない。最初にtrackedな未コミット変更がないことを確認する。
 
 1. 最新のorigin/mainをfetchし、対象SHAへdetached checkoutする。
@@ -428,10 +430,10 @@ laptopで更新を取り込む前には、新しいコミットの`Nix cache / l
 
 ### 適用と初回確認
 
-1. Ryzenへ更新した`servers-config`を取り込み、ビルドして適用する。
+1. Ryzenへ更新した`nixos-config`を取り込み、ビルドして適用する。
 
 ```sh
-cd ~/servers-config
+cd ~/nixos-config
 nix build .#nixosConfigurations.ryzen.config.system.build.toplevel
 nh os switch
 test -x /run/current-system/sw/bin/nix-cache-update

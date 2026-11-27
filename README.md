@@ -29,32 +29,44 @@ access and suspend/resume should be checked in the actual Umbriel session.
 
 ```plain
 hosts/
-  inspiron5425/           # inspiron5425 (x86_64-linux): boot, disk, network and packages
-    nix.nix               # remote builder, binary cache and garbage collection
-    locale.nix            # locale and timezone
-    services.nix          # device and firmware services
+  inspiron5425/           # laptop: boot, kernel, hardware, remote rebuild
+  ryzen/                  # services, storage, builder and RAID monitoring
+  rock3b/                 # board, cross kernel, fans, LEDs and EDID
+  cubiea5e/               # board, cross kernel and initrd diagnostics
 modules/
   system/
+    nix/                  # Nix, cache client and build-machine ccache setup
+    server/               # shared server policies and runner support
+    desktop/              # system desktop configuration
+    security/             # reusable security policies
     cli.nix               # shared command-line tools
-    nix.nix               # Nix implementation, Flakes and nh
-    fish.nix              # system Fish configuration
-    remote-rebuild/       # remote rebuild command and its test
-    ssh.nix               # SSH authentication policy
-    desktop/              # system desktop modules
-    security/             # reusable security modules
+    fish.nix              # shared system Fish configuration
+    ssh.nix               # shared SSH authentication policy
   home/
-    programs/             # application configuration; related assets stay nearby
-    desktop/              # desktop configuration, including Noctalia
+    programs/             # reusable application configuration
+    desktop/              # reusable desktop configuration
 users/jinji/
-  nixos.nix               # NixOS account, secrets and Home Manager wiring
+  nixos.nix               # shared account
+  desktop.nix             # desktop groups, secrets and Home Manager wiring
+  server.nix              # additional server login key
   home.nix                # Home Manager entry point
-overlays/                 # laptop package overlays
-assets/                   # wallpapers and images
+lib/
+  kernel-ccache/          # kernel build transformation and shared patch
+  make-extlinux-image.nix
+scripts/                  # CI, cache operation and manual runtime probes
+tests/
+  unit/                   # script, kernel and Device Tree regression checks
+  vm/                     # NixOS service integration tests
+docs/                     # operation, recovery and historical migration records
+overlays/desktop.nix      # overlays applied only to the desktop host
+assets/                   # shared wallpapers and images
 secrets/                  # sops-encrypted secrets
 ```
 
-Directory names do not change hostnames or flake selectors: use `.#inspiron5425`
-for the laptop.
+Hostnames, directories and flake selectors agree: `.#inspiron5425`, `.#ryzen`,
+`.#rock3b` and `.#cubiea5e`. There is no `.#nixos` compatibility alias.
+Each host sets `NH_FLAKE` to `/home/jinji/nixos-config#<hostname>`.
+See [unified operations](docs/operations.md) for CI, deployment and rollout.
 
 Validation:
 
@@ -108,7 +120,7 @@ abbreviations. After activating this configuration, start a new Fish shell.
 ## Secure Boot (Lanzaboote)
 
 Lanzaboote signs boot images using keys in `/var/lib/sbctl` and keeps up to
-30 generations. Keys must exist before installing the boot configuration;
+4 generations. Keys must exist before installing the boot configuration;
 building the configuration alone does not require them. The old systemd-boot
 entry timestamp customization does not apply to Lanzaboote's signed images.
 

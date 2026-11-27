@@ -16,12 +16,12 @@
 
   programs.direnv.enable = true;
   environment = {
-    sessionVariables.NH_FLAKE = "/home/jinji/servers-config#cubiea5e";
+    sessionVariables.NH_FLAKE = "/home/jinji/nixos-config#cubiea5e";
     systemPackages = [ pkgs.pciutils ];
   };
 
   systemd.tmpfiles.rules = [
-    "L+ /etc/nixos - jinji users - /home/jinji/servers-config"
+    "L+ /etc/nixos - jinji users - /home/jinji/nixos-config"
   ];
 
   system.stateVersion = "26.05";

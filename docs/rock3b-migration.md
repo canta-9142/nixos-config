@@ -1,5 +1,7 @@
 # ROCK 3B基本構成の移行
 
+> Historical migration record. Current layout and operations: [repository guide](../README.md).
+
 `~/nixos-config/hosts/rock3b`から基本構成のみ移植した。
 flakeの構成名とホスト名はともに`rock3b`。
 この追加だけでは実機の設定や稼働サービスは変わらない。

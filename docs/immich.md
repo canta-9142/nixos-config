@@ -40,7 +40,7 @@ LANのインターフェース・送信元・宛先の制限も試験する。�
 実機で空き容量を確認してから、Ryzen上で適用する。
 
 ```sh
-cd /home/jinji/servers-config
+cd /home/jinji/nixos-config
 df -h /srv /nix
 sudo nixos-rebuild switch --flake .#ryzen
 systemctl status immich-server immich-machine-learning postgresql redis-immich
@@ -100,8 +100,8 @@ trap 'systemctl start immich-server.service immich-machine-learning.service' EXI
 systemctl stop immich-server.service immich-machine-learning.service
 runuser -u postgres -- pg_dump --format=custom immich > "$backup_dir/database.dump"
 tar --acls --xattrs -C /srv -cpf "$backup_dir/media.tar" immich
-git -C /home/jinji/servers-config rev-parse HEAD > "$backup_dir/configuration-revision.txt"
-cp /home/jinji/servers-config/flake.lock "$backup_dir/flake.lock"
+git -C /home/jinji/nixos-config rev-parse HEAD > "$backup_dir/configuration-revision.txt"
+cp /home/jinji/nixos-config/flake.lock "$backup_dir/flake.lock"
 exit
 ```
 

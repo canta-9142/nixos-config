@@ -1,0 +1,6 @@
+.#nixosConfigurations.inspiron5425.config.system.build.toplevel
+.#nixosConfigurations.ryzen.config.system.build.toplevel
+.#nixosConfigurations.rock3b.config.system.build.toplevel
+.#nixosConfigurations.cubiea5e.config.system.build.toplevel
+.#rock3b-image
+.#cubiea5e-image

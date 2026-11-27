@@ -31,7 +31,10 @@
         protocol = "ssh-ng";
         sshUser = "nix-builder";
         sshKey = config.sops.secrets.nix_builder_private_key.path;
-        system = "x86_64-linux";
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
         maxJobs = 12;
         supportedFeatures = [
           "big-parallel"

@@ -27,7 +27,7 @@
   ];
 
   environment = {
-    sessionVariables.NH_FLAKE = "/home/jinji/servers-config#rock3b";
+    sessionVariables.NH_FLAKE = "/home/jinji/nixos-config#rock3b";
     systemPackages = with pkgs; [
       wget
       curl
@@ -42,7 +42,7 @@
   };
 
   systemd.tmpfiles.rules = [
-    "L+ /etc/nixos - jinji users - /home/jinji/servers-config"
+    "L+ /etc/nixos - jinji users - /home/jinji/nixos-config"
   ];
 
   system.stateVersion = "26.05";

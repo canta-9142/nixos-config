@@ -96,12 +96,12 @@
         {
           packages = lib.optionalAttrs (system == "x86_64-linux") {
             rock3b-image = import ./lib/make-extlinux-image.nix {
-              pkgs = inputs.nixpkgs.legacyPackages.${system};
+              inherit pkgs;
               inherit (self.nixosConfigurations.rock3b) config;
               baseName = "rock3b-nvme";
             };
             cubiea5e-image = import ./lib/make-extlinux-image.nix {
-              pkgs = inputs.nixpkgs.legacyPackages.${system};
+              inherit pkgs;
               inherit (self.nixosConfigurations.cubiea5e) config;
               baseName = "cubiea5e-nvme";
             };
@@ -110,7 +110,7 @@
           checks = lib.optionalAttrs (system == "x86_64-linux") (
             import ./tests {
               inherit inputs self;
-              pkgs = inputs.nixpkgs.legacyPackages.${system};
+              inherit pkgs;
             }
           );
           devShells.default = pkgs.mkShellNoCC {
@@ -162,7 +162,7 @@
 
             modules = [
               ./hosts/inspiron5425
-              { nixpkgs.overlays = import ./overlays { inherit inputs; }; }
+              { nixpkgs.overlays = import ./overlays/desktop.nix { inherit inputs; }; }
 
               inputs.nix-flatpak.nixosModules.nix-flatpak
               inputs.sops-nix.nixosModules.sops

@@ -16,7 +16,13 @@ if [[ ! $repository =~ ^[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*$ ]
 fi
 group=${repository##*/}
 if (( $# == 0 )); then
-  set -- .#nixosConfigurations.inspiron5425.config.system.build.toplevel
+  targets_file=${CACHE_UPDATE_TARGETS_FILE:-"$(dirname "${BASH_SOURCE[0]}")/nix-cache-targets"}
+  mapfile -t targets < "$targets_file"
+  if (( ${#targets[@]} == 0 )); then
+    echo "The cache target list is empty." >&2
+    exit 1
+  fi
+  set -- "${targets[@]}"
 fi
 # Only discard changes produced by this job, never pre-existing tracked changes.
 git diff --quiet
@@ -35,6 +41,8 @@ for attempt in 1 2 3; do
   fi
   candidate=$(git rev-parse HEAD)
 
+  nix flake check --accept-flake-config --no-update-lock-file \
+    --max-jobs 1 --cores "$cores"
   nix build --accept-flake-config --no-update-lock-file \
     --max-jobs 1 --cores "$cores" --json --out-link result "$@" > build-results.json
   jq -er '[.[].outputs[]] | unique | .[]' build-results.json > build-paths.txt

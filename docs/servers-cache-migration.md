@@ -1,5 +1,7 @@
 # servers-configのキャッシュ移行
 
+> Historical migration record. Current layout and operations: [repository guide](../README.md).
+
 Forgejoの正本は`ssh://git@ryzen.home.arpa:2222/jinji/servers-config.git`。
 ローカルの`origin`をForgejoへ切り替え、GitHubは`github` remoteとして残す。
 Cubie A5E設定と、キャッシュ・Runnerの準備をコミットしてpushする。

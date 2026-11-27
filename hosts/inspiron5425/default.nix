@@ -15,7 +15,7 @@ _:
     ../../modules/system/nix
     ../../modules/system/cli.nix
     ../../modules/system/fish.nix
-    ../../modules/system/remote-rebuild
+    ./remote-rebuild
     ../../modules/system/ssh.nix
 
     ../../modules/system/audio.nix

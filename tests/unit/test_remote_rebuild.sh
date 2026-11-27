@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run with: bash tests/unit/test_remote_rebuild.sh modules/system/remote-rebuild/remote-rebuild.sh
+# Run with: bash tests/unit/test_remote_rebuild.sh hosts/inspiron5425/remote-rebuild/remote-rebuild.sh
 set -euo pipefail
 script=$(realpath "$1")
 test_root=$(mktemp -d)
@@ -83,6 +83,8 @@ set -euo pipefail
 source record activate
 [[ "$1" == os && "$2" == "$TEST_ACTION" && -L "$3" && "$4" == --ask ]]
 MOCK
+# The Nix build sandbox has no /usr/bin/env.
+sed -i "1c#!$(command -v bash)" "$test_root/bin/"{ssh,rsync,nix,nix-store,nh}
 chmod +x "$test_root/bin/"{ssh,rsync,nix,nix-store,nh}
 export PATH="$test_root/bin:$PATH"
 

@@ -21,7 +21,7 @@ MOCK = r'''
 import json, os, pathlib, subprocess, sys
 name = pathlib.Path(sys.argv[0]).name
 args = sys.argv[1:]
-stage = "publish" if name == "sudo" else "status" if name == "curl" else "update" if args[:2] == ["flake", "update"] else "build" if args[0] == "build" else "verify"
+stage = "publish" if name == "sudo" else "status" if name == "curl" else "update" if args[:2] == ["flake", "update"] else "check" if args[:2] == ["flake", "check"] else "build" if args[0] == "build" else "verify"
 commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
 log = pathlib.Path(os.environ["EVENT_LOG"])
 events = [json.loads(line) for line in log.read_text().splitlines()] if log.exists() else []
@@ -120,15 +120,20 @@ class UpdateTests(unittest.TestCase):
     def test_success_only_pushes_after_verification(self):
         result = self.run_update()
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual([event["stage"] for event in self.events()], ["update", "build", "publish", "verify", "status"])
+        self.assertEqual([event["stage"] for event in self.events()], ["update", "check", "build", "publish", "verify", "status"])
         self.assertNotEqual(self.head(), self.initial)
-        build_args = self.events()[1]["args"]
+        build_args = self.events()[2]["args"]
         self.assertEqual(build_args[build_args.index("--cores") + 1], "8")
+        expected_targets = [
+            f".#nixosConfigurations.{name}.config.system.build.toplevel"
+            for name in ("inspiron5425", "ryzen", "rock3b", "cubiea5e")
+        ] + [".#rock3b-image", ".#cubiea5e-image"]
+        self.assertEqual(build_args[-len(expected_targets):], expected_targets)
         self.assertIn("[skip ci]", git(self.remote, "log", "-1", "--format=%s", "main"))
         self.assertEqual(git(self.remote, "diff-tree", "--no-commit-id", "--name-only", "-r", "main"), "flake.lock")
 
     def test_failure_never_pushes_an_unverified_update(self):
-        for stage in ("update", "build", "publish", "verify"):
+        for stage in ("update", "check", "build", "publish", "verify"):
             with self.subTest(stage=stage):
                 git(self.work, "reset", "--hard", self.initial)
                 Path(self.env["EVENT_LOG"]).unlink(missing_ok=True)

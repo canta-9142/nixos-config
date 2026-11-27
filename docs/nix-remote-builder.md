@@ -31,13 +31,13 @@ sudo nixos-rebuild switch --flake ~/nixos-config#inspiron5425 --builders '' --ma
 
 ### Ryzen自体の更新
 
-ノートPC上の`~/servers-config`からdeploy-rsで更新する。
+ノートPC上の`~/nixos-config`からdeploy-rsで更新する。
 `flake.nix`の`deploy.nodes.ryzen`で接続先とビルド方法を定義している。
 管理ユーザー`jinji`でMesh経由で接続し、Ryzen自身でビルドしてから、
 sudoパスワードを使ってrootとして適用する。
 
 ```sh
-cd ~/servers-config
+cd ~/nixos-config
 nix develop -c deploy .#ryzen
 ```
 
@@ -68,7 +68,7 @@ ROCK 3B・Cubie A5Eはdeploy-rsの対象に追加していない。
 従来の`nixos-rebuild`も利用できる。
 
 ```sh
-nixos-rebuild switch --flake ~/servers-config#ryzen \
+nixos-rebuild switch --flake ~/nixos-config#ryzen \
   --build-host jinji@ryzen.home.arpa \
   --target-host jinji@ryzen.home.arpa \
   --ask-sudo-password
@@ -80,7 +80,7 @@ nixos-rebuild switch --flake ~/servers-config#ryzen \
 
 | 対象 | ファイル |
 | --- | --- |
-| Ryzenの専用ユーザー・ビルド設定 | `modules/system/nix-builder.nix` |
+| Ryzenの専用ユーザー・ビルド設定 | `hosts/ryzen/nix-builder.nix` |
 | ビルド用SSH公開鍵 | `hosts/ryzen/nix-builder.pub` |
 | ノートPCの委譲先・SSH設定 | `~/nixos-config/hosts/inspiron5425/nix-builder.nix` |
 | 暗号化したSSH秘密鍵 | `~/nixos-config/secrets/nix-builder.yaml` |
@@ -108,7 +108,7 @@ SSHホスト公開鍵はクライアント設定に固定する。接続先や�
 sudo nix store info --store 'ssh-ng://nix-builder@ryzen.home.arpa?ssh-key=/run/secrets/nix_builder_private_key'
 ```
 
-`~/servers-config`で、キャッシュ取得だけでは終了しない小規模ビルドを実行する。
+`~/nixos-config`で、キャッシュ取得だけでは終了しない小規模ビルドを実行する。
 
 ```sh
 nix build --impure --no-link --expr '

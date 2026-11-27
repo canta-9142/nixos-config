@@ -406,10 +406,10 @@ DHCPのリース一覧から接続先IPアドレスを確認し、共通設定�
 一般のsudoを使う場合は、インストール環境で`passwd jinji`を実行するか、管理するパスワード設定を別途追加する。
 `nixos-rebuild`には既存のROCK 3Bと同じパスワード不要sudoルールを設けている。
 
-本リポジトリを`/home/jinji/servers-config`へ配置した後の更新（RyzenへSSH接続できる場合）:
+本リポジトリを`/home/jinji/nixos-config`へ配置した後の更新（RyzenへSSH接続できる場合）:
 
 ```sh
-sudo nixos-rebuild switch --flake /home/jinji/servers-config#cubiea5e \
+sudo nixos-rebuild switch --flake /home/jinji/nixos-config#cubiea5e \
   --build-host jinji@ryzen.home.arpa
 ```
 

@@ -74,7 +74,7 @@ nix build .#nixosConfigurations.ryzen.config.system.build.toplevel
 実機への適用は、実施する時点で以下を手元から実行する。
 
 ```sh
-nixos-rebuild switch --flake ~/servers-config#ryzen \
+nixos-rebuild switch --flake ~/nixos-config#ryzen \
   --build-host jinji@ryzen.home.arpa \
   --target-host jinji@ryzen.home.arpa \
   --ask-sudo-password

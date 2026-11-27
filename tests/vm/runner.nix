@@ -22,7 +22,6 @@ pkgs.testers.runNixOSTest {
     runners = {
         "web": "/var/lib/gitea-runner/web",
         "nix": "/var/lib/gitea-runner-nix/nix",
-        "servers": "/var/lib/gitea-runner-servers",
     }
     start_all()
     machine.wait_for_unit("forgejo.service")
@@ -30,7 +29,6 @@ pkgs.testers.runNixOSTest {
     machine.succeed("install -d -m 700 /srv/forgejo /etc/forgejo-runner /var/lib/nix-cache; touch /srv/forgejo/.migration-ready /var/lib/nix-cache/signing-key")
     machine.succeed("su -s /bin/sh forgejo -c 'FORGEJO_WORK_DIR=/var/lib/forgejo ${pkgs.forgejo}/bin/forgejo actions generate-runner-token' > /etc/forgejo-runner/web.env")
     machine.succeed("sed 's/^/TOKEN=/' /etc/forgejo-runner/web.env > /etc/forgejo-runner/nix.env; chmod 600 /etc/forgejo-runner/*.env")
-    machine.succeed("cp /etc/forgejo-runner/nix.env /etc/forgejo-runner/servers-nix.env")
 
     with subtest("all runners register with Forgejo using either token format"):
         for name in runners:
@@ -54,7 +52,7 @@ pkgs.testers.runNixOSTest {
         assert len(registrations) == len(runners)
 
     with subtest("the Nix runner writes registration state as its dedicated account"):
-        for name in ["nix", "servers"]:
+        for name in ["nix"]:
             machine.succeed(f"test $(systemctl show -p User --value forgejo-runner-{name}) = nix-ci")
             for filename in [".runner", ".token-hash", ".labels"]:
                 machine.succeed(f"sudo -u nix-ci test -s {runners[name]}/{filename}")

@@ -1,5 +1,7 @@
 # Actions Runner（Phase 5）
 
+> 統合後の対象・runner・更新スケジュールは [現行の運用手順](operations.md) を参照。以下には導入時の手順・記録を含む。
+
 以下はPhase 5時点の構成・受入記録。
 Phase 6でサイト領域のvolume許可と本番workflowを追加した。
 現在の適用手順・権限の前提は[Webデプロイ手順](web-deployment.md)を参照。
@@ -43,7 +45,7 @@ Podmanはjobのresolverをブリッジ上のaardvarkへ向けるため、DNSポ�
 3. 設定を検証して適用する。
 
 ```sh
-cd ~/servers-config
+cd ~/nixos-config
 nix develop
 nix fmt
 statix check .

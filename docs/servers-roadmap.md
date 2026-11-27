@@ -1,5 +1,7 @@
 # 自宅サーバー構成 要件定義・実装ロードマップ
 
+> Historical migration record. Current layout and operations: [repository guide](../README.md).
+
 ## 1. 目的
 
 本プロジェクトは、Ryzen搭載PCを主系サーバー、Radxa ROCK 3Bを非常用待機サーバーとして構成し、以下のサービスを安定して提供することを目的とする。
@@ -774,7 +776,7 @@ nix build --builders '' --max-jobs 1 <installable>
 
 Binary CacheはRyzen上で提供する。
 
-運用方針の詳細は[Binary Cache運用計画](docs/nix-binary-cache.md)を参照。
+運用方針の詳細は[Binary Cache運用計画](nix-binary-cache.md)を参照。
 `~/nixos-config`の正本はRyzenのForgejoへ移行済み。
 Ryzenで毎日09:00・21:00 JSTにflake inputsを更新してlaptop構成全体をビルドする。
 システムのclosureをキャッシュへ公開した後、成功した更新コミットだけをpushする。
@@ -980,7 +982,7 @@ Ryzen機を組み立てる。
 
 NixOSを導入し、通常起動、LANおよびCloudflare Mesh経由のSSH、片側縮退起動とメンバー復旧を実機で確認した。
 縮退のログ検出と縮退中の書き込み保持を確認し、B側は手動の再参加、A側は自動復旧を実施した。
-SSDの再参加・交換と起動領域の復旧は[復旧手順](docs/ryzen-storage-recovery.md)にまとめる。
+SSDの再参加・交換と起動領域の復旧は[復旧手順](ryzen-storage-recovery.md)にまとめる。
 実機で遭遇したRAID管理情報のカーネル互換性問題は、7.2.7での正常起動を確認して解消した。
 
 確定方針:
@@ -1020,7 +1022,7 @@ SSDの再参加・交換と起動領域の復旧は[復旧手順](docs/ryzen-sto
 RyzenとノートPCの設定、専用鍵の暗号化管理、VM試験を追加した。
 Ryzenへ適用し、専用鍵とホスト鍵検証を用いたMesh経由のビルド、およびクライアントへの成果物取得を確認した。
 この確認はコマンド単位のbuilder指定で実施しており、ノートPCの恒久設定の適用、大規模ビルド、実機での途中切断試験は未実施。
-適用順序と手動切替は[運用手順](docs/nix-remote-builder.md)にまとめる。
+適用順序と手動切替は[運用手順](nix-remote-builder.md)にまとめる。
 
 RyzenをRemote Builder化する。
 設定方針は第8節に従い、通常は原則全委譲、障害時は手動でローカル実行へ切り替える。
@@ -1103,7 +1105,7 @@ ROCKのForgejo・Runner・dumpを停止してデータを移し、Ryzenで起動
 
 laptopのSSH恒久設定は`~/nixos-config`の`93f5be4`でコミット済み（OSへの適用完了は未確認）。
 既存リポジトリ`~/Projects/floating-gate`のoriginも新SSH URLへ変更し、参照取得を確認した。
-詳細と再移行時の手順は[Forgejo移行手順](docs/forgejo-migration.md)にまとめる。
+詳細と再移行時の手順は[Forgejo移行手順](forgejo-migration.md)にまとめる。
 
 完了条件の確認状況:
 
@@ -1127,7 +1129,7 @@ laptopのSSH恒久設定は`~/nixos-config`の`93f5be4`でコミット済み（O
 `~/Projects/floating-gate`を対象に、Podman上のNode 22でWebビルドを行う。
 既存デプロイjobとはRunnerラベルを分け、公開ディレクトリへの書き込み権限を付与しない。
 Nix build用workflowは現時点では不要のため、今回の作業・完了条件から除外する。
-登録と受入確認は[Actions Runner手順](docs/forgejo-runner.md)にまとめる。
+登録と受入確認は[Actions Runner手順](forgejo-runner.md)にまとめる。
 `phase5-ci`ブランチでWebビルド成功、意図的なCI失敗時の本番release維持、復旧後の再成功を確認した。
 Podman 5.8.7との互換性のためNode 22 Alpineを使い、ブリッジのDNS通信を許可する。
 workflowの`main`統合は、既存deploy workflowを整理したPhase 6で完了した。
@@ -1168,7 +1170,7 @@ build
 Ryzenに`/srv/www/floating-gate`と`/healthz`、既存TunnelへのWeb ingressを追加した。
 既存Runnerのvolume許可をサイト領域に限定し、本番jobでのみマウントする。
 サイト側workflowはAlpine対応・新Forgejo URL・Ryzen Runnerへ更新し、mainの二重ビルドを除いた。
-適用順序と切戻しは[Webデプロイ手順](docs/web-deployment.md)を参照。
+適用順序と切戻しは[Webデプロイ手順](web-deployment.md)を参照。
 サイトの`9dbfeb7`をmainへpushし、[CI #77](https://git.floating-gate.com/jinji/floating-gate/actions/runs/77)が成功。
 Ryzenの`current`が同commitを指し、`/healthz`が200 / ok、HTTP本文と公開ファイルのハッシュ一致を確認した。
 DNS切替後の公開アクセスを確認済み。
