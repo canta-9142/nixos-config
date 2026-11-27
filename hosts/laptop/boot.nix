@@ -81,6 +81,10 @@ in
 
     kernelPatches = [
       {
+        name = "kconfig-stable-autoconf-comment";
+        patch = ./kconfig-stable-autoconf-comment.patch;
+      }
+      {
         name = "iwlwifi-ax210-6ghz-diagnostic";
         patch = ./iwlwifi-ax210-6ghz-diagnostic.patch;
       }

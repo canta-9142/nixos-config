@@ -1,0 +1,14 @@
+Subject: [PATCH] kconfig: keep the autoconf.h heading independent of the release
+
+The C configuration header is an input to ccache's direct-mode manifest.
+Keep its heading stable across kernel releases without changing configuration
+definitions or the pound-style headings in .config and auto.conf.
+
+--- a/scripts/kconfig/confdata.c
++++ b/scripts/kconfig/confdata.c
+@@ -632 +632,4 @@ static void conf_write_heading(FILE *fp, const struct comment_style *cs)
+-	fprintf(fp, "%s %s\n", cs->decoration, rootmenu.prompt->text);
++	if (cs == &comment_style_c)
++		fprintf(fp, "%s Linux Kernel Configuration\n", cs->decoration);
++	else
++		fprintf(fp, "%s %s\n", cs->decoration, rootmenu.prompt->text);
