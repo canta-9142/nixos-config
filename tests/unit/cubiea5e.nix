@@ -40,8 +40,8 @@ pkgs.stdenv.mkDerivation {
     test "$(fdtget configured.dtb /soc/pcie@4800000 status)" = okay
     test "$(fdtget configured.dtb /soc/phy@4f00000 phy_use_sel)" = 0
     test "$(fdtget configured.dtb /soc/spi@4025000/flash@0 compatible)" = jedec,spi-nor
-    bash ${./cubiea5e-pcie-watch.sh} ${../hosts/cubiea5e/initrd-pcie-watch.sh}
-    bash ${./cubiea5e-pcie-gen1.sh} ${../hosts/cubiea5e/initrd-pcie-gen1.sh}
+    bash ${./cubiea5e-pcie-watch.sh} ${../../hosts/cubiea5e/initrd-pcie-watch.sh}
+    bash ${./cubiea5e-pcie-gen1.sh} ${../../hosts/cubiea5e/initrd-pcie-gen1.sh}
     touch "$out"
   '';
 }

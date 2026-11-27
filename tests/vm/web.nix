@@ -2,7 +2,7 @@
 pkgs.testers.runNixOSTest {
   name = "ryzen-web";
   nodes.machine = {
-    imports = [ ../hosts/ryzen/web.nix ];
+    imports = [ ../../hosts/ryzen/web.nix ];
     # Exercise nginx without contacting Cloudflare or needing credentials.
     services.cloudflared.tunnels."aa088497-b776-4cb2-989e-935dc02ed6b3".credentialsFile =
       "/nonexistent";

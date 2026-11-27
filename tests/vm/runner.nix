@@ -3,8 +3,8 @@ pkgs.testers.runNixOSTest {
   name = "ryzen-forgejo-runners";
   nodes.machine = {
     imports = [
-      ../hosts/ryzen/runner.nix
-      ../hosts/ryzen/nix-ci.nix
+      ../../hosts/ryzen/runner.nix
+      ../../hosts/ryzen/nix-ci.nix
     ];
     services.forgejo = {
       enable = true;

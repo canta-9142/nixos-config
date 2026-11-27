@@ -245,7 +245,7 @@ journalctl -u nix-cache-gc.service
 `nix flake check`には隔離VMでの基盤試験を追加している。
 署名付きclosureの取得、別鍵での拒否、HTTP書き込み拒否、Store GC後の取得、
 キャッシュ停止時のローカルビルドに加え、GC後の取得と公開ロックとの排他を確認する。
-`tests/nix-cache-gc.py`は14日間の保持、最新成功分・共有依存物・共有NARの保護、
+`tests/unit/nix-cache-gc.py`は14日間の保持、最新成功分・共有依存物・共有NARの保護、
 初回の猶予期間、dry-run、破損・欠落時の削除抑止を確認する。
 実機のTunnel・DNS・laptopでのキャッシュ利用も確認済み。
 2026-10-06にfish補完を含む取得と高速化を利用者が確認した。

@@ -15,8 +15,8 @@ pkgs.testers.runNixOSTest {
   name = "ryzen-nix-cache";
   nodes.machine = {
     imports = [
-      ../hosts/ryzen/nix-cache.nix
-      ../hosts/ryzen/nix-ci.nix
+      ../../hosts/ryzen/nix-cache.nix
+      ../../hosts/ryzen/nix-ci.nix
     ];
     services.cloudflared.tunnels."aa088497-b776-4cb2-989e-935dc02ed6b3".credentialsFile =
       "/nonexistent";

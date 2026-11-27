@@ -33,12 +33,12 @@ hosts/cubiea5e/        Cubie A5EのNVMe起動・ハードウェア・管理SSH
 lib/                  extlinuxを使うNVMeイメージの生成
 assets/edid/          ROCK 3BのHDMI用EDID
 modules/system/       SSH・Mesh・保守・管理ユーザー
-tests/deploy.nix        deploy-rsの確認タイムアウト・適用失敗時の切り戻し試験
-tests/forgejo.nix       Forgejo移行・起動抑止・Mesh SSH制限の試験
-tests/web.nix           nginx・healthz・公開release切替の試験
-tests/nix-cache.nix     署名付きcache・closure取得・障害時buildの試験
-tests/nix-cache-gc.py   キャッシュの14日保持・依存物保護・異常時削除抑止の試験
-tests/nix-cache-update.py 定期更新のpush抑止・Git競合の回帰試験
+tests/vm/deploy.nix        deploy-rsの確認タイムアウト・適用失敗時の切り戻し試験
+tests/vm/forgejo.nix       Forgejo移行・起動抑止・Mesh SSH制限の試験
+tests/vm/web.nix           nginx・healthz・公開release切替の試験
+tests/vm/nix-cache.nix     署名付きcache・closure取得・障害時buildの試験
+tests/unit/nix-cache-gc.py   キャッシュの14日保持・依存物保護・異常時削除抑止の試験
+tests/unit/nix-cache-update.py 定期更新のpush抑止・Git競合の回帰試験
 ```
 
 `nixpkgs`は既存の`~/nixos-config`と同じrevisionから開始し、`flake.lock`で固定。

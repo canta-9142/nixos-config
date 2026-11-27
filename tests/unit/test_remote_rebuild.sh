@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Run with: bash modules/system/remote-rebuild/test_remote_rebuild.sh
+# Run with: bash tests/unit/test_remote_rebuild.sh modules/system/remote-rebuild/remote-rebuild.sh
 set -euo pipefail
-script=$(realpath "$(dirname "$0")/remote-rebuild.sh")
+script=$(realpath "$1")
 test_root=$(mktemp -d)
 trap 'rm -rf -- "$test_root"' EXIT
 export TEST_ROOT="$test_root" REAL_RSYNC

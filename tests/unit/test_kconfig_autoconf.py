@@ -11,7 +11,7 @@ def run(*args, cwd, env):
     return subprocess.check_output(args, cwd=cwd, env=env, text=True)
 
 
-def check(conf):
+def check(conf, compiler):
     with tempfile.TemporaryDirectory(prefix="kconfig-ccache-test-") as directory:
         root = Path(directory)
         (root / "ccache.conf").touch()
@@ -39,7 +39,7 @@ def check(conf):
             assert f"#define CONFIG_CACHE_TEST_VALUE {value}\n".encode() in header
             assert version in (root / ".config").read_text()
             assert version in (root / "include/config/auto.conf").read_text()
-            run("ccache", "gcc", "-c", "probe.c", "-o", "probe.o", cwd=root, env=env)
+            run("ccache", compiler, "-c", "probe.c", "-o", "probe.o", cwd=root, env=env)
             stats = dict(
                 line.split()
                 for line in run("ccache", "--print-stats", cwd=root, env=env).splitlines()
@@ -61,4 +61,4 @@ def check(conf):
 
 
 if __name__ == "__main__":
-    check(str(Path(sys.argv[1]).resolve()))
+    check(str(Path(sys.argv[1]).resolve()), sys.argv[2] if len(sys.argv) > 2 else "gcc")

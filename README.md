@@ -184,3 +184,14 @@ Ryzen exposes `/srv/kernel/ccache` to its Nix build sandbox through
 A local build of these kernels also needs this module on its build machine.
 The source path and generated Kconfig C heading are kept stable to allow reuse
 across derivations without ignoring changes to configuration definitions.
+
+## Automated checks
+
+`tests/unit/` contains script regressions, Kconfig/ccache checks (native and ARM
+cross compilation), and the Cubie kernel/Device Tree checks. `tests/vm/` contains
+NixOS service integration tests. `tests/default.nix` registers both in the flake
+checks for x86_64 Linux. VM tests need KVM; the configured Ryzen builder provides it.
+The checks use disposable data and do not activate a host configuration.
+
+The Discord runtime probe is manual:
+`nix run --impure --file scripts/check-discord-mediapipe.nix`.

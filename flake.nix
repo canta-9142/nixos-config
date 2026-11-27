@@ -108,7 +108,7 @@
           };
 
           checks = lib.optionalAttrs (system == "x86_64-linux") (
-            import ./tests/server-checks.nix {
+            import ./tests {
               inherit inputs self;
               pkgs = inputs.nixpkgs.legacyPackages.${system};
             }

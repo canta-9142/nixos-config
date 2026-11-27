@@ -22,7 +22,7 @@ pkgs.testers.runNixOSTest {
       environment.systemPackages = [ pkgs.netcat-openbsd ];
     };
     target = {
-      imports = [ ../hosts/ryzen/forgejo.nix ];
+      imports = [ ../../hosts/ryzen/forgejo.nix ];
       networking.nftables.enable = true;
     };
   };

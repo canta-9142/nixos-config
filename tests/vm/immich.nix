@@ -4,7 +4,7 @@ pkgs.testers.runNixOSTest {
 
   nodes = {
     server = {
-      imports = [ ../hosts/ryzen/immich.nix ];
+      imports = [ ../../hosts/ryzen/immich.nix ];
       system.stateVersion = "26.05";
       networking.nftables.enable = true;
       networking.firewall.checkReversePath = "loose";
