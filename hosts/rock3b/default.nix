@@ -1,0 +1,54 @@
+{ pkgs, ... }:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./rock3b.nix
+    ./boot.nix
+    ./networking.nix
+    ../../modules/system/server/common.nix
+    ../../modules/system/server/ssh.nix
+    ../../modules/system/server/cloudflare-mesh.nix
+  ];
+
+  networking.hostName = "rock3b";
+
+  programs.direnv.enable = true;
+
+  nix.package = pkgs.lixPackageSets.stable.lix;
+  nixpkgs.overlays = [
+    (_final: prev: {
+      nh = prev.symlinkJoin {
+        name = "nh-${prev.nh.version}";
+        paths = [ prev.nh ];
+        nativeBuildInputs = [ prev.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/nh --set NH_PRESERVE_ENV 0
+        '';
+      };
+      phytool = prev.phytool.overrideAttrs {
+        env.NIX_CFLAGS_COMPILE = "-Wno-error=unused-but-set-variable";
+      };
+    })
+  ];
+
+  environment = {
+    sessionVariables.NH_FLAKE = "/home/jinji/servers-config#rock3b";
+    systemPackages = with pkgs; [
+      wget
+      curl
+      ripgrep
+      yazi
+      fastfetch
+      fetch
+      htop
+      zellij
+      dnsutils
+    ];
+  };
+
+  systemd.tmpfiles.rules = [
+    "L+ /etc/nixos - jinji users - /home/jinji/servers-config"
+  ];
+
+  system.stateVersion = "26.05";
+}

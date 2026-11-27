@@ -5,6 +5,15 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    cubiea5e = {
+      url = "github:patryk4815/nixos-cubie-a5e";
+      flake = false;
+    };
+
     nixpkgs-stable.url = "https://channels.nixos.org/nixos-26.05/nixexprs.tar.zst";
 
     lanzaboote.url = "github:nix-community/lanzaboote/v1.2.0";
@@ -70,26 +79,80 @@
   };
 
   outputs =
-    inputs@{ flake-parts, ... }:
+    inputs@{ self, flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
         "aarch64-linux"
       ];
 
-      perSystem = { pkgs, ... }: {
-        devShells.default = pkgs.mkShellNoCC {
-          packages = with pkgs; [
-            nixfmt-tree
-            statix
-            deadnix
-            nixd
-            sops
-            age
-          ];
+      perSystem =
+        {
+          pkgs,
+          system,
+          lib,
+          ...
+        }:
+        {
+          packages = lib.optionalAttrs (system == "x86_64-linux") {
+            rock3b-image = import ./lib/make-extlinux-image.nix {
+              pkgs = inputs.nixpkgs.legacyPackages.${system};
+              inherit (self.nixosConfigurations.rock3b) config;
+              baseName = "rock3b-nvme";
+            };
+            cubiea5e-image = import ./lib/make-extlinux-image.nix {
+              pkgs = inputs.nixpkgs.legacyPackages.${system};
+              inherit (self.nixosConfigurations.cubiea5e) config;
+              baseName = "cubiea5e-nvme";
+            };
+          };
+
+          checks = lib.optionalAttrs (system == "x86_64-linux") (
+            import ./tests/server-checks.nix {
+              inherit inputs self;
+              pkgs = inputs.nixpkgs.legacyPackages.${system};
+            }
+          );
+          devShells.default = pkgs.mkShellNoCC {
+            packages = with pkgs; [
+              nixfmt-tree
+              statix
+              deadnix
+              nixd
+              sops
+              age
+              inputs.deploy-rs.packages.${system}.default
+            ];
+          };
+
+          formatter = pkgs.nixfmt-tree;
         };
 
-        formatter = pkgs.nixfmt-tree;
+      flake.deploy.nodes.ryzen = {
+        hostname = "ryzen.home.arpa";
+        sshUser = "jinji";
+        interactiveSudo = true;
+        remoteBuild = true;
+        profiles.system = {
+          user = "root";
+          path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.ryzen;
+        };
+      };
+
+      flake.nixosConfigurations = {
+        ryzen = inputs.nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./hosts/ryzen ];
+        };
+        rock3b = inputs.nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [ ./hosts/rock3b ];
+        };
+        cubiea5e = inputs.nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { inherit (inputs) cubiea5e; };
+          modules = [ ./hosts/cubiea5e ];
+        };
       };
 
       flake.nixosConfigurations.nixos = inputs.nixpkgs.lib.nixosSystem {

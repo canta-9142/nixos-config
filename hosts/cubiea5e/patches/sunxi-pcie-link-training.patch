@@ -1,0 +1,273 @@
+Subject: [PATCH] PCIe: sunxi: validate link training before enumeration
+
+Read the negotiated speed from Link Status and return it to the caller.
+Only request a speed change in speed_change(), then wait for both the
+request to complete and the link to finish training. Propagate failures
+through host_init instead of enumerating a failed link.
+
+Log root-port state around initialization, retraining and enumeration,
+and device command/BAR values after enumeration. These diagnostics help
+locate the configuration loss observed on Cubie A5E; its cause is not yet
+proven. Keep the guarded initrd recovery until hardware testing completes.
+
+Related report: https://github.com/radxa-build/radxa-a733/issues/10
+---
+diff --git a/drivers/pci/pcie-sunxi/pcie-sunxi-rc.c b/drivers/pci/pcie-sunxi/pcie-sunxi-rc.c
+--- a/drivers/pci/pcie-sunxi/pcie-sunxi-rc.c
++++ b/drivers/pci/pcie-sunxi/pcie-sunxi-rc.c
+@@ -458,6 +458,32 @@
+ 	.write = sunxi_pcie_wr_conf,
+ };
+ 
++static void sunxi_pcie_log_state(struct sunxi_pcie_port *pp, const char *stage)
++{
++	struct sunxi_pcie *pci = to_sunxi_pcie_from_pp(pp);
++	u8 cap = sunxi_pcie_plat_find_capability(pci, PCI_CAP_ID_EXP);
++
++	dev_info(pp->dev,
++		 "PCIe diag %s: link=%08x lnksta=%04x cmd=%04x buses=%08x\n",
++		 stage, sunxi_pcie_readl(pci, PCIE_LINK_STAT),
++		 cap ? sunxi_pcie_readw_dbi(pci, cap + PCI_EXP_LNKSTA) : 0xffff,
++		 sunxi_pcie_readw_dbi(pci, PCI_COMMAND),
++		 sunxi_pcie_readl_dbi(pci, PCI_PRIMARY_BUS));
++}
++
++static int sunxi_pcie_log_device(struct pci_dev *dev, void *data)
++{
++	u16 command = 0xffff;
++	u32 bar0 = ~0U, bar1 = ~0U;
++
++	pci_read_config_word(dev, PCI_COMMAND, &command);
++	pci_read_config_dword(dev, PCI_BASE_ADDRESS_0, &bar0);
++	pci_read_config_dword(dev, PCI_BASE_ADDRESS_1, &bar1);
++	pci_info(dev, "PCIe diag after-probe: cmd=%04x bar0=%08x bar1=%08x\n",
++		 command, bar0, bar1);
++	return 0;
++}
++
+ static int sunxi_pcie_host_init(struct sunxi_pcie_port *pp)
+ {
+ 	struct device *dev = pp->dev;
+@@ -513,8 +539,13 @@
+ 			return ret;
+ 	}
+ 
+-	if (pp->ops->host_init)
+-		pp->ops->host_init(pp);
++	sunxi_pcie_log_state(pp, "before-host-init");
++	if (pp->ops->host_init) {
++		ret = pp->ops->host_init(pp);
++		if (ret)
++			goto err_free_irqs;
++	}
++	sunxi_pcie_log_state(pp, "after-host-init");
+ 
+ 	bridge->sysdata = pp;
+ 	bridge->ops = &sunxi_pcie_ops;
+@@ -522,20 +553,21 @@
+ 	if (pp->irq_domain)
+ 		dev_set_msi_domain(&bridge->dev, pp->irq_domain);
+ 
++	sunxi_pcie_log_state(pp, "before-probe");
+ 	ret = pci_host_probe(bridge);
+-
+-	if (ret) {
+-		if (pci_msi_enabled() && !pp->has_its) {
+-			sunxi_pcie_free_msi(pp);
+-		}
+-		sunxi_free_irq_domains(pp);
+-
+-		dev_err(pp->dev, "Failed to probe host bridge\n");
+-
+-		return ret;
+-	}
++	sunxi_pcie_log_state(pp, "after-probe");
++	if (ret)
++		goto err_free_irqs;
++	pci_walk_bus(bridge->bus, sunxi_pcie_log_device, NULL);
+ 
+ 	return 0;
++
++err_free_irqs:
++	if (pci_msi_enabled() && !pp->has_its)
++		sunxi_pcie_free_msi(pp);
++	sunxi_free_irq_domains(pp);
++	dev_err(pp->dev, "Failed to initialize host bridge: %d\n", ret);
++	return ret;
+ }
+ 
+ void sunxi_pcie_host_setup_rc(struct sunxi_pcie_port *pp)
+@@ -613,9 +645,7 @@
+ 
+ 	sunxi_pcie_dbi_ro_wr_dis(pci);
+ 
+-	sunxi_pcie_host_rd_own_conf(pp, PCIE_LINK_WIDTH_SPEED_CONTROL, 4, &val);
+-	val |= PORT_LOGIC_SPEED_CHANGE;
+-	sunxi_pcie_host_wr_own_conf(pp, PCIE_LINK_WIDTH_SPEED_CONTROL, 4, val);
++	/* Retrain only in speed_change(), where completion is checked. */
+ }
+ EXPORT_SYMBOL_GPL(sunxi_pcie_host_setup_rc);
+ 
+@@ -635,34 +665,52 @@
+ 	return -ETIMEDOUT;
+ }
+ 
++static int sunxi_pcie_host_wait_for_link(struct sunxi_pcie_port *pp)
++{
++	struct sunxi_pcie *pci = to_sunxi_pcie_from_pp(pp);
++	u8 cap = sunxi_pcie_plat_find_capability(pci, PCI_CAP_ID_EXP);
++	int retries;
++
++	if (!cap)
++		return -EINVAL;
++
++	for (retries = 0; retries < LINK_WAIT_MAX_RETRIE; retries++) {
++		if (sunxi_pcie_host_is_link_up(pp) &&
++		    !(sunxi_pcie_readw_dbi(pci, cap + PCI_EXP_LNKSTA) & PCI_EXP_LNKSTA_LT))
++			return 0;
++		usleep_range(LINK_WAIT_USLEEP_MIN, LINK_WAIT_USLEEP_MAX);
++	}
++
++	dev_err(pp->dev, "PCIe link training timeout\n");
++	return -ETIMEDOUT;
++}
++
+ static int sunxi_pcie_host_read_speed(struct sunxi_pcie *pci)
+ {
+-	int val, gen;
+-
+-	sunxi_pcie_dbi_ro_wr_en(pci);
+-	val = sunxi_pcie_readl_dbi(pci, LINK_CONTROL2_LINK_STATUS2);
+-	gen = val & 0xf;
+-
+-	dev_info(pci->dev, "PCIe speed of Gen%d\n", gen);
+-
+-	sunxi_pcie_dbi_ro_wr_dis(pci);
+-	return 0;
++	u8 cap = sunxi_pcie_plat_find_capability(pci, PCI_CAP_ID_EXP);
++
++	if (!cap)
++		return -EINVAL;
++
++	return sunxi_pcie_readw_dbi(pci, cap + PCI_EXP_LNKSTA) & PCI_EXP_LNKSTA_CLS;
+ }
+ 
+ int sunxi_pcie_host_speed_change(struct sunxi_pcie *pci, int gen)
+ {
+ 	u32 val;
+-	u32 current_speed;
+-	int ret;
+-
++	int current_speed, ret;
++
++	sunxi_pcie_log_state(&pci->pp, "before-speed-change");
+ 	current_speed = sunxi_pcie_host_read_speed(pci);
++	if (current_speed <= 0)
++		return current_speed ? current_speed : -ENOLINK;
+ 
+ 	if (current_speed >= gen) {
+-		dev_info(pci->dev, "Link already at Gen%u, skipping retrain.\n", current_speed);
++		dev_info(pci->dev, "Link already at Gen%d, skipping retrain.\n", current_speed);
+ 		return 0;
+ 	}
+ 
+-	dev_info(pci->dev, "Current speed Gen%u < target Gen%d. Retraining link...\n",
++	dev_info(pci->dev, "Current speed Gen%d < target Gen%d. Retraining link...\n",
+ 		   current_speed, gen);
+ 
+ 	sunxi_pcie_dbi_ro_wr_en(pci);
+@@ -679,20 +727,25 @@
+ 	val |= PORT_LOGIC_SPEED_CHANGE;
+ 	sunxi_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
+ 
++	sunxi_pcie_dbi_ro_wr_dis(pci);
+ 	ret = sunxi_pcie_host_wait_for_speed_change(pci);
+-	if (!ret) {
+-		dev_info(pci->dev, "PCIe speed of Gen%d\n", gen);
+-	}
+-	else
+-		dev_info(pci->dev, "PCIe speed of Gen1\n");
+-
+-	sunxi_pcie_dbi_ro_wr_dis(pci);
++	if (!ret)
++		ret = sunxi_pcie_host_wait_for_link(&pci->pp);
++	sunxi_pcie_log_state(&pci->pp, "after-speed-change");
++	if (ret)
++		return ret;
++
++	current_speed = sunxi_pcie_host_read_speed(pci);
++	if (current_speed <= 0)
++		return current_speed ? current_speed : -ENOLINK;
++	dev_info(pci->dev, "PCIe negotiated Gen%d (target Gen%d)\n", current_speed, gen);
+ 	return 0;
+ }
+ 
+-static void __sunxi_pcie_host_init(struct sunxi_pcie_port *pp)
++static int __sunxi_pcie_host_init(struct sunxi_pcie_port *pp)
+ {
+ 	struct sunxi_pcie *pci = to_sunxi_pcie_from_pp(pp);
++	int ret;
+ 
+ 	if (!sunxi_pcie_host_is_link_up(pp)) {
+ 		sunxi_pcie_plat_ltssm_disable(pci);
+@@ -706,16 +759,16 @@
+ 	}
+ 
+ 	sunxi_pcie_host_setup_rc(pp);
+-
+-	if (sunxi_pcie_host_is_link_up(pp)) {
+-		dev_info(pci->dev, "pcie is already link up\n");
+-
+-		sunxi_pcie_host_read_speed(pci);
+-	} else {
+-		sunxi_pcie_host_establish_link(pci);
+-
+-		sunxi_pcie_host_speed_change(pci, pci->link_gen);
+-	}
++	sunxi_pcie_log_state(pp, "after-rc-setup");
++
++	ret = sunxi_pcie_host_establish_link(pci);
++	if (ret)
++		return ret;
++	ret = sunxi_pcie_host_wait_for_link(pp);
++	if (ret)
++		return ret;
++
++	return sunxi_pcie_host_speed_change(pci, pci->link_gen);
+ }
+ 
+ static bool sunxi_pcie_host_link_up_status(struct sunxi_pcie_port *pp)
+@@ -737,21 +790,6 @@
+ 	.is_link_up = sunxi_pcie_host_link_up_status,
+ 	.host_init = __sunxi_pcie_host_init,
+ };
+-
+-static int sunxi_pcie_host_wait_for_link(struct sunxi_pcie_port *pp)
+-{
+-	int retries;
+-
+-	for (retries = 0; retries < LINK_WAIT_MAX_RETRIE; retries++) {
+-		if (sunxi_pcie_host_is_link_up(pp)) {
+-			dev_info(pp->dev, "pcie link up success\n");
+-			return 0;
+-		}
+-		usleep_range(LINK_WAIT_USLEEP_MIN, LINK_WAIT_USLEEP_MAX);
+-	}
+-
+-	return -ETIMEDOUT;
+-}
+ 
+ int sunxi_pcie_host_establish_link(struct sunxi_pcie *pci)
+ {
+diff --git a/drivers/pci/pcie-sunxi/pcie-sunxi.h b/drivers/pci/pcie-sunxi/pcie-sunxi.h
+--- a/drivers/pci/pcie-sunxi/pcie-sunxi.h
++++ b/drivers/pci/pcie-sunxi/pcie-sunxi.h
+@@ -339,7 +339,7 @@
+ 	int  (*rd_own_conf)(struct sunxi_pcie_port *pp, int where, int size, u32 *val);
+ 	int  (*wr_own_conf)(struct sunxi_pcie_port *pp, int where, int size, u32 val);
+ 	bool (*is_link_up)(struct sunxi_pcie_port *pp);
+-	void (*host_init)(struct sunxi_pcie_port *pp);
++	int (*host_init)(struct sunxi_pcie_port *pp);
+ 	void (*scan_bus)(struct sunxi_pcie_port *pp);
+ };
+ 

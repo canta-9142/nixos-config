@@ -1,6 +1,8 @@
 # nixos-config
 NixOS and Home Manager configuration for the `nixos` laptop.
-The ROCK 3B configuration is maintained separately in `servers-config`.
+Ryzen, ROCK 3B and Cubie A5E configurations are also included.
+See [server operations](docs/servers.md) for deployment, images and recovery.
+All four hosts use the same pinned `nixpkgs` input.
 
 ## Desktop
 
