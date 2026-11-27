@@ -6,7 +6,7 @@
     group = "nix-builder";
     useDefaultShell = true;
     openssh.authorizedKeys.keys = [
-      ''restrict,command="${config.nix.package}/bin/nix-daemon --stdio" ${builtins.readFile ../../../hosts/ryzen/nix-builder.pub}''
+      ''restrict,command="${config.nix.package}/bin/nix-daemon --stdio" ${builtins.readFile ./nix-builder.pub}''
     ];
   };
   services.openssh.settings.AllowUsers = [ "nix-builder" ];

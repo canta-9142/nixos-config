@@ -4,6 +4,7 @@ _:
   imports = [
     ./hardware-configuration.nix
     ./boot.nix
+    ./kernel.nix
     ./luks.nix
     ./networking.nix
     ./nix.nix

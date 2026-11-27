@@ -22,7 +22,7 @@ inputs.deploy-rs.lib.${pkgs.stdenv.hostPlatform.system}.deployChecks self.deploy
         ];
       }
       ''
-        python ${./fanctl.py} ${../scripts/fanctl.sh}
+        python ${./fanctl.py} ${../hosts/rock3b/fanctl.sh}
         touch "$out"
       '';
   forgejo = import ./forgejo.nix { inherit pkgs; };

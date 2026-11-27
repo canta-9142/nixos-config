@@ -3,6 +3,7 @@
   imports = [
     ../../users/jinji/server.nix
     ./hardware-configuration.nix
+    ./kernel.nix
     ./initrd-debug.nix
     ../../modules/system/server
     ../../modules/system/server/ssh.nix

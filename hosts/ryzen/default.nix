@@ -4,6 +4,7 @@
     ../../users/jinji/server.nix
     ./hardware-configuration.nix
     ./storage.nix
+    ./storage-health
     ./forgejo.nix
     ./immich.nix
     ./runner.nix
@@ -15,7 +16,7 @@
     ../../modules/system/server/ssh.nix
     ../../modules/system/cloudflare-warp.nix
     ../../modules/system/server/maintenance.nix
-    ../../modules/system/server/nix-builder.nix
+    ./nix-builder.nix
   ];
 
   networking = {

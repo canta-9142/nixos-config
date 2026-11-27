@@ -3,7 +3,10 @@
   imports = [
     ../../users/jinji/server.nix
     ./hardware-configuration.nix
-    ./rock3b.nix
+    ./hardware.nix
+    ./kernel.nix
+    ./fan-control.nix
+    ./ethernet-leds.nix
     ./boot.nix
     ./networking.nix
     ../../modules/system/server
