@@ -44,7 +44,10 @@ in
   ];
   boot = {
     # Compile the patched ARM kernel on Ryzen without QEMU.
-    kernelPackages = kernelPkgs.linuxPackages_latest;
+    kernelPackages = import ../../lib/kernel-ccache {
+      pkgs = kernelPkgs;
+      kernelPackages = kernelPkgs.linuxPackages_latest;
+    };
     kernelPatches = lib.mkAfter [
       {
         name = "sunxi-pcie-link-training";

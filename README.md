@@ -172,3 +172,15 @@ cp ~/.local/state/noctalia/settings.toml \
 Runtime settings take precedence over the Home Manager defaults, so GUI changes
 remain active after rebuilding. The file in this repository serves as the
 reproducible initial configuration and should be updated manually when needed.
+
+## Kernel compilation cache
+
+Inspiron 5425, ROCK 3B and Cubie A5E share the kernel ccache setup in
+`lib/kernel-ccache/`. The ARM kernels are cross-compiled on x86_64 using their
+cross toolchain; the installed systems remain aarch64.
+
+Ryzen exposes `/srv/kernel/ccache` to its Nix build sandbox through
+`modules/system/nix/ccache.nix`. The three kernels share a 50 GB cache.
+A local build of these kernels also needs this module on its build machine.
+The source path and generated Kconfig C heading are kept stable to allow reuse
+across derivations without ignoring changes to configuration definitions.
