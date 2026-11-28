@@ -122,8 +122,11 @@ class UpdateTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual([event["stage"] for event in self.events()], ["update", "check", "build", "publish", "verify", "status"])
         self.assertNotEqual(self.head(), self.initial)
-        build_args = self.events()[2]["args"]
-        self.assertEqual(build_args[build_args.index("--cores") + 1], "8")
+        check_args, build_args = (event["args"] for event in self.events()[1:3])
+        self.assertEqual(check_args[check_args.index("--max-jobs") + 1], "1")
+        self.assertEqual(build_args[build_args.index("--max-jobs") + 1], "2")
+        for args in (check_args, build_args):
+            self.assertEqual(args[args.index("--cores") + 1], "8")
         expected_targets = [
             f".#nixosConfigurations.{name}.config.system.build.toplevel"
             for name in ("inspiron5425", "ryzen", "rock3b", "cubiea5e")

@@ -43,10 +43,10 @@ jobs:
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$EXPECTED_COMMIT"
           nix flake check --accept-flake-config --no-update-lock-file \
-            --max-jobs 1 --cores 16
+            --max-jobs 1 --cores 8
           mapfile -t targets < scripts/nix-cache-targets
           nix build --accept-flake-config --no-update-lock-file \
-            --max-jobs 1 --cores 16 --json --out-link result \
+            --max-jobs 2 --cores 8 --json --out-link result \
             "${targets[@]}" > "$RUNNER_TEMP/cache-build-results.json"
           nix shell --inputs-from . nixpkgs#jq -c jq -er \
             '[.[].outputs[]] | unique | .[]' "$RUNNER_TEMP/cache-build-results.json" \
@@ -85,7 +85,7 @@ jobs:
 
       - name: Update, build, publish, verify, then push
         env:
-          CACHE_UPDATE_CORES: '16'
+          CACHE_UPDATE_CORES: '8'
           CACHE_UPDATE_TOKEN: ${{ github.token }}
           CACHE_UPDATE_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |

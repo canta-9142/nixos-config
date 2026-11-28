@@ -39,6 +39,9 @@ ARM のユーザーランド生成には Ryzen の既存の binfmt エミュレ�
 - JST 03:00 / 15:00 または手動 `update_lock`: lock 更新 → checks → 全対象ビルド → 署名公開・検証 → lock の push。
 - main が進んだ場合は、新しい main を元に最大3回やり直す。未検証の lock は push しない。
 
+どちらの CI ジョブも、`nix flake check` は `--max-jobs 1 --cores 8`、
+`nix build` は `--max-jobs 2 --cores 8` で実行する。
+
 runner は既存の `ryzen-nix-build` を継続利用する。登録ファイルと作業領域も維持する。
 ワークフローは checkout 内の更新スクリプトを使うので、旧インストール済み updater に依存しない。
 署名は既存の `nix-cache-publish` を経由し、秘密鍵を CI ユーザーへ渡さない。

@@ -44,7 +44,7 @@ for attempt in 1 2 3; do
   nix flake check --accept-flake-config --no-update-lock-file \
     --max-jobs 1 --cores "$cores"
   nix build --accept-flake-config --no-update-lock-file \
-    --max-jobs 1 --cores "$cores" --json --out-link result "$@" > build-results.json
+    --max-jobs 2 --cores "$cores" --json --out-link result "$@" > build-results.json
   jq -er '[.[].outputs[]] | unique | .[]' build-results.json > build-paths.txt
   mapfile -t store_paths < build-paths.txt
   sudo -n /run/current-system/sw/bin/nix-cache-publish --group "$group" "${store_paths[@]}"
