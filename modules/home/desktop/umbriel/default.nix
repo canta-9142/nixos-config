@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 
 {
   imports = [ inputs.umbriel.homeModules.default ];
@@ -31,15 +31,8 @@
         };
       };
 
-      output = {
-        "HDMI-A-1" = {
-          scale = 1.0;
-        };
-        "eDP-1" = {
-          scale = 1.0;
-          mode = "1920x1080@48.001";
-        };
-      };
+      # Noctalia's Umbriel Displays plugin writes this file on the first edit.
+      include.optional.files = [ "${config.xdg.configHome}/umbriel/outputs.toml" ];
 
       layout = {
         mode = "scrolling";
