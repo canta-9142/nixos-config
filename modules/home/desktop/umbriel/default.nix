@@ -34,17 +34,9 @@
       output = {
         "HDMI-A-1" = {
           scale = 1.0;
-          position = [
-            0
-            0
-          ];
         };
         "eDP-1" = {
           scale = 1.0;
-          position = [
-            1920
-            0
-          ];
           mode = "1920x1080@48.001";
         };
       };
