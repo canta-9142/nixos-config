@@ -21,7 +21,7 @@
 
   nix.gc = {
     automatic = true;
-    dates = "Sun 04:00";
+    dates = "Sun 02:00";
     options = "--delete-older-than 14d";
     persistent = true;
   };

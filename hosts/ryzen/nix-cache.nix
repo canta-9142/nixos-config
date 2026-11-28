@@ -88,7 +88,7 @@ in
     timers.nix-cache-gc = {
       wantedBy = [ "timers.target" ];
       timerConfig = {
-        OnCalendar = "*-*-* 04:30:00";
+        OnCalendar = "*-*-* 02:30:00";
         Persistent = true;
       };
     };

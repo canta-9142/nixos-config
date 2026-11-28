@@ -90,7 +90,7 @@ pkgs.testers.runNixOSTest {
     with subtest("cache GC has a persistent daily timer and respects the publication lock"):
         machine.succeed("systemctl is-active nix-cache-gc.timer")
         machine.succeed("test $(systemctl show -p Persistent --value nix-cache-gc.timer) = yes")
-        machine.succeed("grep -F 'OnCalendar=*-*-* 04:30:00' /etc/systemd/system/nix-cache-gc.timer")
+        machine.succeed("grep -F 'OnCalendar=*-*-* 02:30:00' /etc/systemd/system/nix-cache-gc.timer")
         machine.succeed("flock /run/lock/nix-cache-publish.lock -c 'touch /tmp/cache-lock-held; sleep 300' >/tmp/cache-lock.log 2>&1 &")
         machine.wait_until_succeeds("test -f /tmp/cache-lock-held")
         machine.succeed("systemctl start --no-block nix-cache-gc")

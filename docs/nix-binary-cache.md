@@ -217,7 +217,7 @@ HTTP障害時の待ち時間はNixの通信タイムアウト・再試行に依�
 
 ### 5. キャッシュの保持とGC
 
-`/srv/nix-cache`はNix StoreのGCとは独立して、毎日04:30 JSTに`nix-cache-gc.timer`でGCする。
+`/srv/nix-cache`はNix StoreのGCとは独立して、毎日02:30 JSTに`nix-cache-gc.timer`でGCする。
 停止中に実行を逃した場合は次回起動後に実行する。
 
 - 直近14日以内に公開に成功した構成と、その依存物を保持する。
