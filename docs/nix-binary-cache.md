@@ -68,7 +68,7 @@ CI成功を確認する。定期ジョブ自身のpushは`[skip ci]`で通常CI�
 
 ## laptopでの操作
 
-対象コミットのCI成功を確認してから実行する。`NH_FLAKE`は既存の
+対象コミットのCI成功を確認してから実行する。`NH_OS_FLAKE`は
 `~/nixos-config#inspiron5425`を使う。
 
 ```sh

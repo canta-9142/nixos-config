@@ -31,7 +31,7 @@
     binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 
-  environment.sessionVariables.NH_FLAKE = "/home/jinji/nixos-config#ryzen";
+  environment.sessionVariables.NH_OS_FLAKE = "/home/jinji/nixos-config#ryzen";
 
   system.stateVersion = "26.05";
 }

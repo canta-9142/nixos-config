@@ -54,10 +54,10 @@ runner は既存の `ryzen-nix-build` を継続利用する。登録ファイル
    新設定ではサーバー専用 runner を廃し、Nix runner と Web runner を残す。
    旧 runner の状態ディレクトリや token はこのリポジトリから削除しない。
 5. ARM 機は個別の起動・ディスク手順に従って適用する。
-   適用後の `NH_FLAKE` と `/etc/nixos` は統合 checkout を参照する。
+   適用後の `NH_OS_FLAKE` と `/etc/nixos` は統合 checkout を参照する。
 6. Inspiron の適用後は OS ホスト名も `inspiron5425` になる。
    `nsr` / `nbr` は新しいセレクターと専用のリモート作業ディレクトリを使う。
-   ログインし直して、新しい `NH_FLAKE` をセッションへ反映する。
+   ログインし直して、新しい `NH_OS_FLAKE` をセッションへ反映する。
 
 SSH 接続制限、sudo の認証方針、ディスク UUID、GC の保持期間は統合前の方針を引き継ぐ。
 古い `docs/` の移行記録に旧リポジトリ名・旧 runner 名が出る場合、現在の操作は本ページを優先する。

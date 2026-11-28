@@ -34,7 +34,7 @@ _:
     nbl = "nh os boot --builders '' --max-jobs 10";
     nsl = "nh os switch --builders '' --max-jobs 10";
   };
-  environment.sessionVariables.NH_FLAKE = "/home/jinji/nixos-config#inspiron5425";
+  environment.sessionVariables.NH_OS_FLAKE = "/home/jinji/nixos-config#inspiron5425";
 
   networking.hostName = "inspiron5425";
   # Forgejo's migrated host key on Mesh port 2222; separate from management SSH.

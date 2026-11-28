@@ -65,7 +65,7 @@ secrets/                  # sops-encrypted secrets
 
 Hostnames, directories and flake selectors agree: `.#inspiron5425`, `.#ryzen`,
 `.#rock3b` and `.#cubiea5e`. There is no `.#nixos` compatibility alias.
-Each host sets `NH_FLAKE` to `/home/jinji/nixos-config#<hostname>`.
+Each host sets `NH_OS_FLAKE` to `/home/jinji/nixos-config#<hostname>` for `nh os`.
 See [unified operations](docs/operations.md) for CI, deployment and rollout.
 
 Validation:

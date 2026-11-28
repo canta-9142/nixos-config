@@ -16,7 +16,7 @@
 
   programs.direnv.enable = true;
   environment = {
-    sessionVariables.NH_FLAKE = "/home/jinji/nixos-config#cubiea5e";
+    sessionVariables.NH_OS_FLAKE = "/home/jinji/nixos-config#cubiea5e";
     systemPackages = [ pkgs.pciutils ];
   };
 

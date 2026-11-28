@@ -27,7 +27,7 @@
   ];
 
   environment = {
-    sessionVariables.NH_FLAKE = "/home/jinji/nixos-config#rock3b";
+    sessionVariables.NH_OS_FLAKE = "/home/jinji/nixos-config#rock3b";
     systemPackages = with pkgs; [
       wget
       curl

@@ -5,7 +5,7 @@ flake評価・成果物取得・ノートPCへの適用はノートPC側で行�
 
 ## 普段の操作
 
-ノートPC上で実行する。`NH_FLAKE`は`~/nixos-config#inspiron5425`に設定済み。
+ノートPC上で実行する。`NH_OS_FLAKE`は`~/nixos-config#inspiron5425`に設定済み。
 
 ```sh
 # ノートPCを更新（ビルドは原則Ryzen）
