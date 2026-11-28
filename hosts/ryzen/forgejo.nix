@@ -98,7 +98,10 @@ in
     enable = true;
     tunnels.${tunnelId} = {
       credentialsFile = "/var/lib/cloudflared/${tunnelId}.json";
-      ingress."git.floating-gate.com" = "http://127.0.0.1:3000";
+      ingress = {
+        "git.floating-gate.com" = "http://127.0.0.1:3000";
+        "ssh.floating-gate.com" = "ssh://127.0.0.1:22";
+      };
       default = "http_status:404";
     };
   };
